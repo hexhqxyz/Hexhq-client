@@ -15,7 +15,8 @@ contract Staking is ReentrancyGuard {
 
     mapping(address => uint) public stakedBalance;
     mapping(address => uint) public userRewardPerTokenPaid;
-    
+    mapping(address => uint) public rewards;
+
     constructor(address stakingTokenAddress, address rewardTokenAddress) {
         s_stakingToken = IERC20(stakingTokenAddress);
         s_rewardToken = IERC20(rewardTokenAddress);
@@ -37,5 +38,14 @@ contract Staking is ReentrancyGuard {
             (stakedBalance[account] *
                 (rewardsPerToken() - userRewardPerTokenPaid[account]))
         );
+    }
+
+    modifier updateReward(address account) {
+        rewardPerTokenStored = rewardsPerToken();
+        lastUpdateTime = block.timestamp;
+
+        rewards[account] = earned(account);
+        userRewardPerTokenPaid[account] = rewardPerTokenStored;
+        _;
     }
 }
