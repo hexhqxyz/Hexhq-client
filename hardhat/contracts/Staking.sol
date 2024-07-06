@@ -13,19 +13,29 @@ contract Staking is ReentrancyGuard {
     uint public rewardPerTokenStored;
     uint public lastUpdateTime;
 
+    mapping(address => uint) public stakedBalance;
+    mapping(address => uint) public userRewardPerTokenPaid;
+    
     constructor(address stakingTokenAddress, address rewardTokenAddress) {
         s_stakingToken = IERC20(stakingTokenAddress);
         s_rewardToken = IERC20(rewardTokenAddress);
     }
 
-    function rewardsPerToken() public view  returns (uint) {
-        if(totalStakedToken == 0){
-         return rewardPerTokenStored;
+    function rewardsPerToken() public view returns (uint) {
+        if (totalStakedToken == 0) {
+            return rewardPerTokenStored;
         }
 
         uint totalTime = block.timestamp - lastUpdateTime;
         uint totalRewards = REWARD_RATE * totalTime;
 
         return rewardPerTokenStored + totalRewards / totalStakedToken;
+    }
+
+    function earned(address account) public view returns (uint) {
+        return (
+            (stakedBalance[account] *
+                (rewardsPerToken() - userRewardPerTokenPaid[account]))
+        );
     }
 }
