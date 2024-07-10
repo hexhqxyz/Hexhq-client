@@ -130,4 +130,26 @@ describe("Staking Contract", function () {
     });
   });
 
+  describe("Rewards", function () {
+    it("should allow users to claim rewards", async function () {
+      const { staking, stakingToken, rewardToken, addr1, stakeAmount } =
+        await loadFixture(deployStakingFixture);
+
+      await stakingToken.connect(addr1).approve(staking.target, stakeAmount);
+      await staking.connect(addr1).stake(stakeAmount);
+
+      // Fast forward time to accumulate rewards
+      const initialTimestamp = await time.latest();
+      await time.increaseTo(initialTimestamp + 3600);
+
+      const earned = await staking.earned(await addr1.getAddress());
+      expect(earned).to.be.closeTo(3600n * 1n * 10n ** 15n, 1n * 10n ** 15n); // Use closeTo for slight variations
+
+      await staking.connect(addr1).getReward();
+      expect(
+        await rewardToken.balanceOf(await addr1.getAddress())
+      ).to.be.closeTo(earned, 1n * 10n ** 15n);
+    });
+  });
+
 });
