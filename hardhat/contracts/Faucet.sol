@@ -4,6 +4,9 @@ pragma solidity ^0.8.24;
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+error FaucetAlreadyClaimed(address claimer);
+error FaucetInsufficientFunds(uint256 requested, uint256 available);
+
 contract Faucet is Ownable {
     IERC20 public token;
     uint256 public amountAllowed;
@@ -17,8 +20,14 @@ contract Faucet is Ownable {
     }
 
     function claimTokens() external {
-        require(!hasClaimed[msg.sender], "Faucet: You have already claimed your tokens");
-        require(token.balanceOf(address(this)) >= amountAllowed, "Faucet: Not enough tokens in the faucet");
+        if (hasClaimed[msg.sender]) {
+            revert FaucetAlreadyClaimed(msg.sender);
+        }
+        uint256 faucetBalance = token.balanceOf(address(this));
+
+        if (faucetBalance < amountAllowed) {
+            revert FaucetInsufficientFunds(amountAllowed, faucetBalance);
+        }
         hasClaimed[msg.sender] = true;
         token.transfer(msg.sender, amountAllowed);
         emit Claimed(msg.sender, amountAllowed);

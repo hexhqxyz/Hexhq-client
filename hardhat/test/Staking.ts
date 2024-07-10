@@ -152,4 +152,39 @@ describe("Staking Contract", function () {
     });
   });
 
+  describe("Owner Functions", function () {
+    it("should allow owner to pause and unpause the contract", async function () {
+      const { staking, owner } = await loadFixture(deployStakingFixture);
+
+      await staking.connect(owner).pause();
+      expect(await staking.paused()).to.be.true;
+
+      await staking.connect(owner).unpause();
+      expect(await staking.paused()).to.be.false;
+    });
+
+    it("should allow owner to update the reward rate", async function () {
+      const { staking, owner } = await loadFixture(deployStakingFixture);
+
+      await staking.connect(owner).setRewardRate(2n * 10n ** 15n);
+      expect(await staking.rewardRate()).to.equal(2n * 10n ** 15n);
+    });
+  });
+
+
+  describe("Emergency Withdrawal", function () {
+    it("should allow users to withdraw staked tokens during emergency", async function () {
+      const { staking, stakingToken, addr1, stakeAmount,owner } = await loadFixture(deployStakingFixture);
+
+      await stakingToken.connect(addr1).approve(staking.target, stakeAmount);
+      await staking.connect(addr1).stake(stakeAmount);
+
+      await staking.connect(owner).pause();
+      await staking.connect(addr1).emergencyWithdraw();
+
+      expect(await staking.stakedBalanceOf(await addr1.getAddress())).to.equal(0);
+      expect(await stakingToken.balanceOf(await addr1.getAddress())).to.equal(stakeAmount);
+    });
+  });
+
 });
