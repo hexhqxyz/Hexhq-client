@@ -60,23 +60,33 @@ describe("Staking Contract", function () {
 
   describe("Staking", function () {
     it("should allow users to stake tokens", async function () {
-      const { staking, stakingToken, addr1, stakeAmount } = await loadFixture(deployStakingFixture);
+      const { staking, stakingToken, addr1, stakeAmount } = await loadFixture(
+        deployStakingFixture
+      );
 
       await stakingToken.connect(addr1).approve(staking.target, stakeAmount);
       await staking.connect(addr1).stake(stakeAmount);
 
-      expect(await staking.stakedBalanceOf(await addr1.getAddress())).to.equal(stakeAmount);
+      expect(await staking.stakedBalanceOf(await addr1.getAddress())).to.equal(
+        stakeAmount
+      );
     });
 
     it("should not allow staking 0 tokens", async function () {
-      const { staking, stakingToken, addr1 } = await loadFixture(deployStakingFixture);
+      const { staking, stakingToken, addr1 } = await loadFixture(
+        deployStakingFixture
+      );
 
       await stakingToken.connect(addr1).approve(staking.target, 0);
-      await expect(staking.connect(addr1).stake(0)).to.be.revertedWithCustomError(staking, "AmountMustBeGreaterThanZero");
+      await expect(
+        staking.connect(addr1).stake(0)
+      ).to.be.revertedWithCustomError(staking, "AmountMustBeGreaterThanZero");
     });
 
     it("should update reward balances on staking", async function () {
-      const { staking, stakingToken, addr1, stakeAmount } = await loadFixture(deployStakingFixture);
+      const { staking, stakingToken, addr1, stakeAmount } = await loadFixture(
+        deployStakingFixture
+      );
 
       await stakingToken.connect(addr1).approve(staking.target, stakeAmount);
       await staking.connect(addr1).stake(stakeAmount);
@@ -86,6 +96,37 @@ describe("Staking Contract", function () {
 
       const earned = await staking.earned(await addr1.getAddress());
       expect(earned).to.be.gt(0);
+    });
+  });
+
+  describe("Withdrawing", function () {
+    it("should allow users to withdraw staked tokens", async function () {
+      const { staking, stakingToken, addr1, stakeAmount } = await loadFixture(
+        deployStakingFixture
+      );
+
+      await stakingToken.connect(addr1).approve(staking.target, stakeAmount);
+      await staking.connect(addr1).stake(stakeAmount);
+
+      const withdrawAmount = stakeAmount / 2n; // Withdraw half
+      await staking.connect(addr1).withdrawStakedTokens(withdrawAmount);
+      expect(await staking.stakedBalanceOf(await addr1.getAddress())).to.equal(
+        stakeAmount - withdrawAmount
+      );
+    });
+
+    it("should not allow withdrawing more than staked", async function () {
+      const { staking, stakingToken, addr1, stakeAmount } = await loadFixture(
+        deployStakingFixture
+      );
+
+      await stakingToken.connect(addr1).approve(staking.target, stakeAmount);
+      await staking.connect(addr1).stake(stakeAmount);
+
+      const excessiveAmount = stakeAmount + 1n; // More than staked
+      await expect(
+        staking.connect(addr1).withdrawStakedTokens(excessiveAmount)
+      ).to.be.revertedWithCustomError(staking, "AmountNotEnough");
     });
   });
 
