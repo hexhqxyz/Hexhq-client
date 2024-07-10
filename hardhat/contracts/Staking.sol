@@ -69,7 +69,7 @@ contract Staking is ReentrancyGuard, Ownable, Pausable {
     function stake(
         uint256 amount
     ) external nonReentrant whenNotPaused updateReward(msg.sender) {
-        if (amount < 0) revert AmountMustBeGreaterThanZero();
+        if (amount <= 0) revert AmountMustBeGreaterThanZero();
         totalStakedTokens += amount;
         stakedBalance[msg.sender] += amount;
         emit Staked(msg.sender, amount);
@@ -84,7 +84,7 @@ contract Staking is ReentrancyGuard, Ownable, Pausable {
     function withdrawStakedTokens(
         uint256 amount
     ) external nonReentrant whenNotPaused updateReward(msg.sender) {
-        if (amount < 0) revert AmountMustBeGreaterThanZero();
+        if (amount <= 0) revert AmountMustBeGreaterThanZero();
         if (stakedBalance[msg.sender] <= amount) revert AmountNotEnough();
         totalStakedTokens -= amount;
         stakedBalance[msg.sender] -= amount;
@@ -110,7 +110,7 @@ contract Staking is ReentrancyGuard, Ownable, Pausable {
 
     function emergencyWithdraw() external nonReentrant whenPaused {
         uint256 amount = stakedBalance[msg.sender];
-        if (amount < 0) revert AmountMustBeGreaterThanZero();
+        if (amount <= 0) revert AmountMustBeGreaterThanZero();
         totalStakedTokens -= amount;
         stakedBalance[msg.sender] = 0;
         emit EmergencyWithdrawal(msg.sender, amount);
