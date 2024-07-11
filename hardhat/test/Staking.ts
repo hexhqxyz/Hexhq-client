@@ -14,8 +14,9 @@ describe("Staking Contract", function () {
     const stakeAmount = 1000n * 10n ** 18n; // 1,000 tokens with 18 decimals
 
     const Token = await hre.ethers.getContractFactory("StakingToken");
+    const RewardToken = await hre.ethers.getContractFactory("RewardToken");
     const stakingToken = await Token.deploy(initialSupply);
-    const rewardToken = await Token.deploy(initialSupply);
+    const rewardToken = await RewardToken.deploy(initialSupply);
 
     await stakingToken.waitForDeployment();
     await rewardToken.waitForDeployment();
@@ -28,7 +29,7 @@ describe("Staking Contract", function () {
 
     await staking.waitForDeployment();
 
-    await rewardToken.approve(staking.target, initialSupply);
+    await stakingToken.approve(staking.target, initialSupply);
     // Transfer tokens to addr1 and addr2 for testing
 
     await stakingToken.transfer(addr1.getAddress(), stakeAmount);
