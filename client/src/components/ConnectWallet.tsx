@@ -1,12 +1,16 @@
-'use client'
+"use client";
 
-import { useWeb3Modal } from '@web3modal/ethers/react'
+import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 
 export default function ConnectButton() {
+  const {isConnected} = useWeb3ModalAccount();
+  console.log("is connected..", isConnected)
   return (
-    <>
-      <w3m-button />
+    <> 
+    {
+      isConnected ? <w3m-account-button /> : <w3m-connect-button />
+    }
+      {/* <w3m-button /> */}
     </>
-  )
+  );
 }
-
