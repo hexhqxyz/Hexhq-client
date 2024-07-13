@@ -3,6 +3,7 @@ import "./globals.css";
 import Providers from "@/components/providers";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
+import Navbar from "@/components/navbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -27,7 +28,12 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <nav>
+            <Navbar />
+          </nav>
+          {children}
+        </Providers>
       </body>
     </html>
   );
