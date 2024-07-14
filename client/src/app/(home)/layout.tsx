@@ -1,20 +1,26 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import ScreenLoading from "@/components/ui/ScreenLoading";
 import { useSwitchNetwork, useWeb3ModalAccount } from "@web3modal/ethers/react";
-import React from "react";
+import React, { Suspense } from "react";
+import { useIsClient } from "usehooks-ts";
 
 type Props = {
   children: React.ReactNode;
 };
 
 const Layout = ({ children }: Props) => {
-  const { chainId, isConnected } = useWeb3ModalAccount();
+  const { chainId, isConnected, address, status } = useWeb3ModalAccount();
+  const client = useIsClient();
   const { switchNetwork } = useSwitchNetwork();
-
   const handleSwitch = () => {
     switchNetwork(1337);
   };
+
+  if (status === "reconnecting" || !client) {
+    return <ScreenLoading />;
+  }
 
   if (!isConnected) {
     return <div>please connect to continue</div>;
@@ -32,8 +38,10 @@ const Layout = ({ children }: Props) => {
 
   return (
     <div>
-      hurray!!! connected to {chainId}
-      <div>{children}</div>
+      <Suspense fallback={<ScreenLoading />}>
+        hurray!!! connected to {chainId}
+        <div>{children}</div>
+      </Suspense>
     </div>
   );
 };
