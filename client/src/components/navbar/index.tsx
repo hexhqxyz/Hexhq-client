@@ -8,7 +8,7 @@ const Navbar = (props: Props) => {
   return (
     <div className="flex justify-between items-center">
       <div>hello</div>
-      <div className="flex items-center">
+      <div className="flex items-center gap-x-2">
         <ThemeSwitcher />
         <ConnectButton />
       </div>

@@ -30,6 +30,7 @@ const metadata = {
   url: "https://mywebsite.com", // origin must match your domain & subdomain
   icons: ["https://avatars.mywebsite.com/"],
 };
+const chains = [mainnet, localhost];
 // 4. Create Ethers config
 const ethersConfig = defaultConfig({
   /*Required*/
@@ -45,12 +46,11 @@ const ethersConfig = defaultConfig({
 // 5. Create a Web3Modal instance
 createWeb3Modal({
   ethersConfig,
-  chains: [localhost],
+  chains,
   projectId,
   enableAnalytics: true, // Optional - defaults to your Cloud configuration
   enableOnramp: false, // Optional - false as default
   // allowUnsupportedChain: false,
-
 });
 
 type Props = {
