@@ -30,10 +30,13 @@ export default function RootLayout({
         )}
       >
         <Providers>
-          <nav className="px-2 py-2 border-b">
+          <nav className="px-2 py-2 border-b fixed top-0 z-50 bg-background w-full">
             <Navbar />
           </nav>
+          <div className="mt-14">
+
           {children}
+          </div>
         </Providers>
       </body>
     </html>
