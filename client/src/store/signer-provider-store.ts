@@ -1,10 +1,9 @@
-import { Contract } from "ethers";
-import { BrowserProvider } from "ethers";
+import { Contract,BrowserProvider,JsonRpcSigner } from "ethers";
 import { create } from "zustand";
 
 type State = {
   provider: BrowserProvider | null;
-  signer: any | null;
+  signer: JsonRpcSigner | null;
   contract: Contract | null;
   isConnected: boolean;
 };
