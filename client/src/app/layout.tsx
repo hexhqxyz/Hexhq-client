@@ -4,6 +4,7 @@ import Providers from "@/components/providers";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/navbar";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -33,10 +34,8 @@ export default function RootLayout({
           <nav className="px-2 py-2 border-b fixed top-0 z-50 bg-background w-full">
             <Navbar />
           </nav>
-          <div className="mt-14">
-
-          {children}
-          </div>
+          <div className="mt-14">{children}</div>
+          <Toaster duration={2000} />
         </Providers>
       </body>
     </html>

@@ -2,12 +2,11 @@
 
 import React, { useState } from "react";
 import { Button } from "../ui/button";
-import { Contract, ethers } from "ethers";
+import { Contract, ethers, TransactionReceipt } from "ethers";
 import { useWeb3Store } from "@/store/signer-provider-store";
-import {
-  FAUCET_CONTRACT_ADDRESS,
-} from "@/lib/constants";
+import { FAUCET_CONTRACT_ADDRESS } from "@/lib/constants";
 import { decodeFaucetError } from "@/lib/utils";
+import { toast } from "sonner";
 
 type Props = {};
 
@@ -19,7 +18,7 @@ const Faucet = (props: Props) => {
     try {
       if (!contract) return;
       setLoading(true);
-      
+
       const faucetAbi = await import("@/lib/abis/Faucet.json").then(
         (data) => data.abi
       );
@@ -33,12 +32,34 @@ const Faucet = (props: Props) => {
       const tx = await faucetContract.claimTokens({
         maxFeePerGas: maxFeePerGas,
       });
-      const receipt = await tx.wait();
-      console.log("receipt:", receipt);
+            
+      const toastId = toast.loading(
+        "Your DTX faucet tokens are on the way! This may take a few moments"
+      );
+      const receipt: TransactionReceipt = await tx.wait();
+
+      toast.success("Tokens Received!", {
+        description:
+          "Your DTX faucet tokens have been successfully transferred",
+        action: {
+          label: "See Tx",
+          onClick: () => {
+            window.open(
+              `https://sepolia.etherscan.io/tx/${receipt?.blockHash}`
+            );
+          },
+        },
+        id: toastId,
+      });
+
       setLoading(false);
     } catch (error) {
       console.log("error:", error);
-      console.log(decodeFaucetError(error))
+      const parsedError = decodeFaucetError(error);
+      toast.error(parsedError.title, {
+        description: parsedError.description,
+      });
+
       setLoading(false);
     }
   };
