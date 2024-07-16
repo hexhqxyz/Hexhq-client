@@ -1,7 +1,7 @@
 import React from "react";
 import ThemeSwitcher from "../ThemeSwitcher";
 import ConnectButton from "../ConnectWallet";
-import { Heading } from "../ui/Typography";
+import { Heading, headingClasses } from "../ui/Typography";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
@@ -35,7 +35,7 @@ const links = [
 const Navbar = (props: Props) => {
   return (
     <div className="flex justify-between items-center">
-      <Heading variant="h3">OmniDeFi</Heading>
+      <Link className={cn(headingClasses["h3"])} href={"/"}>OmniDeFi</Link>
       <div className="flex items-center gap-x-2">
         {links?.map((item, index) => (
           <Link
