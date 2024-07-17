@@ -75,7 +75,7 @@ const EarnedReward = (props: Props) => {
 
     const interval = setInterval(() => {
       getStakedEarnedReward();
-    }, 10000);
+    }, 20000);
 
     return () => clearInterval(interval);
   }, [address, signer]);
