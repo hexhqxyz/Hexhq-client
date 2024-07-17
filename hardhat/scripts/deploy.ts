@@ -54,7 +54,7 @@ async function main() {
   );
   console.log(
     `Funded the faucet contract with ${
-      faucetFundingAmount
+      ethers.formatUnits(faucetFundingAmount, 18)
     } tokens.`
   );
 }

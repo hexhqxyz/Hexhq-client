@@ -32,7 +32,7 @@ const useInitializeWeb3 = () => {
         console.log("disconnected..., resetting the store")
         reset();
       }
-      if (!walletProvider || !isConnected || !chainId ||  ![1337,1].includes(chainId)) return;
+      if (!walletProvider || !isConnected || !chainId ||  ![1337,1,11155111].includes(chainId)) return;
       console.log("calling again... in useInitializeWeb3")
 
       const ethersProvider = new BrowserProvider(walletProvider);

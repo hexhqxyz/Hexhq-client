@@ -3,7 +3,6 @@ pragma solidity ^0.8.24;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "hardhat/console.sol";
 
 error FaucetAlreadyClaimed(address claimer);
 error FaucetInsufficientFunds(uint256 requested, uint256 available);
@@ -23,32 +22,21 @@ contract Faucet is Ownable {
         uint256 _amountAllowed,
         uint256 _claimInterval
     ) Ownable(msg.sender) {
-        console.log(
-            "ownable msg.sender: %s ... amountAllowed: %s .... claimInterval: %s",
-            msg.sender,
-            _amountAllowed,
-            _claimInterval
-        );
-
         token = IERC20(_token);
         amountAllowed = _amountAllowed;
         claimInterval = _claimInterval; // set claim interval in seconds
     }
 
     function claimTokens() external {
-        console.log("called claimTokens...");
         uint256 currentTime = block.timestamp;
         uint256 lastClaimedTime = lastClaimed[msg.sender];
-        console.log("started claiming token part...");
 
         if (currentTime < lastClaimedTime + claimInterval) {
-            console.log("reverting with claimtoosoon...");
             revert ClaimTooSoon(lastClaimedTime + claimInterval - currentTime);
         }
 
         uint256 faucetBalance = token.balanceOf(address(this));
         if (faucetBalance < amountAllowed) {
-            console.log("reverting with faucetinsufficientfunds...");
             revert FaucetInsufficientFunds(amountAllowed, faucetBalance);
         }
 

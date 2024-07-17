@@ -11,9 +11,9 @@ const GANACHE_PRIVATE_KEY = process.env.GANACHE_PRIVATE_KEY as string;
 const config: HardhatUserConfig = {
   solidity: "0.8.24",
   defaultNetwork: "hardhat",
-  etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
-  },
+  // etherscan: {
+  //   apiKey: ETHERSCAN_API_KEY,
+  // },
   networks: {
     // ganache: {
     //   accounts: [GANACHE_PRIVATE_KEY],
@@ -21,13 +21,21 @@ const config: HardhatUserConfig = {
     //   chainId: 1337,
     // },
     // sepolia: {
-    //   url: `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    //   // url: `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    //   url: `https://rpc.sepolia.org`,
     //   accounts: [SEPOLIA_PRIVATE_KEY],
+    //   chainId: 11155111,
     // },
     hardhat: {
       chainId: 1337,
+      loggingEnabled: true
     },
   },
+  // paths: {
+  //   sources: "./contracts",
+  //   cache: "./cache",
+  //   artifacts: "./artifacts"
+  // }
 };
 
 export default config;

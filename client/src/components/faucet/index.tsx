@@ -27,16 +27,20 @@ const Faucet = (props: Props) => {
         faucetAbi,
         signer
       );
+      const maxPriorityFeePerGas = ethers.parseUnits("2", "gwei"); // 2 gwei
 
       const maxFeePerGas = ethers.parseUnits("100", "gwei"); // 100 gwei
       const tx = await faucetContract.claimTokens({
         maxFeePerGas: maxFeePerGas,
+        // gasLimit: 100000, // Set a high enough gas limit
+        // maxPriorityFeePerGas: maxPriorityFeePerGas,
       });
-            
+
       const toastId = toast.loading(
         "Your DTX faucet tokens are on the way! This may take a few moments"
       );
       const receipt: TransactionReceipt = await tx.wait();
+      console.log("receipt:", receipt)
 
       toast.success("Tokens Received!", {
         description:
@@ -45,7 +49,7 @@ const Faucet = (props: Props) => {
           label: "See Tx",
           onClick: () => {
             window.open(
-              `https://sepolia.etherscan.io/tx/${receipt?.blockHash}`
+              `https://sepolia.etherscan.io/tx/${receipt?.hash}`
             );
           },
         },

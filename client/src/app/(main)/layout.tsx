@@ -28,7 +28,7 @@ const Layout = ({ children }: Props) => {
     return <div>please connect to continue</div>;
   }
 
-  if (chainId && ![1337,1].includes(chainId)) {
+  if (chainId && ![1337,1,11155111].includes(chainId)) {
     return (
       <div>
         <Button onClick={() => handleSwitch()}>
@@ -42,7 +42,7 @@ const Layout = ({ children }: Props) => {
     <div>
       <Suspense fallback={<ScreenLoading />}>
         hurray!!! connected to {chainId}
-        <div>{children}</div>
+        <div className="">{children}</div>
       </Suspense>
     </div>
   );
