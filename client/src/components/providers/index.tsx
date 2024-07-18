@@ -1,13 +1,14 @@
 import { Web3Modal } from "@/context/web3modal";
 import React from "react";
 import { ThemeProvider } from "./theme-provider";
+import { ApolloProvider } from "./apollo-provider";
 
 type Props = {
   children: React.ReactNode;
 };
 
 const Providers = ({ children }: Props) => {
-  return ( 
+  return (
     <div>
       <ThemeProvider
         attribute="class"
@@ -15,7 +16,9 @@ const Providers = ({ children }: Props) => {
         enableSystem
         disableTransitionOnChange
       >
-        <Web3Modal>{children}</Web3Modal>
+        <Web3Modal>
+          <ApolloProvider>{children}</ApolloProvider>
+        </Web3Modal>
       </ThemeProvider>
     </div>
   );

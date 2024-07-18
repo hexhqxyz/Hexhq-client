@@ -1,20 +1,46 @@
-import { WalletCardsIcon } from "lucide-react";
+import { CalendarDaysIcon, MoveUpRight, WalletCardsIcon } from "lucide-react";
 import React from "react";
 import { format } from "date-fns";
+import { ethers } from "ethers";
+import { shortenString } from "@/lib/utils";
+import Link from "next/link";
 
 type Activity = {
   type: "Staked" | "Withdrawn" | "RewardsClaimed";
   user: string;
   amount: string;
-  timestamp: string; // Assuming timestamp is in ISO format
+  timestamp: number; // Assuming timestamp is in ISO format
+  transactionHash: string;
+  blockNumber: string;
 };
 
 type Props = {
   activity: Activity;
 };
+export const getCurrency = (type: string) => {
+  switch (type) {
+    case "Staked":
+      return "DTX";
+    case "Withdrawn":
+      return "DTX";
+    case "RewardsClaimed":
+      return "dUSD";
+    default:
+      return "DTX";
+  }
+};
 
 const ActivityRow = ({ activity }: Props) => {
-  const formattedTimestamp = format(new Date(activity.timestamp), "PPpp");
+  if (!activity) return null;
+  console.log("activity:", activity);
+  const formattedTimestamp = format(
+    new Date(activity.timestamp * 1000 || ""),
+    "do MMM yyyy, h:mm a"
+  );
+  const formattedAmount = activity.amount
+    ? ethers.formatUnits(activity.amount, 18)
+    : "0";
+  const etherscanLink = `https://etherscan.io/tx/${activity.transactionHash}`;
 
   const getActivityIcon = (type: string) => {
     switch (type) {
@@ -28,32 +54,34 @@ const ActivityRow = ({ activity }: Props) => {
         return <WalletCardsIcon className="w-5 h-5 text-muted-foreground" />;
     }
   };
-  const getCurrency = (type: string) => {
-    switch (type) {
-      case "Staked":
-        return "DTX";
-      case "Withdrawn":
-        return "DTX";
-      case "RewardsClaimed":
-        return "dUSD";
-      default:
-        return "DTX";
-    }
-  };
 
   return (
-    <div className="px-2 py-2 cursor-pointer hover:bg-secondary rounded-md">
+    <div className="px-4 py-2 cursor-pointer hover:bg-secondary rounded-md">
       <div className="flex items-center">
         {getActivityIcon(activity.type)}
         <div className="ml-4 space-y-1">
           <p className="text-sm font-medium leading-none">{activity.type}</p>
-          <p className="text-sm text-muted-foreground">{activity.user}</p>
+          <Link
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            href={etherscanLink}
+            target="_blank"
+            className="text-sm text-muted-foreground flex gap-x-1 items-center"
+          >
+            {shortenString(activity.transactionHash)}{" "}
+            <MoveUpRight className="w-3 h-3 text-muted-foreground" />{" "}
+          </Link>
         </div>
         <div className="ml-auto text-right">
           <p className="font-medium">
-            {activity.amount} {getCurrency(activity.type)}
+            {formattedAmount} {getCurrency(activity.type)}
           </p>
-          <p className="text-sm text-muted-foreground">{formattedTimestamp}</p>
+          <p className="text-sm text-muted-foreground flex gap-x-1 items-center">
+            {" "}
+            <CalendarDaysIcon className="w-3 h-3 text-muted-foreground" />{" "}
+            {formattedTimestamp}{" "}
+          </p>
         </div>
       </div>
     </div>
