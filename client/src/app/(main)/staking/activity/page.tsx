@@ -6,7 +6,7 @@ type Props = {}
 const Page = (props: Props) => {
   return (
     <div className='py-4'>
-        <StakingActivity />
+        <StakingActivity /> 
     </div>
   )
 }

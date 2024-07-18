@@ -30,6 +30,19 @@ export const getCurrency = (type: string) => {
   }
 };
 
+export const getActivityIcon = (type: string) => {
+    switch (type) {
+      case "Staked":
+        return <WalletCardsIcon className="w-5 h-5 text-green-500" />;
+      case "Withdrawn":
+        return <WalletCardsIcon className="w-5 h-5 text-red-500" />;
+      case "RewardsClaimed":
+        return <WalletCardsIcon className="w-5 h-5 text-blue-500" />;
+      default:
+        return <WalletCardsIcon className="w-5 h-5 text-muted-foreground" />;
+    }
+  };
+
 const ActivityRow = ({ activity }: Props) => {
   if (!activity) return null;
   console.log("activity:", activity);
@@ -42,18 +55,6 @@ const ActivityRow = ({ activity }: Props) => {
     : "0";
   const etherscanLink = `https://etherscan.io/tx/${activity.transactionHash}`;
 
-  const getActivityIcon = (type: string) => {
-    switch (type) {
-      case "Staked":
-        return <WalletCardsIcon className="w-5 h-5 text-green-500" />;
-      case "Withdrawn":
-        return <WalletCardsIcon className="w-5 h-5 text-red-500" />;
-      case "RewardsClaimed":
-        return <WalletCardsIcon className="w-5 h-5 text-blue-500" />;
-      default:
-        return <WalletCardsIcon className="w-5 h-5 text-muted-foreground" />;
-    }
-  };
 
   return (
     <div className="px-4 py-2 cursor-pointer hover:bg-secondary rounded-md">

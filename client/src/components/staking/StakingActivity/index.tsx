@@ -1,12 +1,14 @@
 "use client";
 
 import React from "react";
-import ActivityRow from "./ActivityRow";
+import ActivityRow, { getActivityIcon } from "./ActivityRow";
 import { useQuery } from "@apollo/client";
 import { GET_USER_ACTIVITIES } from "@/lib/services/graphql/queries";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ExpandableCardDemo } from "@/components/ui/ExbandableCard";
+import { ExpandableCard } from "@/components/ui/ExpandableCard";
+import ActivityDetails from "./ActivityDetails";
+import { motion } from "framer-motion";
 
 type Props = {};
 
@@ -17,6 +19,7 @@ type Activity = {
   timestamp: number;
   transactionHash: string;
   blockNumber: string;
+  id: string;
 };
 
 const StakingActivity = (props: Props) => {
@@ -30,6 +33,7 @@ const StakingActivity = (props: Props) => {
 
   const stakedEvents: Activity[] = data.stakeds.map((event: any) => ({
     type: "Staked",
+    id: event.id,
     user: event.user,
     amount: event.amount,
     transactionHash: event.transactionHash,
@@ -39,6 +43,7 @@ const StakingActivity = (props: Props) => {
 
   const withdrawnEvents: Activity[] = data.withdrawns.map((event: any) => ({
     type: "Withdrawn",
+    id: event.id,
     user: event.user,
     amount: event.amount,
     transactionHash: event.transactionHash,
@@ -49,6 +54,7 @@ const StakingActivity = (props: Props) => {
   const rewardsClaimedEvents: Activity[] = data.rewardsClaimeds.map(
     (event: any) => ({
       type: "RewardsClaimed",
+      id: event.id,
       user: event.user,
       amount: event.amount,
       transactionHash: event.transactionHash,
@@ -62,21 +68,31 @@ const StakingActivity = (props: Props) => {
     ...withdrawnEvents,
     ...rewardsClaimedEvents,
   ];
-  const sortedActivities = activities
-    .sort(
-      (a, b) =>
-        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-    )
-    .slice(0, 10);
+  const sortedActivities = activities.sort(
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+  );
 
   return (
     <div>
       <ScrollArea className="h-96 w-full rounded-md">
-        {/* {sortedActivities.map((activity, index) => (
-          <ActivityRow key={index} activity={activity} />
-        ))} */}
-         <ExpandableCardDemo activities={sortedActivities} />
-
+        <ul className="max-w-2xl mx-auto w-full gap-4">
+          {sortedActivities.map((activity, index) => (
+            <li key={index}>
+              <ExpandableCard
+                title={
+                  <div className="flex items-center gap-x-2">
+                    {getActivityIcon(activity.type)}
+                    {activity.type}
+                  </div>
+                }
+                expandedContent={<ActivityDetails activity={activity} />}
+                id={activity.id}
+              >
+                <ActivityRow activity={activity} />
+              </ExpandableCard>
+            </li>
+          ))}
+        </ul>
       </ScrollArea>
     </div>
   );

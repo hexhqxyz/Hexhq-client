@@ -33,15 +33,15 @@ const ActivityDetails = ({ activity }: Props) => {
   const etherscanBlockLink = `https://etherscan.io/block/${activity.blockNumber}`;
 
   return (
-    <div className="p-4">
+    <div className="">
       {/* <h2 className="text-xl font-bold mb-2">Activity Details</h2> */}
       <div className="mb-2">
-        <motion.h3
+        {/* <motion.h3
           layoutId={`title-${activity.type}-${activity.type}`}
           className="font-bold text-neutral-700 dark:text-neutral-200"
         >
           {activity.type}
-        </motion.h3>
+        </motion.h3> */}
         <motion.p
           className="text-neutral-600 dark:text-neutral-400"
         >
