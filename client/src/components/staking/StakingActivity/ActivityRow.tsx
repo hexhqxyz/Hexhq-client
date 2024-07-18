@@ -44,8 +44,8 @@ export const getActivityIcon = (type: string) => {
   };
 
 const ActivityRow = ({ activity }: Props) => {
-  if (!activity) return null;
-  console.log("activity:", activity);
+  if (!activity) return <>nothing...</>;
+//   console.log("activity:", activity);
   const formattedTimestamp = format(
     new Date(activity.timestamp * 1000 || ""),
     "do MMM yyyy, h:mm a"

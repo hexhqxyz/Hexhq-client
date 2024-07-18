@@ -73,8 +73,7 @@ export function ExpandableCard({
         )}
       </AnimatePresence>
       <motion.div
-        layoutId={`card-${id}`}
-        key={`card-${id}`}
+        // layoutId={`card-${id}`}
         onClick={() => setIsExpanded(true)}
       >
         {children}
