@@ -37,7 +37,7 @@ type Activity = {
 
 const StakingActivity = (props: Props) => {
   const [filter, setFilter] = useState("all");
-  const PER_PAGE = 6;
+  const PER_PAGE = 10;
   const [page, setPage] = useState(0);
   const [activities, setActivities] = useState<any>([]);
 
