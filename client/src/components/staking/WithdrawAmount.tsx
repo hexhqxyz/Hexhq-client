@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+import { Label, LabelValueRow } from "../ui/label";
 import { Button } from "../ui/button";
 import { useWeb3Store } from "@/store/signer-provider-store";
 import {
@@ -18,6 +18,11 @@ import STAKING_TOKEN_ABI from "@/lib/abis/StakingToken.json";
 import STAKING_ABI from "@/lib/abis/Staking.json";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import { useStakingStore } from "@/store/staking-store";
+import { Heading } from "../ui/Typography";
+import { ArrowRight } from "lucide-react";
+import { useDebounceValue } from "usehooks-ts";
+import { toast } from "sonner";
+import { decodeStakingError } from "@/lib/utils";
 
 type Props = {};
 
@@ -26,8 +31,13 @@ type FormData = {
 };
 
 const WithdrawAmount = (props: Props) => {
-  const { setTotalStakedAmount, totalStakedAmount, stakingContract } =
-    useStakingStore();
+  const {
+    setTotalStakedAmount,
+    totalStakedAmount,
+    stakingContract,
+    totalApprovedAmount,
+  } = useStakingStore();
+  const [debouncedValue, setDebouncedValue] = useDebounceValue("", 500);
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -36,6 +46,9 @@ const WithdrawAmount = (props: Props) => {
     handleSubmit,
     reset,
     setError,
+    setValue,
+    clearErrors,
+    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(ApproveTokenSchema),
@@ -60,25 +73,72 @@ const WithdrawAmount = (props: Props) => {
       const tx = await stakingContract.withdrawStakedTokens(amountToStake, {
         maxFeePerGas: maxFeePerGas,
       });
+      const toastId = toast.loading(
+        "Your DTX is being withdrawn! This may take a few moments"
+      );
+
       console.log("tx:", tx);
 
       const receipt: TransactionReceipt = await tx.wait();
       console.log("receipt:", receipt);
+      toast.success("Successfully Withdrawn!", {
+        description: "Your DTX tokens have been successfully withdrawn",
+        action: {
+          label: "See Tx",
+          onClick: () => {
+            window.open(`https://sepolia.etherscan.io/tx/${receipt?.hash}`);
+          },
+        },
+        id: toastId,
+      });
 
       setIsLoading(false);
       reset();
       setTotalStakedAmount();
+      setDebouncedValue("");
     } catch (error) {
+      toast.dismiss();
+      const parsedError = await decodeStakingError(error);
+      toast.error(parsedError.title, {
+        description: parsedError.description || "",
+      });
+
       setIsLoading(false);
       console.log("error:", error);
     }
   });
 
+  const handlePricePercentClick = (percent: number) => {
+    const amount = (Number(totalStakedAmount) * percent) / 100;
+    setValue("amount", parseFloat(amount.toString()).toFixed(2));
+  };
+
+  const amount = watch("amount");
+
+  useEffect(() => {
+    if (!amount) {
+      setDebouncedValue("");
+      return;
+    }
+    if (parseFloat(amount) > parseFloat(totalStakedAmount)) {
+      setDebouncedValue("");
+      setError("amount", {
+        message: "Amount must be below or equal to the Staked DTX tokens",
+      });
+    } else {
+      clearErrors("amount");
+      setDebouncedValue(amount);
+    }
+  }, [amount]);
+
   return (
-    <div>
-      <form onSubmit={onSubmit} className="w-3/6 space-y-4">
+    <div className="">
+      <Heading variant="h3" className="mb-4">
+        Withdraw amount
+      </Heading>
+      <form onSubmit={onSubmit} className="space-y-4">
         <div className="grid gap-2">
-          <Label htmlFor="amount">Amount to withdraw</Label>
+          <Label htmlFor="amount">How much DTX do you want to withdraw?</Label>
           <Input
             disabled={isLoading}
             type="text"
@@ -89,7 +149,40 @@ const WithdrawAmount = (props: Props) => {
             <p className="text-red-500 text-sm">{errors?.amount.message}</p>
           )}
         </div>
-        <Button type="submit" loading={isLoading}>
+        <div className="grid grid-cols-4 gap-x-4 text-sm !mt-2">
+          {[25, 50, 75, 100].map((item, index) => (
+            <p
+              key={item}
+              onClick={() => handlePricePercentClick(item)}
+              className="py-1 bg-secondary text-center rounded-sm cursor-pointer"
+            >
+              {item}%
+            </p>
+          ))}
+        </div>
+        {debouncedValue && (
+          <div className="bg-secondary rounded-lg px-2 py-2 mt-2">
+            <LabelValueRow
+              tooltip="Staked DTX change"
+              label="Staked"
+              value={
+                <>
+                  {totalStakedAmount}
+                  <ArrowRight className="w-4 h-4 text-muted-foreground" />{" "}
+                  {parseFloat(totalStakedAmount) - parseFloat(debouncedValue) ||
+                    "0.0"}
+                </>
+              }
+            />
+          </div>
+        )}
+
+        <Button
+          type="submit"
+          variant={"invert"}
+          loading={isLoading}
+          className="w-full"
+        >
           Withdraw
         </Button>
       </form>

@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+import { Label, LabelValueRow } from "../ui/label";
 import { Button } from "../ui/button";
 import { useWeb3Store } from "@/store/signer-provider-store";
 import {
@@ -17,6 +17,9 @@ import { Contract, ethers, TransactionReceipt } from "ethers";
 import STAKING_TOKEN_ABI from "@/lib/abis/StakingToken.json";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import { useStakingStore } from "@/store/staking-store";
+import { Heading } from "../ui/Typography";
+import { defaultError } from "@/lib/errors";
+import { toast } from "sonner";
 
 type Props = {};
 
@@ -25,7 +28,6 @@ type FormData = {
 };
 
 const ApproveToken = (props: Props) => {
-  const { address } = useWeb3ModalAccount();
   const { signer } = useWeb3Store();
   const { totalApprovedAmount, setTotalApprovedAmount } = useStakingStore();
 
@@ -40,27 +42,6 @@ const ApproveToken = (props: Props) => {
   } = useForm<FormData>({
     resolver: zodResolver(ApproveTokenSchema),
   });
-
-  // const getApprovedAmount = async () => {
-  //   try {
-  //     const stakingTokenContract = new Contract(
-  //       STAKING_TOKEN_CONTRACT_ADDRESS,
-  //       STAKING_TOKEN_ABI.abi,
-  //       signer
-  //     );
-
-  //     const allowance = await stakingTokenContract.allowance(
-  //       address,
-  //       STAKING_ADDRESS
-  //     );
-  //     console.log("allowance:", allowance);
-  //     const amount = ethers.formatUnits(allowance, 18);
-  //     console.log("allowance amount:", amount);
-  //     setTotalApprovedAmount(amount);
-  //   } catch (error) {
-  //     console.log("error:", error);
-  //   }
-  // };
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -82,44 +63,78 @@ const ApproveToken = (props: Props) => {
           maxFeePerGas: maxFeePerGas,
         }
       );
+      const toastId = toast.loading(
+        "Your DTX is being approved! This may take a few moments"
+      );
+
       console.log("tx:", tx);
 
       const receipt: TransactionReceipt = await tx.wait();
       console.log("receipt:", receipt);
+      toast.success("DTX tokens approved!", {
+        description: "Your DTX tokens have been approved to use for staking",
+        action: {
+          label: "See Tx",
+          onClick: () => {
+            window.open(`https://sepolia.etherscan.io/tx/${receipt?.hash}`);
+          },
+        },
+        id: toastId,
+      });
 
       setIsLoading(false);
       reset();
       setTotalApprovedAmount();
     } catch (error) {
-        setIsLoading(false);
+      setIsLoading(false);
       console.log("error:", error);
+      toast.dismiss();
+      toast.error(defaultError.title, {
+        description: defaultError.description || "",
+      });
     }
   });
 
-  // useEffect(() => {
-  //   if (!address || !signer) return;
-  //   setTotalApprovedAmount();
-  // }, [address, signer]);
-
   return (
-    <div>
+    <div className="">
+      <Heading variant="h3" className="mb-2">
+        Approve token
+      </Heading>
+      <p className="mb-4 text-sm text-muted-foreground">
+        You need to approve tokens to the Staking contract before you can start
+        your Staking Journey
+      </p>
       <form onSubmit={onSubmit} className="space-y-4">
         <div className="grid gap-2">
-          <Label htmlFor="amount">Amount</Label>
+          <Label htmlFor="amount">How much DTX do you want to approve?</Label>
           <Input
             disabled={isLoading}
             type="text"
-            placeholder="24"
+            placeholder="enter amount"
             {...register("amount")}
+            className="mt-1"
           />
           {errors.amount && (
             <p className="text-red-500 text-sm">{errors?.amount.message}</p>
           )}
         </div>
-        <div>total approved amount: {totalApprovedAmount}</div>
-        <Button type="submit" loading={isLoading}>
-          Approve
-        </Button>
+        <LabelValueRow
+          label="Total approved amount"
+          value={
+            <span className="font-semibold">{totalApprovedAmount} DTX</span>
+          }
+          tooltip="Amount you have approved to be staked later on"
+        />
+        <div className="flex justify-end w-full">
+          <Button
+            type="submit"
+            loading={isLoading}
+            variant={"invert"}
+            className="w-full"
+          >
+            Approve
+          </Button>
+        </div>
       </form>
     </div>
   );
