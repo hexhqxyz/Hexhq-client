@@ -1,5 +1,6 @@
 "use client";
 
+import ClaimReward from "@/components/staking/ClaimReward";
 import EarnedReward from "@/components/staking/EarnedReward";
 import { Button } from "@/components/ui/button";
 import InfoCard from "@/components/ui/InfoCard";
@@ -72,9 +73,12 @@ const Layout = ({ children }: Props) => {
               subValue="excluding your current reward cycle"
             />
           </div>
+              <ClaimReward />
           <div className="w-4/12 flex justify-center items-center flex-col mx-auto border bg-background shadow-lg rounded-lg">
             <div className="border-b w-full rounded-md">
               <TabsNav items={tabItems} />
+
+              
             </div>
             <div className="w-full p-2">{children}</div>
           </div>
