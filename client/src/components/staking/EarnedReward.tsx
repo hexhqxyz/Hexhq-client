@@ -20,11 +20,11 @@ import { DollarSignIcon, Gem, Gift, Medal, Trophy } from "lucide-react";
 type Props = {};
 
 const EarnedReward = (props: Props) => {
+  const [rewardDate, setRewardDate] = useState("0");
   const [earnedReward, setEarnedReward] = useState("0");
-  const [rewardRate, setRewardRate] = useState("0");
   const { address } = useWeb3ModalAccount();
   const { signer } = useWeb3Store();
-  const { stakingContract } = useStakingStore();
+  const { stakingContract,totalRewardsEarned,setTotalRewardsEarned } = useStakingStore();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -36,7 +36,7 @@ const EarnedReward = (props: Props) => {
       const amount = ethers.formatUnits(stakedBalance, 18);
       const roundedReward = parseFloat(amount)?.toFixed(2);
 
-      setEarnedReward(roundedReward);
+      setTotalRewardsEarned(roundedReward);
       console.log("setEarnedReward amount:", amount);
     } catch (error) {
       console.log("error:", error);
@@ -51,7 +51,7 @@ const EarnedReward = (props: Props) => {
       const rewardRate = await stakingContract.rewardRate();
       console.log("reward rate:", rewardRate);
       const amount = ethers.formatUnits(rewardRate, 18);
-      setRewardRate(amount);
+      setRewardDate(amount);
       console.log("reward rate amount:", amount);
     } catch (error) {
       console.log("error:", error);
@@ -76,13 +76,13 @@ const EarnedReward = (props: Props) => {
       <InfoCard
         icon={<Trophy className="h-4 w-4 text-muted-foreground" />}
         title="Current reward rate"
-        value={`${rewardRate} dUSD`}
+        value={`${rewardDate} dUSD`}
         subValue="per second"
       />
       <InfoCard
         icon={<Gift className="h-4 w-4 text-muted-foreground" />}
         title="Your rewards"
-        value={`${earnedReward} dUSD*`}
+        value={`${totalRewardsEarned} dUSD*`}
         subValue="Updated every 40 seconds*"
       />
     </>

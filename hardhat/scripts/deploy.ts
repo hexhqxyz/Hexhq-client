@@ -45,7 +45,7 @@ async function main() {
 
   // Transfer some reward tokens to the staking contract
   // const rewardAmount = 100000n * 10n ** 18n; // 100,000 tokens with 18 decimals
-  const rewardAmount = 100000; // 100,000 tokens with 18 decimals
+  const rewardAmount = ethers.parseUnits("10000", 18); 
   await rewardToken.transfer(staking.target, rewardAmount);
   await stakingToken.transfer(faucet.target, faucetFundingAmount);
 

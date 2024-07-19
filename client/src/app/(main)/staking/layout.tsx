@@ -1,5 +1,6 @@
 "use client";
 
+import ClaimReward from "@/components/staking/ClaimReward";
 import EarnedReward from "@/components/staking/EarnedReward";
 import { Button } from "@/components/ui/button";
 import InfoCard from "@/components/ui/InfoCard";
@@ -35,7 +36,8 @@ const tabItems = [
 ];
 
 const Layout = ({ children }: Props) => {
-  const {setTotalApprovedAmount,setTotalStakedAmount,totalStakedAmount} = useStakingStore();
+  const { setTotalApprovedAmount, setTotalStakedAmount, totalStakedAmount } =
+    useStakingStore();
   const { address } = useWeb3ModalAccount();
   const { signer } = useWeb3Store();
   useInitializeStaking();
@@ -45,12 +47,12 @@ const Layout = ({ children }: Props) => {
     setTotalApprovedAmount();
     setTotalStakedAmount();
   }, [address, signer]);
-  
+
   return (
     <div>
       <Suspense fallback={<ScreenLoading />}>
         <div className="flex flex-col w-full items-center min-h-[calc(100vh-86px)] justify-center">
-        <Heading className="text-center">Staking DApp</Heading>
+          <Heading className="text-center">Staking DApp</Heading>
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 py-4 md:w-8/12">
             <InfoCard
@@ -62,16 +64,18 @@ const Layout = ({ children }: Props) => {
               subValue="As of now"
             />
 
-           <EarnedReward />
+            <EarnedReward />
             <InfoCard
-              icon={
-                <Award className="h-4 w-4 text-muted-foreground" />
-              }
+              icon={<Award className="h-4 w-4 text-muted-foreground" />}
               title="Total Rewards earned"
               value="$45,231.89"
               subValue="excluding your current reward cycle"
             />
           </div>
+          <div className="mb-4 flex justify-end w-8/12">
+            <ClaimReward />
+          </div>
+
           <div className="w-4/12 flex justify-center items-center flex-col mx-auto border bg-background shadow-lg rounded-lg">
             <div className="border-b w-full rounded-md">
               <TabsNav items={tabItems} />

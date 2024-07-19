@@ -13,24 +13,28 @@ type State = {
   totalStakedAmount: string;
   stakingContract: Contract | null;
   stakingTokenContract: Contract | null;
+  totalRewardsEarned: string;
 };
 type Action = {
   setTotalApprovedAmount: () => void;
   setTotalStakedAmount: () => void;
   setStakingContract: (contract: Contract) => void;
   setStakingTokenContract: (contract: Contract) => void;
+  setTotalRewardsEarned: (val: string) => void;
   reset: () => void;
 };
 
 const initialState: State = {
   totalApprovedAmount: "0",
   totalStakedAmount: "0",
+  totalRewardsEarned: "0",
   stakingContract: null,
   stakingTokenContract: null,
 };
 
 export const useStakingStore = create<State & Action>((set, get) => ({
   ...initialState,
+  setTotalRewardsEarned: (amount) => set({ totalRewardsEarned: amount }),
   setTotalStakedAmount: async () => {
     try {
       const { stakingContract } = get(); // Get the current state
