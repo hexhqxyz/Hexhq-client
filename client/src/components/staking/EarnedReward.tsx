@@ -14,6 +14,8 @@ import { Contract, ethers } from "ethers";
 import STAKING_ABI from "@/lib/abis/Staking.json";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import { useStakingStore } from "@/store/staking-store";
+import InfoCard from "../ui/InfoCard";
+import { DollarSignIcon, Gem, Gift, Medal, Trophy } from "lucide-react";
 
 type Props = {};
 
@@ -70,10 +72,20 @@ const EarnedReward = (props: Props) => {
   }, [address, signer]);
 
   return (
-    <div>
-      <div>Earned amount: {earnedReward} dUSD</div>
-      <div>Reward: {rewardRate} dUSD / second</div>
-    </div>
+    <>
+      <InfoCard
+        icon={<Trophy className="h-4 w-4 text-muted-foreground" />}
+        title="Current reward rate"
+        value={`${rewardRate} dUSD`}
+        subValue="per second"
+      />
+      <InfoCard
+        icon={<Gift className="h-4 w-4 text-muted-foreground" />}
+        title="Your rewards"
+        value={`${earnedReward} dUSD*`}
+        subValue="Updated every 40 seconds*"
+      />
+    </>
   );
 };
 

@@ -9,6 +9,7 @@ export const GET_USER_ACTIVITIES = gql`
       blockTimestamp
       blockNumber
       transactionHash
+      __typename
     }
     withdrawns(where: { user: $user }, first: $first, skip: $skip) {
       id
@@ -17,6 +18,7 @@ export const GET_USER_ACTIVITIES = gql`
       blockTimestamp
       blockNumber
       transactionHash
+      __typename
     }
     rewardsClaimeds(where: { user: $user }, first: $first, skip: $skip) {
       id
@@ -25,48 +27,7 @@ export const GET_USER_ACTIVITIES = gql`
       blockTimestamp
       blockNumber
       transactionHash
-    }
-  }
-`;
-
-
-
-
-export const GET_STAKED_ACTIVITIES = gql`
-  query GetStakedActivities($user: Bytes!, $first: Int!, $skip: Int!) {
-    stakeds(where: { user: $user }, first: $first, skip: $skip) {
-      id
-      user
-      amount
-      blockTimestamp
-      blockNumber
-      transactionHash
-    }
-  }
-`;
-
-export const GET_WITHDRAWN_ACTIVITIES = gql`
-  query GetWithdrawnActivities($user: Bytes!, $first: Int!, $skip: Int!) {
-    withdrawns(where: { user: $user }, first: $first, skip: $skip) {
-      id
-      user
-      amount
-      blockTimestamp
-      blockNumber
-      transactionHash
-    }
-  }
-`;
-
-export const GET_REWARDS_CLAIMED_ACTIVITIES = gql`
-  query GetRewardsClaimedActivities($user: Bytes!, $first: Int!, $skip: Int!) {
-    rewardsClaimeds(where: { user: $user }, first: $first, skip: $skip) {
-      id
-      user
-      amount
-      blockTimestamp
-      blockNumber
-      transactionHash
+      __typename
     }
   }
 `;

@@ -15,9 +15,6 @@ const Staking = (props: Props) => {
     
   return (
     <div className='px-2'>
-        <div className='mt-4 '>
-            <EarnedReward />
-        </div>
         <ApproveToken />
         <div className='mt-4 '>
             <StakeAmount />
