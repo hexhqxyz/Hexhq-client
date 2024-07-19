@@ -3,9 +3,7 @@
 import React, { useEffect, useState } from "react";
 import ActivityRow, { getActivityIcon } from "./ActivityRow";
 import { useQuery } from "@apollo/client";
-import {
-  GET_USER_ACTIVITIES,
-} from "@/lib/services/graphql/queries";
+import { GET_USER_ACTIVITIES } from "@/lib/services/graphql/queries";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import { ExpandableCard } from "@/components/ui/ExpandableCard";
 import ActivityDetails from "./ActivityDetails";
@@ -43,12 +41,9 @@ const StakingActivity = (props: Props) => {
 
   const [hasMore, setHasMore] = useState(true);
   const { address } = useWeb3ModalAccount();
-  const { loading, error, data, fetchMore } = useQuery(
-   GET_USER_ACTIVITIES ,
-    {
-      variables: { user: address, first: PER_PAGE, skip: 0, filter: filter },
-    }
-  );
+  const { loading, error, data, fetchMore } = useQuery(GET_USER_ACTIVITIES, {
+    variables: { user: address, first: PER_PAGE, skip: 0, filter: filter },
+  });
 
   const mergeAndSortData = (data: any) => {
     let stakedEvents: Activity[] = [];
@@ -110,15 +105,32 @@ const StakingActivity = (props: Props) => {
         skip: (page + 1) * PER_PAGE,
       },
       updateQuery: (previousResult, { fetchMoreResult }) => {
-        if (
-          !fetchMoreResult.rewardsClaimeds.length &&
-          !fetchMoreResult.stakeds.length &&
-          !fetchMoreResult.withdrawns.length
-        ) {
-          console.log("no more daa..........");
-          setHasMore(false);
+        if (filter === "all") {
+          if (
+            !fetchMoreResult.rewardsClaimeds.length &&
+            !fetchMoreResult.stakeds.length &&
+            !fetchMoreResult.withdrawns.length
+          ) {
+            console.log("no more daa..........");
+            setHasMore(false);
 
-          return previousResult;
+            return previousResult;
+          }
+        } else if (filter === "stake") {
+          if (!fetchMoreResult.stakeds.length) {
+            setHasMore(false);
+            return previousResult;
+          }
+        } else if (filter === "withdraw") {
+          if (!fetchMoreResult.withdrawns.length) {
+            setHasMore(false);
+            return previousResult;
+          }
+        } else if (filter === "reward") {
+          if (!fetchMoreResult.rewardsClaimeds.length) {
+            setHasMore(false);
+            return previousResult;
+          }
         }
         console.log("fetchMoreData", fetchMoreResult);
         setPage((prevPage) => prevPage + 1);
@@ -251,19 +263,19 @@ const StakingActivity = (props: Props) => {
           >
             <div className="max-w-2xl mx-auto w-full gap-4">
               {activities.map((activity: any, index: number) => (
-                  <ExpandableCard
+                <ExpandableCard
                   key={activity.id + index}
-                    title={
-                      <div className="flex items-center gap-x-2">
-                        {getActivityIcon(activity.type)}
-                        {activity.type}
-                      </div>
-                    }
-                    expandedContent={<ActivityDetails activity={activity} />}
-                    id={activity.id}
-                  >
-                    <ActivityRow activity={activity} />
-                  </ExpandableCard>
+                  title={
+                    <div className="flex items-center gap-x-2">
+                      {getActivityIcon(activity.type)}
+                      {activity.type}
+                    </div>
+                  }
+                  expandedContent={<ActivityDetails activity={activity} />}
+                  id={activity.id}
+                >
+                  <ActivityRow activity={activity} />
+                </ExpandableCard>
               ))}
             </div>
           </InfiniteScroll>
