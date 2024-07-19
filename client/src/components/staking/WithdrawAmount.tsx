@@ -26,9 +26,7 @@ type FormData = {
 };
 
 const WithdrawAmount = (props: Props) => {
-  const { address } = useWeb3ModalAccount();
-  const { signer } = useWeb3Store();
-  const { totalApprovedAmount, setTotalStakedAmount, totalStakedAmount } =
+  const { setTotalStakedAmount, totalStakedAmount, stakingContract } =
     useStakingStore();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -43,24 +41,6 @@ const WithdrawAmount = (props: Props) => {
     resolver: zodResolver(ApproveTokenSchema),
   });
 
-  const getStakedAmount = async () => {
-    try {
-      const stakingContract = new Contract(
-        STAKING_ADDRESS,
-        STAKING_ABI.abi,
-        signer
-      );
-
-      const stakedBalance = await stakingContract.stakedBalance(address);
-      console.log("stakedBalance:", stakedBalance);
-      const amount = ethers.formatUnits(stakedBalance, 18);
-      setTotalStakedAmount(amount);
-      console.log("stakedBalance amount:", amount);
-    } catch (error) {
-      console.log("error:", error);
-    }
-  };
-
   const onSubmit = handleSubmit(async (data) => {
     if (Number(data.amount) > Number(totalStakedAmount)) {
       setError("amount", {
@@ -68,14 +48,11 @@ const WithdrawAmount = (props: Props) => {
       });
       return;
     }
+    if (!stakingContract) return;
+
     try {
       console.log("data:", data);
       setIsLoading(true);
-      const stakingContract = new Contract(
-        STAKING_ADDRESS,
-        STAKING_ABI.abi,
-        signer
-      );
 
       const amountToStake = ethers.parseUnits(data.amount, 18).toString();
 
@@ -90,13 +67,12 @@ const WithdrawAmount = (props: Props) => {
 
       setIsLoading(false);
       reset();
-      getStakedAmount();
+      setTotalStakedAmount();
     } catch (error) {
       setIsLoading(false);
       console.log("error:", error);
     }
   });
-
 
   return (
     <div>

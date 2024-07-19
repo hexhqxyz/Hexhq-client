@@ -26,9 +26,7 @@ type FormData = {
 };
 
 const StakeAmount = (props: Props) => {
-  const { address } = useWeb3ModalAccount();
-  const { signer } = useWeb3Store();
-  const { totalApprovedAmount, setTotalStakedAmount, totalStakedAmount } =
+  const { totalApprovedAmount, setTotalStakedAmount, totalStakedAmount,stakingContract } =
     useStakingStore();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -43,24 +41,6 @@ const StakeAmount = (props: Props) => {
     resolver: zodResolver(ApproveTokenSchema),
   });
 
-  const getStakedAmount = async () => {
-    try {
-      const stakingContract = new Contract(
-        STAKING_ADDRESS,
-        STAKING_ABI.abi,
-        signer
-      );
-
-      const stakedBalance = await stakingContract.stakedBalance(address);
-      console.log("stakedBalance:", stakedBalance);
-      const amount = ethers.formatUnits(stakedBalance, 18);
-      setTotalStakedAmount(amount);
-      console.log("stakedBalance amount:", amount);
-    } catch (error) {
-      console.log("error:", error);
-    }
-  };
-
   const onSubmit = handleSubmit(async (data) => {
     if (Number(data.amount) > Number(totalApprovedAmount)) {
       setError("amount", {
@@ -68,15 +48,11 @@ const StakeAmount = (props: Props) => {
       });
       return;
     }
+    if(!stakingContract) return;
     try {
       console.log("data:", data);
       setIsLoading(true);
-      const stakingContract = new Contract(
-        STAKING_ADDRESS,
-        STAKING_ABI.abi,
-        signer
-      );
-
+      
       const amountToStake = ethers.parseUnits(data.amount, 18).toString();
 
       const maxFeePerGas = ethers.parseUnits("100", "gwei"); // 100 gwei
@@ -90,17 +66,12 @@ const StakeAmount = (props: Props) => {
 
       setIsLoading(false);
       reset();
-      getStakedAmount();
+      setTotalStakedAmount();
     } catch (error) {
       setIsLoading(false);
       console.log("error:", error);
     }
   });
-
-  useEffect(() => {
-    if (!address || !signer) return;
-    getStakedAmount();
-  }, [address, signer]);
 
   return (
     <div>

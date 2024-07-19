@@ -13,50 +13,39 @@ import { Contract, ethers } from "ethers";
 
 import STAKING_ABI from "@/lib/abis/Staking.json";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
+import { useStakingStore } from "@/store/staking-store";
 
 type Props = {};
 
 const EarnedReward = (props: Props) => {
   const [earnedReward, setEarnedReward] = useState("0");
-  const [rewardRate, setRewardRate] = useState("0")
+  const [rewardRate, setRewardRate] = useState("0");
   const { address } = useWeb3ModalAccount();
   const { signer } = useWeb3Store();
+  const { stakingContract } = useStakingStore();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const getStakedEarnedReward = async () => {
+    if (!stakingContract) return;
     setIsLoading(true);
-    console.log("calling it getStakedEarnedReward...");
     try {
-      const stakingContract = new Contract(
-        STAKING_ADDRESS,
-        STAKING_ABI.abi,
-        signer
-      );
-
       const stakedBalance = await stakingContract.earned(address);
-      console.log("setEarnedReward:", stakedBalance);
       const amount = ethers.formatUnits(stakedBalance, 18);
-      const roundedReward = parseFloat(amount).toFixed(2)
+      const roundedReward = parseFloat(amount)?.toFixed(2);
 
       setEarnedReward(roundedReward);
       console.log("setEarnedReward amount:", amount);
-      console.log("setEarnedReward rounded reward:", roundedReward);
     } catch (error) {
       console.log("error:", error);
     }
     setIsLoading(false);
   };
   const getRewardRate = async () => {
+    if (!stakingContract) return;
     setIsLoading(true);
     console.log("calling it getStakedEarnedReward...");
     try {
-      const stakingContract = new Contract(
-        STAKING_ADDRESS,
-        STAKING_ABI.abi,
-        signer
-      );
-
       const rewardRate = await stakingContract.rewardRate();
       console.log("reward rate:", rewardRate);
       const amount = ethers.formatUnits(rewardRate, 18);

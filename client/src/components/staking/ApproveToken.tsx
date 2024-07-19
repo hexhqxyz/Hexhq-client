@@ -41,26 +41,26 @@ const ApproveToken = (props: Props) => {
     resolver: zodResolver(ApproveTokenSchema),
   });
 
-  const getApprovedAmount = async () => {
-    try {
-      const stakingTokenContract = new Contract(
-        STAKING_TOKEN_CONTRACT_ADDRESS,
-        STAKING_TOKEN_ABI.abi,
-        signer
-      );
+  // const getApprovedAmount = async () => {
+  //   try {
+  //     const stakingTokenContract = new Contract(
+  //       STAKING_TOKEN_CONTRACT_ADDRESS,
+  //       STAKING_TOKEN_ABI.abi,
+  //       signer
+  //     );
 
-      const allowance = await stakingTokenContract.allowance(
-        address,
-        STAKING_ADDRESS
-      );
-      console.log("allowance:", allowance);
-      const amount = ethers.formatUnits(allowance, 18);
-      console.log("allowance amount:", amount);
-      setTotalApprovedAmount(amount);
-    } catch (error) {
-      console.log("error:", error);
-    }
-  };
+  //     const allowance = await stakingTokenContract.allowance(
+  //       address,
+  //       STAKING_ADDRESS
+  //     );
+  //     console.log("allowance:", allowance);
+  //     const amount = ethers.formatUnits(allowance, 18);
+  //     console.log("allowance amount:", amount);
+  //     setTotalApprovedAmount(amount);
+  //   } catch (error) {
+  //     console.log("error:", error);
+  //   }
+  // };
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -89,17 +89,17 @@ const ApproveToken = (props: Props) => {
 
       setIsLoading(false);
       reset();
-      getApprovedAmount();
+      setTotalApprovedAmount();
     } catch (error) {
         setIsLoading(false);
       console.log("error:", error);
     }
   });
 
-  useEffect(() => {
-    if (!address || !signer) return;
-    getApprovedAmount();
-  }, [address, signer]);
+  // useEffect(() => {
+  //   if (!address || !signer) return;
+  //   setTotalApprovedAmount();
+  // }, [address, signer]);
 
   return (
     <div>
