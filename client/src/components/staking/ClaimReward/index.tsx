@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Minus, Plus } from "lucide-react";
+import { Gift, Minus, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,7 +28,7 @@ export default function ClaimReward() {
     setLoading(true);
     try {
       const maxFeePerGas = ethers.parseUnits("100", "gwei"); // 100 gwei
-      const tx = await stakingContract.getReward( {
+      const tx = await stakingContract.getReward({
         maxFeePerGas: maxFeePerGas,
       });
       const toastId = toast.loading(
@@ -51,7 +51,7 @@ export default function ClaimReward() {
 
       setOpen(false);
     } catch (error) {
-      console.log("error:", error)
+      console.log("error:", error);
       toast.dismiss();
       const parsedError = await decodeStakingError(error);
       toast.error(parsedError.title, {
@@ -63,8 +63,13 @@ export default function ClaimReward() {
   };
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="outline">Claim Reward</Button>
+      <DrawerTrigger asChild disabled={parseFloat(totalRewardsEarned) <= 0}>
+        <Button
+          variant="invert"
+          className="bg-teal-500 hover:border-teal-500 gap-x-2 items-center"
+        >
+          Claim Reward <Gift className="w-4 h-4" />
+        </Button>
       </DrawerTrigger>
       <DrawerContent>
         <div className="mx-auto w-full py-20 max-w-sm">
