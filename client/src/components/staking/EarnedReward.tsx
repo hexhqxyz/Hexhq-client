@@ -60,7 +60,7 @@ const EarnedReward = (props: Props) => {
   };
 
   useEffect(() => {
-    if (!address || !signer) return;
+    if (!address || !signer || !stakingContract) return;
     getStakedEarnedReward();
     getRewardRate();
 
@@ -69,7 +69,7 @@ const EarnedReward = (props: Props) => {
     }, 20000);
 
     return () => clearInterval(interval);
-  }, [address, signer]);
+  }, [address, signer,stakingContract]);
 
   return (
     <>

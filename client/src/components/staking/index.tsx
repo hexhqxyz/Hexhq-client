@@ -1,26 +1,24 @@
-'use client'
+import React from "react";
+import ApproveToken from "./ApproveToken";
+import StakeAmount from "./StakeAmount";
+import { Separator } from "../ui/separator";
 
-import React, { useEffect } from 'react'
-import ApproveToken from './ApproveToken'
-import StakeAmount from './StakeAmount'
-import EarnedReward from './EarnedReward'
-import WithdrawAmount from './WithdrawAmount'
-
-type Props = {}
+type Props = {};
 
 const Staking = (props: Props) => {
-    useEffect(() => {
-      console.log("hello")
-    }, [])
-    
   return (
-    <div className='px-2'>
+    <div className="mx-auto max-w-lg">
+      <div className="p-6">
+        <StakeAmount />
+      </div>
+      <div className="mt-6">
+        <Separator />
+      </div>
+      <div className="p-6">
         <ApproveToken />
-        <div className='mt-4 '>
-            <StakeAmount />
-        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Staking
+export default Staking;
