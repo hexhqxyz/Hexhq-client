@@ -22,6 +22,8 @@ import { Heading } from "../ui/Typography";
 import { useDebounceValue } from "usehooks-ts";
 import { ArrowRight, ChevronRight, InfoIcon } from "lucide-react";
 import { TooltipWrapper } from "../ui/tooltip";
+import { toast } from "sonner";
+import { decodeStakingError } from "@/lib/utils";
 
 type Props = {};
 
@@ -74,18 +76,34 @@ const StakeAmount = (props: Props) => {
       const tx = await stakingContract.stake(amountToStake, {
         maxFeePerGas: maxFeePerGas,
       });
-      console.log("tx:", tx);
-
+      const toastId = toast.loading(
+        "Your DTX is being staked! This may take a few moments"
+      );
       const receipt: TransactionReceipt = await tx.wait();
       console.log("receipt:", receipt);
+      toast.success("Successfully Staked!", {
+        description: "Your DTX tokens have been successfully staked",
+        action: {
+          label: "See Tx",
+          onClick: () => {
+            window.open(`https://sepolia.etherscan.io/tx/${receipt?.hash}`);
+          },
+        },
+        id: toastId,
+      });
 
       setIsLoading(false);
       reset();
-      setDebouncedValue("")
+      setDebouncedValue("");
       setTotalStakedAmount();
     } catch (error) {
+      toast.dismiss();
       setIsLoading(false);
       console.log("error:", error);
+      const parsedError = await decodeStakingError(error);
+      toast.error(parsedError.title, {
+        description: parsedError.description || "",
+      });
     }
   });
 
@@ -207,14 +225,14 @@ const StakeAmount = (props: Props) => {
           value={<>~${estimatedGasFees}</>}
           tooltip="amount required to conduct a transaction onchain"
         />
-          <Button
-            type="submit"
-            variant={"invert"}
-            loading={isLoading}
-            className="w-full"
-          >
-            Stake
-          </Button>
+        <Button
+          type="submit"
+          variant={"invert"}
+          loading={isLoading}
+          className="w-full"
+        >
+          Stake
+        </Button>
       </form>
     </div>
   );

@@ -21,6 +21,8 @@ import { useStakingStore } from "@/store/staking-store";
 import { Heading } from "../ui/Typography";
 import { ArrowRight } from "lucide-react";
 import { useDebounceValue } from "usehooks-ts";
+import { toast } from "sonner";
+import { decodeStakingError } from "@/lib/utils";
 
 type Props = {};
 
@@ -71,16 +73,36 @@ const WithdrawAmount = (props: Props) => {
       const tx = await stakingContract.withdrawStakedTokens(amountToStake, {
         maxFeePerGas: maxFeePerGas,
       });
+      const toastId = toast.loading(
+        "Your DTX is being withdrawn! This may take a few moments"
+      );
+
       console.log("tx:", tx);
 
       const receipt: TransactionReceipt = await tx.wait();
       console.log("receipt:", receipt);
+      toast.success("Successfully Withdrawn!", {
+        description: "Your DTX tokens have been successfully withdrawn",
+        action: {
+          label: "See Tx",
+          onClick: () => {
+            window.open(`https://sepolia.etherscan.io/tx/${receipt?.hash}`);
+          },
+        },
+        id: toastId,
+      });
 
       setIsLoading(false);
       reset();
       setTotalStakedAmount();
       setDebouncedValue("");
     } catch (error) {
+      toast.dismiss();
+      const parsedError = await decodeStakingError(error);
+      toast.error(parsedError.title, {
+        description: parsedError.description || "",
+      });
+
       setIsLoading(false);
       console.log("error:", error);
     }
@@ -155,14 +177,14 @@ const WithdrawAmount = (props: Props) => {
           </div>
         )}
 
-          <Button
-            type="submit"
-            variant={"invert"}
-            loading={isLoading}
-            className="w-full"
-          >
-            Withdraw
-          </Button>
+        <Button
+          type="submit"
+          variant={"invert"}
+          loading={isLoading}
+          className="w-full"
+        >
+          Withdraw
+        </Button>
       </form>
     </div>
   );

@@ -58,8 +58,9 @@ const Faucet = (props: Props) => {
 
       setLoading(false);
     } catch (error) {
+      toast.dismiss();
       console.log("error:", error);
-      const parsedError = decodeFaucetError(error);
+      const parsedError = await decodeFaucetError(error);
       toast.error(parsedError.title, {
         description: parsedError.description,
       });

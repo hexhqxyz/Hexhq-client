@@ -18,6 +18,8 @@ import STAKING_TOKEN_ABI from "@/lib/abis/StakingToken.json";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import { useStakingStore } from "@/store/staking-store";
 import { Heading } from "../ui/Typography";
+import { defaultError } from "@/lib/errors";
+import { toast } from "sonner";
 
 type Props = {};
 
@@ -26,7 +28,6 @@ type FormData = {
 };
 
 const ApproveToken = (props: Props) => {
-  const { address } = useWeb3ModalAccount();
   const { signer } = useWeb3Store();
   const { totalApprovedAmount, setTotalApprovedAmount } = useStakingStore();
 
@@ -41,27 +42,6 @@ const ApproveToken = (props: Props) => {
   } = useForm<FormData>({
     resolver: zodResolver(ApproveTokenSchema),
   });
-
-  // const getApprovedAmount = async () => {
-  //   try {
-  //     const stakingTokenContract = new Contract(
-  //       STAKING_TOKEN_CONTRACT_ADDRESS,
-  //       STAKING_TOKEN_ABI.abi,
-  //       signer
-  //     );
-
-  //     const allowance = await stakingTokenContract.allowance(
-  //       address,
-  //       STAKING_ADDRESS
-  //     );
-  //     console.log("allowance:", allowance);
-  //     const amount = ethers.formatUnits(allowance, 18);
-  //     console.log("allowance amount:", amount);
-  //     setTotalApprovedAmount(amount);
-  //   } catch (error) {
-  //     console.log("error:", error);
-  //   }
-  // };
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -83,10 +63,24 @@ const ApproveToken = (props: Props) => {
           maxFeePerGas: maxFeePerGas,
         }
       );
+      const toastId = toast.loading(
+        "Your DTX is being approved! This may take a few moments"
+      );
+
       console.log("tx:", tx);
 
       const receipt: TransactionReceipt = await tx.wait();
       console.log("receipt:", receipt);
+      toast.success("DTX tokens approved!", {
+        description: "Your DTX tokens have been approved to use for staking",
+        action: {
+          label: "See Tx",
+          onClick: () => {
+            window.open(`https://sepolia.etherscan.io/tx/${receipt?.hash}`);
+          },
+        },
+        id: toastId,
+      });
 
       setIsLoading(false);
       reset();
@@ -94,16 +88,14 @@ const ApproveToken = (props: Props) => {
     } catch (error) {
       setIsLoading(false);
       console.log("error:", error);
+      toast.dismiss();
+      toast.error(defaultError.title, {
+        description: defaultError.description || "",
+      });
     }
   });
 
-  // useEffect(() => {
-  //   if (!address || !signer) return;
-  //   setTotalApprovedAmount();
-  // }, [address, signer]);
-
   return (
-    // <div className="bg-gray-50 p-4 rounded-lg shadow-md">
     <div className="">
       <Heading variant="h3" className="mb-2">
         Approve token
@@ -128,13 +120,11 @@ const ApproveToken = (props: Props) => {
         </div>
         <LabelValueRow
           label="Total approved amount"
-          value={<span className="font-semibold">{totalApprovedAmount} DTX</span>}
+          value={
+            <span className="font-semibold">{totalApprovedAmount} DTX</span>
+          }
           tooltip="Amount you have approved to be staked later on"
         />
-        {/* <div className="text-muted-foreground">
-          Total approved amount:{" "}
-          <span className="font-medium">{totalApprovedAmount} DTX</span>
-        </div> */}
         <div className="flex justify-end w-full">
           <Button
             type="submit"
