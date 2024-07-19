@@ -22,8 +22,8 @@ const USDTAbi = [
 const useInitializeWeb3 = () => {
     // console.log("calling again... in useInitializeWeb3")
   const { walletProvider } = useWeb3ModalProvider();
-  const { isConnected,chainId,status } = useWeb3ModalAccount();
-  const { setProvider, setSigner, setContract, setIsConnected,reset } =
+  const { isConnected,chainId,status,address } = useWeb3ModalAccount();
+  const { setProvider, setSigner, setContract, setIsConnected,reset,setAddress } =
     useWeb3Store();
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const useInitializeWeb3 = () => {
         console.log("disconnected..., resetting the store")
         reset();
       }
-      if (!walletProvider || !isConnected || !chainId ||  ![1337,1].includes(chainId)) return;
+      if (!walletProvider || !address || !isConnected || !chainId ||  ![1337,1,11155111].includes(chainId)) return;
       console.log("calling again... in useInitializeWeb3")
 
       const ethersProvider = new BrowserProvider(walletProvider);
@@ -40,6 +40,7 @@ const useInitializeWeb3 = () => {
 
       const signer = await ethersProvider.getSigner();
       setSigner(signer);
+      setAddress(address as string);
 
       const USDTContract = new Contract(USDTAddress, USDTAbi, signer);
       setContract(USDTContract);

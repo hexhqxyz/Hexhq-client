@@ -22,6 +22,13 @@ const localhost = {
   explorerUrl: "https://etherscan.io",
   rpcUrl: "http://127.0.0.1:8545",
 };
+const sepolia = {
+  chainId: 11155111,
+  name: "Sepolia",
+  currency: "ETH",
+  explorerUrl: "https://sepolia.etherscan.io",
+  rpcUrl: "https://rpc.sepolia.org",
+};
 
 // 3. Create a metadata object
 const metadata = {
@@ -30,7 +37,7 @@ const metadata = {
   url: "https://mywebsite.com", // origin must match your domain & subdomain
   icons: ["https://avatars.mywebsite.com/"],
 };
-const chains = [mainnet, localhost];
+const chains = [mainnet, localhost,sepolia];
 // 4. Create Ethers config
 const ethersConfig = defaultConfig({
   /*Required*/

@@ -19,7 +19,7 @@ export default function ConnectButton() {
   return (
     <div>
       <div className="flex gap-x-2 items-center">
-        {chainId && ![1337, 1].includes(chainId) && (
+        {chainId && ![1337, 1,11155111].includes(chainId) && (
           <Button
             variant={"destructive"}
             size={"sm"}

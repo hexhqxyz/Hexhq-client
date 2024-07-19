@@ -6,12 +6,14 @@ type State = {
   signer: JsonRpcSigner | null;
   contract: Contract | null;
   isConnected: boolean;
+  address: string | null;
 };
 type Action = {
   setProvider: (provider: BrowserProvider) => void;
-  setSigner: (signer: any) => void;
+  setSigner: (signer: JsonRpcSigner) => void;
   setContract: (contract: Contract) => void;
   setIsConnected: (isConnected: boolean) => void;
+  setAddress: (address:string) => void;
   reset: () => void;
 };
 
@@ -20,14 +22,16 @@ const initialState: State = {
   signer: null,
   contract: null,
   isConnected: false,
+  address: null,
 };
 
 export const useWeb3Store = create<State & Action>((set) => ({
   ...initialState,
-  setProvider: (provider: BrowserProvider) => set({ provider }),
-  setSigner: (signer: any) => set({ signer }),
-  setContract: (contract: Contract) => set({ contract }),
-  setIsConnected: (isConnected: boolean) => set({ isConnected }),
+  setProvider: (provider) => set({ provider }),
+  setSigner: (signer) => set({ signer }),
+  setContract: (contract) => set({ contract }),
+  setIsConnected: (isConnected) => set({ isConnected }),
+  setAddress: (address) => set({ address }),
   reset: () => {
     set(initialState);
   },
