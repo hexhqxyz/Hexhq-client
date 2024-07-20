@@ -85,7 +85,7 @@ contract Staking is ReentrancyGuard, Ownable, Pausable {
         uint256 amount
     ) external nonReentrant whenNotPaused updateReward(msg.sender) {
         if (amount <= 0) revert AmountMustBeGreaterThanZero();
-        if (stakedBalance[msg.sender] <= amount) revert AmountNotEnough();
+        if (stakedBalance[msg.sender] < amount) revert AmountNotEnough();
         totalStakedTokens -= amount;
         stakedBalance[msg.sender] -= amount;
         emit Withdrawn(msg.sender, amount);

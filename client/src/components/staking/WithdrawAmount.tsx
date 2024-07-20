@@ -22,7 +22,7 @@ import { Heading } from "../ui/Typography";
 import { ArrowRight } from "lucide-react";
 import { useDebounceValue } from "usehooks-ts";
 import { toast } from "sonner";
-import { decodeStakingError } from "@/lib/utils";
+import { decodeStakingError, formatNumber } from "@/lib/utils";
 
 type Props = {};
 
@@ -55,7 +55,7 @@ const WithdrawAmount = (props: Props) => {
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    if (Number(data.amount) > Number(totalStakedAmount)) {
+    if (parseFloat(data.amount) > parseFloat(totalStakedAmount)) {
       setError("amount", {
         message: "Amount must be below or equal to the staked DTX tokens ",
       });
@@ -167,9 +167,9 @@ const WithdrawAmount = (props: Props) => {
               label="Staked"
               value={
                 <>
-                  {totalStakedAmount}
+                  {formatNumber(totalStakedAmount)}
                   <ArrowRight className="w-4 h-4 text-muted-foreground" />{" "}
-                  {parseFloat(totalStakedAmount) - parseFloat(debouncedValue) ||
+                  {formatNumber(parseFloat(totalStakedAmount) - parseFloat(debouncedValue)) ||
                     "0.0"}
                 </>
               }

@@ -45,6 +45,24 @@ const StakingActivity = (props: Props) => {
     variables: { user: address, first: PER_PAGE, skip: 0, filter: filter },
   });
 
+  const checkHasMore = (data: any) => {
+    if (filter === "all") {
+      if (
+        data.rewardsClaimeds.length < PER_PAGE &&
+        data.stakeds.length < PER_PAGE &&
+        data.withdrawns.length < PER_PAGE
+      ) {
+        setHasMore(false);
+      }
+    } else if (filter === "stake" && data.stakeds.length < PER_PAGE) {
+      setHasMore(false);
+    } else if (filter === "withdraw" && data.withdrawns.length < PER_PAGE) {
+      setHasMore(false);
+    } else if (filter === "reward" && data.rewardsClaimeds.length < PER_PAGE) {
+      setHasMore(false);
+    }
+  };
+
   const mergeAndSortData = (data: any) => {
     let stakedEvents: Activity[] = [];
     let withdrawnEvents: Activity[] = [];
@@ -154,6 +172,7 @@ const StakingActivity = (props: Props) => {
   useEffect(() => {
     if (data && !loading) {
       mergeAndSortData(data);
+      checkHasMore(data);
     }
   }, [data, loading]);
 

@@ -17,6 +17,19 @@ export const shortenString = (
   return `${val.slice(0, start)}...${val.slice(end)}`;
 };
 
+export function formatNumber(value:string|null | any) {
+  if(!value) return "0.0";
+  const floatValue = parseFloat(value);
+  if (floatValue % 1 === 0) {
+    // If the number is an integer, format it to one decimal place
+    return floatValue.toFixed(1);
+  } else {
+    // If the number has decimal places, format it to up to two decimal places
+    return floatValue.toFixed(2).replace(/\.?0+$/, '');
+  }
+}
+
+
 export const decodeFaucetError = async (error: any) => {
   try {
     const faucetAbi = await import("@/lib/abis/Faucet.json").then(

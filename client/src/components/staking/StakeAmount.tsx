@@ -23,7 +23,7 @@ import { useDebounceValue } from "usehooks-ts";
 import { ArrowRight, ChevronRight, InfoIcon } from "lucide-react";
 import { TooltipWrapper } from "../ui/tooltip";
 import { toast } from "sonner";
-import { decodeStakingError } from "@/lib/utils";
+import { decodeStakingError, formatNumber } from "@/lib/utils";
 
 type Props = {};
 
@@ -35,6 +35,7 @@ const StakeAmount = (props: Props) => {
   const {
     totalApprovedAmount,
     setTotalStakedAmount,
+    setTotalApprovedAmount,
     totalStakedAmount,
     stakingContract,
   } = useStakingStore();
@@ -59,7 +60,7 @@ const StakeAmount = (props: Props) => {
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    if (Number(data.amount) > Number(totalApprovedAmount)) {
+    if (parseFloat(data.amount) <= 0 || parseFloat(data.amount) > parseFloat(totalApprovedAmount)) {
       setError("amount", {
         message: "Amount must be below or equal to the approved DTX tokens ",
       });
@@ -96,6 +97,7 @@ const StakeAmount = (props: Props) => {
       reset();
       setDebouncedValue("");
       setTotalStakedAmount();
+      setTotalApprovedAmount();
     } catch (error) {
       toast.dismiss();
       setIsLoading(false);
@@ -108,7 +110,8 @@ const StakeAmount = (props: Props) => {
   });
 
   const handlePricePercentClick = (percent: number) => {
-    const amount = (Number(totalApprovedAmount) * percent) / 100;
+    if (!parseFloat(totalApprovedAmount)) return;
+    const amount = (parseFloat(totalApprovedAmount) * percent) / 100;
     setValue("amount", amount.toString());
   };
 
@@ -184,7 +187,6 @@ const StakeAmount = (props: Props) => {
             type="text"
             placeholder="enter amount"
             {...register("amount")}
-            className="mt-1 block rounded-md shadow-sm"
           />
           {errors.amount && (
             <p className="text-red-500 text-sm">{errors?.amount.message}</p>
@@ -208,12 +210,12 @@ const StakeAmount = (props: Props) => {
               label="Staked"
               value={
                 <>
-                  {totalStakedAmount}
+                  {formatNumber(totalStakedAmount)}
                   <ArrowRight className="w-4 h-4 text-muted-foreground" />{" "}
-                  {parseFloat(
+                  {formatNumber(
                     (parseFloat(totalStakedAmount) as any) +
                       parseFloat(debouncedValue || "0.00")
-                  ).toFixed(1)}
+                  )}
                 </>
               }
             />
