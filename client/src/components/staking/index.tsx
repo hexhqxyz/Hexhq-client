@@ -8,7 +8,7 @@ type Props = {};
 
 const Staking = (props: Props) => {
   return (
-    <div className="mx-auto max-w-lg">
+    <div className="mx-auto lg::max-w-lg w-full ">
       <div className="p-4">
         <StakeAmount />
       </div>

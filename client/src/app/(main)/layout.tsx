@@ -41,7 +41,7 @@ const Layout = ({ children }: Props) => {
   return (
     <div>
       <Suspense fallback={<ScreenLoading />}>
-        hurray!!! connected to {chainId}
+        {/* hurray!!! connected to {chainId} */}
         <div className="">{children}</div>
       </Suspense>
     </div>

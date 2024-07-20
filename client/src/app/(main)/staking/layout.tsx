@@ -54,7 +54,7 @@ const Layout = ({ children }: Props) => {
         <div className="flex flex-col w-full items-center min-h-[calc(100vh-86px)] justify-center">
           <Heading className="text-center">Staking DApp</Heading>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 py-4 md:w-8/12">
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 py-4 w-full lg:w-8/12 px-4 lg:px-0">
             <InfoCard
               icon={
                 <DollarSignIcon className="h-4 w-4 text-muted-foreground" />
@@ -72,11 +72,11 @@ const Layout = ({ children }: Props) => {
               subValue="excluding your current reward cycle"
             />
           </div>
-          <div className="mb-4 flex justify-end w-8/12">
+          <div className="flex justify-center md:justify-end w-full lg:w-8/12 lg:mb-0 mb-4 px-4 lg:px-0">
             <ClaimReward />
           </div>
 
-          <div className="w-4/12 flex justify-center items-center flex-col mx-auto border bg-background shadow-lg rounded-lg">
+          <div className="w-full lg:w-4/12 flex justify-center items-center flex-col mx-auto border bg-background shadow-lg rounded-lg px-4 lg:px-0">
             <div className="border-b w-full rounded-md">
               <TabsNav items={tabItems} />
             </div>

@@ -7,6 +7,18 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
 import { Github } from "lucide-react";
 
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "@/components/ui/navigation-menu"
+
+
 type Props = {};
 
 const links = [
@@ -34,13 +46,13 @@ const links = [
 
 const Navbar = (props: Props) => {
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center h-full">
       <Link className={cn(headingClasses["h3"])} href={"/"}>OmniDeFi</Link>
-      <div className="flex items-center gap-x-2">
+      <div className="lg:flex items-center gap-x-2 hidden">
         {links?.map((item, index) => (
           <Link
             key={index}
-            className={cn(buttonVariants({ variant: "outline" }))}
+            className={cn(buttonVariants({ variant: "link",size: "sm" }))}
             href={item.href}
           >
             {item.label}
@@ -51,6 +63,7 @@ const Navbar = (props: Props) => {
         <ConnectButton />
         <Link
           href={"https://github.com/SachinCoder1/Omni-DeFi"}
+          className="md:block hidden"
           target="_blank"
         >
           <Github className="w-5 h-5" />
