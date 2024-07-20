@@ -2,16 +2,18 @@ import React from "react";
 import { format } from "date-fns";
 import { ethers } from "ethers";
 import { CalendarDaysIcon, ExternalLink } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { motion } from "framer-motion";
+
+import { buttonVariants } from "@/components/ui/button";
 import { getCurrency } from "./ActivityRow";
+
+import { cn } from "@/lib/utils";
 
 type Activity = {
   type: "Staked" | "Withdrawn" | "RewardsClaimed";
   user: string;
   amount: string;
-  timestamp: number; // Assuming timestamp is in ISO format
+  timestamp: number;
   transactionHash: string;
   blockNumber: string;
 };
@@ -34,14 +36,7 @@ const ActivityDetails = ({ activity }: Props) => {
 
   return (
     <div className="">
-      {/* <h2 className="text-xl font-bold mb-2">Activity Details</h2> */}
       <div className="mb-2">
-        {/* <motion.h3
-          layoutId={`title-${activity.type}-${activity.type}`}
-          className="font-bold text-neutral-700 dark:text-neutral-200"
-        >
-          {activity.type}
-        </motion.h3> */}
         <motion.p
           className="text-neutral-600 dark:text-neutral-400"
         >

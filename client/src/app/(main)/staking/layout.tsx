@@ -1,20 +1,17 @@
 "use client";
 
+import React, { Suspense, useEffect } from "react";
+import { Award, DollarSignIcon } from "lucide-react";
+import { useWeb3ModalAccount } from "@web3modal/ethers/react";
+import useInitializeStaking from "@/hooks/use-initialize-staking";
+import { useWeb3Store } from "@/store/signer-provider-store";
+import { useStakingStore } from "@/store/staking-store";
 import ClaimReward from "@/components/staking/ClaimReward";
 import EarnedReward from "@/components/staking/EarnedReward";
-import { Button } from "@/components/ui/button";
 import InfoCard from "@/components/ui/InfoCard";
 import ScreenLoading from "@/components/ui/ScreenLoading";
 import { TabsNav } from "@/components/ui/TabsNav";
 import { Heading } from "@/components/ui/Typography";
-import useInitializeWeb3 from "@/hooks/initialize-web3";
-import useInitializeStaking from "@/hooks/use-initialize-staking";
-import { useWeb3Store } from "@/store/signer-provider-store";
-import { useStakingStore } from "@/store/staking-store";
-import { useSwitchNetwork, useWeb3ModalAccount } from "@web3modal/ethers/react";
-import { Award, DollarSignIcon } from "lucide-react";
-import React, { Suspense, useEffect } from "react";
-import { useIsClient } from "usehooks-ts";
 
 type Props = {
   children: React.ReactNode;

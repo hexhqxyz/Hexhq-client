@@ -1,23 +1,11 @@
 import React from "react";
 import ThemeSwitcher from "../ThemeSwitcher";
 import ConnectButton from "../ConnectWallet";
-import { Heading, headingClasses } from "../ui/Typography";
+import { headingClasses } from "../ui/Typography";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
 import { Github } from "lucide-react";
-
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu"
-
 
 type Props = {};
 

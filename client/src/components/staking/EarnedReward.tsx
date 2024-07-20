@@ -1,27 +1,18 @@
 "use client";
 
-import { ApproveTokenSchema } from "@/lib/zod-validation";
-import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Button } from "../ui/button";
-import { useWeb3Store } from "@/store/signer-provider-store";
-import { STAKING_ADDRESS } from "@/lib/constants";
-import { Contract, ethers } from "ethers";
-
-import STAKING_ABI from "@/lib/abis/Staking.json";
+import { ethers } from "ethers";
+import {  Gift, Trophy } from "lucide-react";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
+
+import { useWeb3Store } from "@/store/signer-provider-store";
 import { useStakingStore } from "@/store/staking-store";
 import InfoCard from "../ui/InfoCard";
-import { DollarSignIcon, Gem, Gift, Medal, Trophy } from "lucide-react";
 
 type Props = {};
 
 const EarnedReward = (props: Props) => {
   const [rewardDate, setRewardDate] = useState("0");
-  const [earnedReward, setEarnedReward] = useState("0");
   const { address } = useWeb3ModalAccount();
   const { signer } = useWeb3Store();
   const { stakingContract,totalRewardsEarned,setTotalRewardsEarned } = useStakingStore();
@@ -46,10 +37,8 @@ const EarnedReward = (props: Props) => {
   const getRewardRate = async () => {
     if (!stakingContract) return;
     setIsLoading(true);
-    console.log("calling it getStakedEarnedReward...");
     try {
       const rewardRate = await stakingContract.rewardRate();
-      console.log("reward rate:", rewardRate);
       const amount = ethers.formatUnits(rewardRate, 18);
       setRewardDate(amount);
       console.log("reward rate amount:", amount);

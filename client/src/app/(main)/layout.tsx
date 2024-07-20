@@ -1,18 +1,18 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import ScreenLoading from "@/components/ui/ScreenLoading";
-import useInitializeWeb3 from "@/hooks/initialize-web3";
-import { useSwitchNetwork, useWeb3ModalAccount } from "@web3modal/ethers/react";
 import React, { Suspense } from "react";
 import { useIsClient } from "usehooks-ts";
+import { useSwitchNetwork, useWeb3ModalAccount } from "@web3modal/ethers/react";
+import useInitializeWeb3 from "@/hooks/initialize-web3";
+import { Button } from "@/components/ui/button";
+import ScreenLoading from "@/components/ui/ScreenLoading";
 
 type Props = {
   children: React.ReactNode;
 };
 
 const Layout = ({ children }: Props) => {
-  const { chainId, isConnected, address, status } = useWeb3ModalAccount();
+  const { chainId, isConnected, status } = useWeb3ModalAccount();
   const client = useIsClient();
   useInitializeWeb3();
   const { switchNetwork } = useSwitchNetwork();
@@ -41,7 +41,6 @@ const Layout = ({ children }: Props) => {
   return (
     <div>
       <Suspense fallback={<ScreenLoading />}>
-        {/* hurray!!! connected to {chainId} */}
         <div className="">{children}</div>
       </Suspense>
     </div>

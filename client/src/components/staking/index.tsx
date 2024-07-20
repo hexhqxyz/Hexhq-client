@@ -1,8 +1,8 @@
 import React from "react";
+
 import ApproveToken from "./ApproveToken";
 import StakeAmount from "./StakeAmount";
 import { Separator } from "../ui/separator";
-import ClaimReward from "./ClaimReward";
 
 type Props = {};
 

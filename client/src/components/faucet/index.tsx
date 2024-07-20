@@ -5,18 +5,17 @@ import { Button } from "../ui/button";
 import { Contract, ethers, TransactionReceipt } from "ethers";
 import { useWeb3Store } from "@/store/signer-provider-store";
 import { FAUCET_CONTRACT_ADDRESS } from "@/lib/constants";
-import { decodeFaucetError } from "@/lib/utils";
 import { toast } from "sonner";
+import { decodeFaucetError } from "@/lib/decodeError";
 
 type Props = {};
 
 const Faucet = (props: Props) => {
-  const { contract, signer } = useWeb3Store();
+  const { signer } = useWeb3Store();
   const [loading, setLoading] = useState(false);
 
   const handleFaucetClick = async () => {
     try {
-      if (!contract) return;
       setLoading(true);
 
       const faucetAbi = await import("@/lib/abis/Faucet.json").then(

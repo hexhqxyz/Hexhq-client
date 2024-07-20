@@ -1,15 +1,17 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ActivityRow, { getActivityIcon } from "./ActivityRow";
+import { InfoIcon, Loader2 } from "lucide-react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useQuery } from "@apollo/client";
+
+import { Button } from "@/components/ui/button";
+import { ExpandableCard } from "@/components/ui/ExpandableCard";
+import ActivityRow, { getActivityIcon } from "./ActivityRow";
+import ActivityDetails from "./ActivityDetails";
+
 import { GET_USER_ACTIVITIES } from "@/lib/services/graphql/queries";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
-import { ExpandableCard } from "@/components/ui/ExpandableCard";
-import ActivityDetails from "./ActivityDetails";
-import { Button } from "@/components/ui/button";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { InfoIcon, Loader2 } from "lucide-react";
 
 import {
   Select,

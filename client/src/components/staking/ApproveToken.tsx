@@ -1,25 +1,25 @@
 "use client";
 
-import { ApproveTokenSchema } from "@/lib/zod-validation";
+import React from "react";
+import { Contract, ethers, TransactionReceipt } from "ethers";
+import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+
 import { Input } from "../ui/input";
 import { Label, LabelValueRow } from "../ui/label";
 import { Button } from "../ui/button";
-import { useWeb3Store } from "@/store/signer-provider-store";
+import { Heading } from "../ui/Typography";
+
 import {
   STAKING_ADDRESS,
   STAKING_TOKEN_CONTRACT_ADDRESS,
 } from "@/lib/constants";
-import { Contract, ethers, TransactionReceipt } from "ethers";
-
-import STAKING_TOKEN_ABI from "@/lib/abis/StakingToken.json";
-import { useWeb3ModalAccount } from "@web3modal/ethers/react";
-import { useStakingStore } from "@/store/staking-store";
-import { Heading } from "../ui/Typography";
 import { defaultError } from "@/lib/errors";
-import { toast } from "sonner";
+import { ApproveTokenSchema } from "@/lib/zod-validation";
+import STAKING_TOKEN_ABI from "@/lib/abis/StakingToken.json";
+import { useStakingStore } from "@/store/staking-store";
+import { useWeb3Store } from "@/store/signer-provider-store";
 
 type Props = {};
 
@@ -37,7 +37,6 @@ const ApproveToken = (props: Props) => {
     register,
     handleSubmit,
     reset,
-    setError,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(ApproveTokenSchema),

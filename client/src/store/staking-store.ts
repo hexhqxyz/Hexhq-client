@@ -1,12 +1,10 @@
 import { create } from "zustand";
+import { Contract, ethers } from "ethers";
+
 import { useWeb3Store } from "./signer-provider-store";
 import {
   STAKING_ADDRESS,
-  STAKING_TOKEN_CONTRACT_ADDRESS,
 } from "@/lib/constants";
-import { Contract, ethers, TransactionReceipt } from "ethers";
-import STAKING_TOKEN_ABI from "@/lib/abis/StakingToken.json";
-import STAKING_ABI from "@/lib/abis/Staking.json";
 
 type State = {
   totalApprovedAmount: string;

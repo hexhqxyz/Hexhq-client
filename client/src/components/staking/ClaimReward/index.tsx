@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Gift, Minus, Plus } from "lucide-react";
+import { Gift } from "lucide-react";
+import { ethers, TransactionReceipt } from "ethers";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,10 +16,9 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+
 import { useStakingStore } from "@/store/staking-store";
-import { ethers, TransactionReceipt } from "ethers";
-import { toast } from "sonner";
-import { decodeStakingError } from "@/lib/utils";
+import { decodeStakingError } from "@/lib/decodeError";
 
 export default function ClaimReward() {
   const [open, setOpen] = React.useState(false);

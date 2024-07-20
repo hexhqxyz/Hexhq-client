@@ -1,29 +1,23 @@
 "use client";
 
-import { ApproveTokenSchema } from "@/lib/zod-validation";
-import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
+import { ethers, TransactionReceipt } from "ethers";
+import { useDebounceValue } from "usehooks-ts";
 import { useForm } from "react-hook-form";
+import { ArrowRight } from "lucide-react";
+import { toast } from "sonner";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Input } from "../ui/input";
 import { Label, LabelValueRow } from "../ui/label";
-import { Button } from "../ui/button";
-import { useWeb3Store } from "@/store/signer-provider-store";
-import {
-  STAKING_ADDRESS,
-  STAKING_TOKEN_CONTRACT_ADDRESS,
-} from "@/lib/constants";
-import { Contract, ethers, TransactionReceipt } from "ethers";
-
-import STAKING_TOKEN_ABI from "@/lib/abis/StakingToken.json";
-import STAKING_ABI from "@/lib/abis/Staking.json";
-import { useWeb3ModalAccount } from "@web3modal/ethers/react";
-import { useStakingStore } from "@/store/staking-store";
 import { Heading } from "../ui/Typography";
-import { useDebounceValue } from "usehooks-ts";
-import { ArrowRight, ChevronRight, InfoIcon } from "lucide-react";
-import { TooltipWrapper } from "../ui/tooltip";
-import { toast } from "sonner";
-import { decodeStakingError, formatNumber } from "@/lib/utils";
+import { Button } from "../ui/button";
+
+import { ApproveTokenSchema } from "@/lib/zod-validation";
+import { formatNumber } from "@/lib/utils";
+import { useWeb3Store } from "@/store/signer-provider-store";
+import { useStakingStore } from "@/store/staking-store";
+import { decodeStakingError } from "@/lib/decodeError";
 
 type Props = {};
 
@@ -39,7 +33,7 @@ const StakeAmount = (props: Props) => {
     totalStakedAmount,
     stakingContract,
   } = useStakingStore();
-  const { provider, signer } = useWeb3Store();
+  const { provider } = useWeb3Store();
 
   const [estimatedGasFees, setEstimatedGasFees] = useState("0.00");
 
@@ -60,7 +54,10 @@ const StakeAmount = (props: Props) => {
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    if (parseFloat(data.amount) <= 0 || parseFloat(data.amount) > parseFloat(totalApprovedAmount)) {
+    if (
+      parseFloat(data.amount) <= 0 ||
+      parseFloat(data.amount) > parseFloat(totalApprovedAmount)
+    ) {
       setError("amount", {
         message: "Amount must be below or equal to the approved DTX tokens ",
       });
@@ -174,7 +171,6 @@ const StakeAmount = (props: Props) => {
   }, [debouncedValue]);
 
   return (
-    // <div className="bg-background border p-4 rounded-lg shadow-md">
     <div className="">
       <Heading variant="h3" className="mb-4">
         Stake Amount

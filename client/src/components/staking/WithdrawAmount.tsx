@@ -1,28 +1,22 @@
 "use client";
 
-import { ApproveTokenSchema } from "@/lib/zod-validation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { ethers, TransactionReceipt } from "ethers";
+import { toast } from "sonner";
+import { useDebounceValue } from "usehooks-ts";
+import { ArrowRight } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Input } from "../ui/input";
+import { Heading } from "../ui/Typography";
 import { Label, LabelValueRow } from "../ui/label";
 import { Button } from "../ui/button";
-import { useWeb3Store } from "@/store/signer-provider-store";
-import {
-  STAKING_ADDRESS,
-  STAKING_TOKEN_CONTRACT_ADDRESS,
-} from "@/lib/constants";
-import { Contract, ethers, TransactionReceipt } from "ethers";
 
-import STAKING_TOKEN_ABI from "@/lib/abis/StakingToken.json";
-import STAKING_ABI from "@/lib/abis/Staking.json";
-import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import { useStakingStore } from "@/store/staking-store";
-import { Heading } from "../ui/Typography";
-import { ArrowRight } from "lucide-react";
-import { useDebounceValue } from "usehooks-ts";
-import { toast } from "sonner";
-import { decodeStakingError, formatNumber } from "@/lib/utils";
+import { ApproveTokenSchema } from "@/lib/zod-validation";
+import { formatNumber } from "@/lib/utils";
+import { decodeStakingError } from "@/lib/decodeError";
 
 type Props = {};
 
@@ -35,7 +29,6 @@ const WithdrawAmount = (props: Props) => {
     setTotalStakedAmount,
     totalStakedAmount,
     stakingContract,
-    totalApprovedAmount,
   } = useStakingStore();
   const [debouncedValue, setDebouncedValue] = useDebounceValue("", 500);
 
