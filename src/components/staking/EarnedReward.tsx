@@ -15,7 +15,7 @@ const EarnedReward = (props: Props) => {
   const [rewardDate, setRewardDate] = useState("0");
   const { address } = useWeb3ModalAccount();
   const { signer } = useWeb3Store();
-  const { stakingContract,totalRewardsEarned,setTotalRewardsEarned } = useStakingStore();
+  const { stakingContract,totalRewardsEarned,setTotalRewardsEarned,totalStakedAmount } = useStakingStore();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
