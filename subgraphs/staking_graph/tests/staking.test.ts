@@ -5,7 +5,7 @@ import {
   clearStore,
   beforeAll,
   afterAll
-} from "matchstick-as/assembly/index"
+} from "matchstick-as"
 import { Address, BigInt } from "@graphprotocol/graph-ts"
 import { EmergencyWithdrawal } from "../generated/schema"
 import { EmergencyWithdrawal as EmergencyWithdrawalEvent } from "../generated/Staking/Staking"
