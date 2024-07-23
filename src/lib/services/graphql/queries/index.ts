@@ -31,3 +31,11 @@ export const GET_USER_ACTIVITIES = gql`
     }
   }
 `;
+
+export const GET_REWARDS_AMOUNT = gql`
+  query GetUserActivities($user: Bytes!) {
+    rewardsClaimeds(where: { user: $user }) {
+      amount
+    }
+  }
+`;

@@ -1,11 +1,13 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
+import { Skeleton } from "./skeleton";
 
 type Props = {
   title: React.ReactNode;
   icon: React.ReactNode;
   value: React.ReactNode;
   subValue: React.ReactNode;
+  loading?: boolean;
 };
 
 const InfoCard = (props: Props) => {
@@ -17,7 +19,15 @@ const InfoCard = (props: Props) => {
           {props.icon}
         </CardHeader>
         <CardContent>
-          <div className="text-xl font-bold">{props.value}</div>
+          {props.loading ? (
+            <>
+              <Skeleton className="h-4 w-[200px] my-1" />
+            </>
+          ) : (
+            <>
+              <div className="text-xl font-bold">{props.value}</div>
+            </>
+          )}
           <p className="text-xs text-muted-foreground">{props.subValue}</p>
         </CardContent>
       </Card>

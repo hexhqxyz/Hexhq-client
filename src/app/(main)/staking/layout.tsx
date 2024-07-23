@@ -12,6 +12,7 @@ import InfoCard from "@/components/ui/InfoCard";
 import ScreenLoading from "@/components/ui/ScreenLoading";
 import { TabsNav } from "@/components/ui/TabsNav";
 import { Heading } from "@/components/ui/Typography";
+import TotalRewardEarned from "@/components/staking/TotalRewardEarned";
 
 type Props = {
   children: React.ReactNode;
@@ -62,12 +63,8 @@ const Layout = ({ children }: Props) => {
             />
 
             <EarnedReward />
-            <InfoCard
-              icon={<Award className="h-4 w-4 text-muted-foreground" />}
-              title="Total Rewards earned"
-              value="$45,231.89"
-              subValue="excluding your current reward cycle"
-            />
+            <TotalRewardEarned />
+           
           </div>
           <div className="flex justify-center md:justify-end w-full lg:w-8/12 lg:mb-0 mb-4 px-4 lg:px-0">
             <ClaimReward />

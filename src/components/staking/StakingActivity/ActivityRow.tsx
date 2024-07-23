@@ -2,7 +2,7 @@ import { CalendarDaysIcon, MoveUpRight, WalletCardsIcon } from "lucide-react";
 import React from "react";
 import { format } from "date-fns";
 import { ethers } from "ethers";
-import { shortenString } from "@/lib/utils";
+import { formatNumber, shortenString } from "@/lib/utils";
 import Link from "next/link";
 
 type Activity = {
@@ -76,7 +76,7 @@ const ActivityRow = ({ activity }: Props) => {
         </div>
         <div className="ml-auto text-right">
           <p className="font-medium">
-            {formattedAmount} {getCurrency(activity.type)}
+            {formatNumber(formattedAmount)} {getCurrency(activity.type)}
           </p>
           <p className="text-sm text-muted-foreground flex gap-x-1 items-center">
             {" "}
