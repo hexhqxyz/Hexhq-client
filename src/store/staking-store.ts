@@ -12,6 +12,7 @@ type State = {
   totalStakedAmount: string;
   stakingContract: Contract | null;
   stakingTokenContract: Contract | null;
+  rewardTokenContract: Contract | null;
   totalRewardsEarned: string;
 };
 type Action = {
@@ -20,6 +21,7 @@ type Action = {
   setTotalBorrowedAmount: () => void;
   setStakingContract: (contract: Contract) => void;
   setStakingTokenContract: (contract: Contract) => void;
+  setRewardTokenContract: (contract: Contract) => void;
   setTotalRewardsEarned: (val: string) => void;
   reset: () => void;
 };
@@ -83,6 +85,9 @@ export const useStakingStore = create<State & Action>((set, get) => ({
   },
   setStakingTokenContract(contract) {
     set({ stakingTokenContract: contract });
+  },
+  setRewardTokenContract(contract) {
+    set({ rewardTokenContract: contract });
   },
   reset: () => {
     set(initialState);

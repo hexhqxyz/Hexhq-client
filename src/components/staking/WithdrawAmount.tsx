@@ -8,7 +8,7 @@ import { ArrowRight } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Input } from "../ui/input";
+import { CryptoInput, Input } from "../ui/input";
 import { Heading } from "../ui/Typography";
 import { Label, LabelValueRow } from "../ui/label";
 import { Button } from "../ui/button";
@@ -25,11 +25,8 @@ type FormData = {
 };
 
 const WithdrawAmount = (props: Props) => {
-  const {
-    setTotalStakedAmount,
-    totalStakedAmount,
-    stakingContract,
-  } = useStakingStore();
+  const { setTotalStakedAmount, totalStakedAmount, stakingContract } =
+    useStakingStore();
   const [debouncedValue, setDebouncedValue] = useDebounceValue("", 500);
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -130,27 +127,27 @@ const WithdrawAmount = (props: Props) => {
         Withdraw amount
       </Heading>
       <form onSubmit={onSubmit} className="space-y-4">
-        <div className="grid gap-2">
-          <Label htmlFor="amount">How much DTX do you want to withdraw?</Label>
-          <Input
-            disabled={isLoading}
-            type="text"
-            placeholder="Enter amount"
-            {...register("amount")}
-          />
-          {errors.amount && (
-            <p className="text-red-500 text-sm">{errors?.amount.message}</p>
-          )}
-        </div>
-        <div className="grid grid-cols-4 gap-x-4 text-sm !mt-2">
+        <CryptoInput
+          onMaxClick={() => {
+            handlePricePercentClick(100);
+          }}
+          disabled={isLoading}
+          error={errors.amount}
+          {...register("amount")}
+          label="How much DTX do you want to withdraw?"
+        />
+        <div className="grid grid-cols-4 gap-x-4 text-sm !mt-3">
           {[25, 50, 75, 100].map((item, index) => (
-            <p
+            <Button
+              size={"sm"}
+              variant={"secondary"}
+              type="button"
               key={item}
               onClick={() => handlePricePercentClick(item)}
-              className="py-1 bg-secondary text-center rounded-sm cursor-pointer"
+              className="text-center rounded-2xl cursor-pointer"
             >
               {item}%
-            </p>
+            </Button>
           ))}
         </div>
         {debouncedValue && (
@@ -162,8 +159,9 @@ const WithdrawAmount = (props: Props) => {
                 <>
                   {formatNumber(totalStakedAmount)}
                   <ArrowRight className="w-4 h-4 text-muted-foreground" />{" "}
-                  {formatNumber(parseFloat(totalStakedAmount) - parseFloat(debouncedValue)) ||
-                    "0.0"}
+                  {formatNumber(
+                    parseFloat(totalStakedAmount) - parseFloat(debouncedValue)
+                  ) || "0.0"}
                 </>
               }
             />

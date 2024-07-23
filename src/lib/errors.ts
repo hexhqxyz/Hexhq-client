@@ -43,4 +43,9 @@ export const stakingErrors: Record<
     description:
       "Something went wrong. Please check transaction details for more",
   },
+  LoanNotRepaid: {
+    title: "Please repay your loan first",
+    description: `You have not paid loan yet. You will be able to withdraw once you repay the loan.`,
+  },
+
 };

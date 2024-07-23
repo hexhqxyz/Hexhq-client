@@ -1,6 +1,10 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { Button } from "./button";
+import { Label } from "./label";
+import { FieldError } from "react-hook-form";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
@@ -17,9 +21,60 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         {...props}
       />
-    )
+    );
   }
-)
-Input.displayName = "Input"
+);
+Input.displayName = "Input";
 
-export { Input }
+export interface CryptoInputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  btnText?: string;
+  label?: string;
+  error?: FieldError | undefined;
+  disabled?: boolean;
+  onMaxClick: () => void;
+}
+
+const CryptoInput = React.forwardRef<HTMLInputElement, CryptoInputProps>(
+  ({ className, type = "text", btnText,label, error, onMaxClick,disabled, ...props }, ref) => {
+    return (
+      <div className="space-y-2">
+        <div className="">
+          <Label htmlFor="amount">{label}</Label>
+        </div>
+        <div className="flex items-center bg-secondary p-2 rounded-md">
+          <div className="flex items-center justify-center bg-blue-600 rounded-full">
+            <Image width={30} height={30} src="/dtx-token.svg" alt="icon" />
+          </div>
+          <input
+            type={type}
+            className="bg-secondary text-xl p-2 focus:outline-none ml-2 w-full disabled:cursor-not-allowed disabled:opacity-50"
+            placeholder="0.00"
+            ref={ref}
+            disabled={disabled}
+            {...props}
+          />
+          <Button
+            variant={"default"}
+            disabled={disabled}
+            type="button"
+            size={"sm"}
+            onClick={onMaxClick}
+            className="p-2 rounded-md ml-2"
+          >
+            {btnText || "MAX"}
+          </Button>
+        </div>
+        <div className="">
+          {error && (
+            <p className="text-red-500 text-sm -mt-2 pl-0.5">{error.message}</p>
+          )}
+        </div>
+      </div>
+    );
+  }
+);
+
+CryptoInput.displayName = "CryptoInput";
+
+export { Input, CryptoInput };

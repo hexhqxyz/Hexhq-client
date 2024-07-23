@@ -8,7 +8,7 @@ import { ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Input } from "../../ui/input";
+import { CryptoInput, Input } from "../../ui/input";
 import { Label, LabelValueRow } from "../../ui/label";
 import { Heading } from "../../ui/Typography";
 import { Button } from "../../ui/button";
@@ -111,6 +111,7 @@ const Borrow = (props: Props) => {
       setTotalStakedAmount();
       setTotalApprovedAmount();
       setTotalBorrowedAmount();
+      getBorrowingLimit();
     } catch (error) {
       toast.dismiss();
       setIsLoading(false);
@@ -186,25 +187,23 @@ const Borrow = (props: Props) => {
         Borrow Amount
       </Heading>
       <p className="mb-4 text-sm text-muted-foreground">
-        You can lend max 80% of the staked tokens. You will not be able to withdraw your DTX until you repay your loan
+        You can lend max 80% of the staked tokens. You will not be able to
+        withdraw your DTX until you repay your loan
       </p>
 
       <form onSubmit={onSubmit} className="space-y-2">
-        <div className="grid gap-2">
-          <Label htmlFor="amount">How much dUSD do you want to borrow?</Label>
-          <Input
-            disabled={isLoading || totalStakedAmount === "0.0"}
-            type="text"
-            placeholder="enter amount"
-            {...register("amount")}
-          />
-          {errors.amount && (
-            <p className="text-red-500 text-sm -mt-2 pl-0.5">
-              {errors?.amount.message}
-            </p>
-          )}
-        </div>
-        <div className="grid grid-cols-4 gap-x-4 text-sm !mt-2">
+        <CryptoInput
+          onMaxClick={() => {
+            handlePricePercentClick(100);
+          }}
+          disabled={totalStakedAmount === "0.0"}
+          btnText="80% Limit"
+          error={errors.amount}
+          {...register("amount")}
+          label="How much dUSD do you want to borrow?"
+        />
+
+        <div className="grid grid-cols-4 gap-x-4 text-sm !mt-3">
           {[25, 50, 75, 100].map((item, index) => (
             <Button
               type="button"
@@ -213,7 +212,7 @@ const Borrow = (props: Props) => {
               disabled={totalStakedAmount === "0.0"}
               size={"sm"}
               onClick={() => handlePricePercentClick(item)}
-              className="text-center rounded-sm cursor-pointer"
+              className="text-center rounded-2xl cursor-pointer"
             >
               {item}%
             </Button>

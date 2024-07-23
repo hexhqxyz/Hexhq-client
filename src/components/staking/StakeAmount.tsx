@@ -8,7 +8,7 @@ import { ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Input } from "../ui/input";
+import { CryptoInput, Input } from "../ui/input";
 import { Label, LabelValueRow } from "../ui/label";
 import { Heading } from "../ui/Typography";
 import { Button } from "../ui/button";
@@ -195,27 +195,27 @@ const StakeAmount = (props: Props) => {
         Stake Amount
       </Heading>
       <form onSubmit={onSubmit} className="space-y-2">
-        <div className="grid gap-2">
-          <Label htmlFor="amount">How much DTX do you want to stake?</Label>
-          <Input
-            disabled={isLoading}
-            type="text"
-            placeholder="enter amount"
-            {...register("amount")}
-          />
-          {errors.amount && (
-            <p className="text-red-500 text-sm">{errors?.amount.message}</p>
-          )}
-        </div>
-        <div className="grid grid-cols-4 gap-x-4 text-sm !mt-2">
+        <CryptoInput
+          onMaxClick={() => {
+            handlePricePercentClick(100);
+          }}
+          disabled={isLoading}
+          error={errors.amount}
+          {...register("amount")}
+          label="How much DTX do you want to stake?"
+        />
+        <div className="grid grid-cols-4 gap-x-4 text-sm !mt-3">
           {[25, 50, 75, 100].map((item, index) => (
-            <p
+            <Button
+              size={"sm"}
+              type="button"
+              variant={"secondary"}
               key={item}
               onClick={() => handlePricePercentClick(item)}
-              className="py-1 bg-secondary text-center rounded-sm cursor-pointer"
+              className="text-center cursor-pointer rounded-2xl"
             >
               {item}%
-            </p>
+            </Button>
           ))}
         </div>
         {debouncedValue && (

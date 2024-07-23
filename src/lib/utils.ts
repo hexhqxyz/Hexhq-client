@@ -15,11 +15,23 @@ export const shortenString = (
 };
 
 export function formatNumber(value:string|null | any) {
-  if(!value) return "0.0";
+  if (!value) return "0.0";
   const floatValue = parseFloat(value);
-  if (floatValue % 1 === 0) {
+
+  if (floatValue === 0) {
+    return "0.0";
+  } else if (floatValue < 1) {
+    return floatValue.toFixed(6).replace(/\.?0+$/, '');
+  } else if (floatValue % 1 === 0) {
     return floatValue.toFixed(1);
   } else {
     return floatValue.toFixed(2).replace(/\.?0+$/, '');
   }
+}
+
+
+export function roundToNearestHalf(value:string) {
+  const floatValue = parseFloat(value);
+  const roundedValue = Math.ceil(floatValue * 2) / 2;
+  return roundedValue.toFixed(1);
 }
