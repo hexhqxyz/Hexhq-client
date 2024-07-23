@@ -6,6 +6,7 @@ import { useSwitchNetwork, useWeb3ModalAccount } from "@web3modal/ethers/react";
 import useInitializeWeb3 from "@/hooks/initialize-web3";
 import { Button } from "@/components/ui/button";
 import ScreenLoading from "@/components/ui/ScreenLoading";
+import ResizableMain from "@/components/ResizableMain";
 
 type Props = {
   children: React.ReactNode;
@@ -28,7 +29,7 @@ const Layout = ({ children }: Props) => {
     return <div>please connect to continue</div>;
   }
 
-  if (chainId && ![1337,1,11155111].includes(chainId)) {
+  if (chainId && ![1337, 1, 11155111].includes(chainId)) {
     return (
       <div>
         <Button onClick={() => handleSwitch()}>
@@ -37,11 +38,13 @@ const Layout = ({ children }: Props) => {
       </div>
     );
   }
-  
+
   return (
     <div>
       <Suspense fallback={<ScreenLoading />}>
-        <div className="">{children}</div>
+        <ResizableMain>
+          <div className="">{children}</div>
+        </ResizableMain>
       </Suspense>
     </div>
   );
