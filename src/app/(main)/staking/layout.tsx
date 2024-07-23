@@ -43,7 +43,7 @@ const tabItems = [
 ];
 
 const Layout = ({ children }: Props) => {
-  const { setTotalApprovedAmount,setTotalStakedAmount, totalStakedAmount } = useStakingStore();
+  const { setTotalApprovedAmount,setTotalStakedAmount,setTotalBorrowedAmount, totalStakedAmount } = useStakingStore();
   const {setAvailableStakingTokenBalance} = useTokenStore();
   const { address } = useWeb3ModalAccount();
   const { signer } = useWeb3Store();
@@ -54,6 +54,7 @@ const Layout = ({ children }: Props) => {
     setTotalApprovedAmount();
     setTotalStakedAmount();
     setAvailableStakingTokenBalance();
+    setTotalBorrowedAmount();
   }, [address, signer]);
 
   return (

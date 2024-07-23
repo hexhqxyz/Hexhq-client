@@ -5,8 +5,8 @@ type Props = {};
 
 const Page = (props: Props) => {
   return (
-    <div className="mx-auto max-w-lg">
-      <div className="p-6">
+    <div className="mx-auto lg::max-w-lg w-full ">
+      <div className="p-4">
         <WithdrawAmount />
       </div>
     </div>

@@ -8,6 +8,7 @@ import {
 
 type State = {
   totalApprovedAmount: string;
+  totalBorrowedAmount: string;
   totalStakedAmount: string;
   stakingContract: Contract | null;
   stakingTokenContract: Contract | null;
@@ -16,6 +17,7 @@ type State = {
 type Action = {
   setTotalApprovedAmount: () => void;
   setTotalStakedAmount: () => void;
+  setTotalBorrowedAmount: () => void;
   setStakingContract: (contract: Contract) => void;
   setStakingTokenContract: (contract: Contract) => void;
   setTotalRewardsEarned: (val: string) => void;
@@ -24,6 +26,7 @@ type Action = {
 
 const initialState: State = {
   totalApprovedAmount: "0",
+  totalBorrowedAmount: "0",
   totalStakedAmount: "0",
   totalRewardsEarned: "0",
   stakingContract: null,
@@ -41,6 +44,18 @@ export const useStakingStore = create<State & Action>((set, get) => ({
       const stakedBalance = await stakingContract.stakedBalance(address);
       const amount = ethers.formatUnits(stakedBalance, 18);
       set({ totalStakedAmount: amount });
+    } catch (error) {
+      console.log("error occured........", error);
+    }
+  },
+  setTotalBorrowedAmount: async () => {
+    try {
+      const { stakingContract } = get(); // Get the current state
+      if (!stakingContract) return;
+      const address = useWeb3Store.getState().address;
+      const stakedBalance = await stakingContract.borrowedAmount(address);
+      const amount = ethers.formatUnits(stakedBalance, 18);
+      set({ totalBorrowedAmount: amount });
     } catch (error) {
       console.log("error occured........", error);
     }

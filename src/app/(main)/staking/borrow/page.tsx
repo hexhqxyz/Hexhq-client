@@ -1,4 +1,4 @@
-import Staking from '@/components/staking'
+import Borrow from '@/components/staking/Borrow'
 import React from 'react'
 
 type Props = {}
@@ -6,7 +6,7 @@ type Props = {}
 const Page = (props: Props) => {
   return (
     <div>
-        <Staking />
+        <Borrow />
     </div>
   )
 }
