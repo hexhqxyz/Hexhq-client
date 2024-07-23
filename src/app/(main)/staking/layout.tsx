@@ -84,7 +84,7 @@ const Layout = ({ children }: Props) => {
             <div className="border-b w-full rounded-md">
               <TabsNav items={tabItems} />
             </div>
-            <div className="w-full p-2">{children}</div>
+            <div className="w-full px-2 py-0.5">{children}</div>
           </div>
         </div>
       </Suspense>

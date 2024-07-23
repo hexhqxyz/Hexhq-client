@@ -182,9 +182,13 @@ const Borrow = (props: Props) => {
 
   return (
     <div className="mx-auto lg::max-w-lg w-full p-4">
-      <Heading variant="h3" className="mb-4">
+      <Heading variant="h3" className="mb-1">
         Borrow Amount
       </Heading>
+      <p className="mb-4 text-sm text-muted-foreground">
+        You can lend max 80% of the staked tokens. You will not be able to withdraw your DTX until you repay your loan
+      </p>
+
       <form onSubmit={onSubmit} className="space-y-2">
         <div className="grid gap-2">
           <Label htmlFor="amount">How much dUSD do you want to borrow?</Label>
