@@ -13,6 +13,7 @@ import ScreenLoading from "@/components/ui/ScreenLoading";
 import { TabsNav } from "@/components/ui/TabsNav";
 import { Heading } from "@/components/ui/Typography";
 import TotalRewardEarned from "@/components/staking/TotalRewardEarned";
+import { useTokenStore } from "@/store/token-store";
 
 type Props = {
   children: React.ReactNode;
@@ -28,14 +29,22 @@ const tabItems = [
     href: "/staking/withdraw",
   },
   {
+    title: "Borrow",
+    href: "/staking/borrow",
+  },
+  {
+    title: "Repay",
+    href: "/staking/repay",
+  },
+  {
     title: "Activity",
     href: "/staking/activity",
   },
 ];
 
 const Layout = ({ children }: Props) => {
-  const { setTotalApprovedAmount, setTotalStakedAmount, totalStakedAmount } =
-    useStakingStore();
+  const { setTotalStakedAmount, totalStakedAmount } = useStakingStore();
+  const { setTotalApprovedAmount } = useTokenStore();
   const { address } = useWeb3ModalAccount();
   const { signer } = useWeb3Store();
   useInitializeStaking();
@@ -64,7 +73,6 @@ const Layout = ({ children }: Props) => {
 
             <EarnedReward />
             <TotalRewardEarned />
-           
           </div>
           <div className="flex justify-center md:justify-end w-full lg:w-8/12 lg:mb-0 mb-4 px-4 lg:px-0">
             <ClaimReward />
