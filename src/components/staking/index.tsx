@@ -12,12 +12,12 @@ const Staking = (props: Props) => {
       <div className="p-4">
         <StakeAmount />
       </div>
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <Separator />
-      </div>
-      <div className="p-4">
+      </div> */}
+      {/* <div className="p-4">
         <ApproveToken />
-      </div>
+      </div> */}
     </div>
   );
 };

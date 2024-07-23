@@ -13,13 +13,10 @@ import { Heading } from "../ui/Typography";
 
 import {
   STAKING_ADDRESS,
-  STAKING_TOKEN_CONTRACT_ADDRESS,
 } from "@/lib/constants";
 import { defaultError } from "@/lib/errors";
 import { ApproveTokenSchema } from "@/lib/zod-validation";
-import STAKING_TOKEN_ABI from "@/lib/abis/StakingToken.json";
 import { useStakingStore } from "@/store/staking-store";
-import { useWeb3Store } from "@/store/signer-provider-store";
 
 type Props = {};
 
@@ -28,8 +25,7 @@ type FormData = {
 };
 
 const ApproveToken = (props: Props) => {
-  const { signer } = useWeb3Store();
-  const { totalApprovedAmount, setTotalApprovedAmount } = useStakingStore();
+  const { totalApprovedAmount, setTotalApprovedAmount,stakingTokenContract } = useStakingStore();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -43,14 +39,10 @@ const ApproveToken = (props: Props) => {
   });
 
   const onSubmit = handleSubmit(async (data) => {
+    if(!stakingTokenContract) return;
     try {
       console.log("data:", data);
       setIsLoading(true);
-      const stakingTokenContract = new Contract(
-        STAKING_TOKEN_CONTRACT_ADDRESS,
-        STAKING_TOKEN_ABI.abi,
-        signer
-      );
 
       const amountToSend = ethers.parseUnits(data.amount, 18).toString();
 

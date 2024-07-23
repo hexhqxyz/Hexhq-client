@@ -18,6 +18,8 @@ import { formatNumber } from "@/lib/utils";
 import { useWeb3Store } from "@/store/signer-provider-store";
 import { useStakingStore } from "@/store/staking-store";
 import { decodeStakingError } from "@/lib/decodeError";
+import { useTokenStore } from "@/store/token-store";
+import { STAKING_ADDRESS } from "@/lib/constants";
 
 type Props = {};
 
@@ -32,8 +34,11 @@ const StakeAmount = (props: Props) => {
     setTotalApprovedAmount,
     totalStakedAmount,
     stakingContract,
+    stakingTokenContract,
   } = useStakingStore();
   const { provider } = useWeb3Store();
+  const { availableStakingTokenBalance, setAvailableStakingTokenBalance } =
+    useTokenStore();
 
   const [estimatedGasFees, setEstimatedGasFees] = useState("0.00");
 
@@ -56,14 +61,14 @@ const StakeAmount = (props: Props) => {
   const onSubmit = handleSubmit(async (data) => {
     if (
       parseFloat(data.amount) <= 0 ||
-      parseFloat(data.amount) > parseFloat(totalApprovedAmount)
+      parseFloat(data.amount) > parseFloat(availableStakingTokenBalance)
     ) {
       setError("amount", {
         message: "Amount must be below or equal to the approved DTX tokens ",
       });
       return;
     }
-    if (!stakingContract) return;
+    if (!stakingContract || !stakingTokenContract) return;
     try {
       console.log("data:", data);
       setIsLoading(true);
@@ -71,6 +76,17 @@ const StakeAmount = (props: Props) => {
       const amountToStake = ethers.parseUnits(data.amount, 18).toString();
 
       const maxFeePerGas = ethers.parseUnits("100", "gwei"); // 100 gwei
+      const approveTx = await stakingTokenContract.approve(
+        STAKING_ADDRESS,
+        amountToStake,
+        {
+          maxFeePerGas: maxFeePerGas,
+        }
+      );
+
+      const approveReceipt: TransactionReceipt = await approveTx.wait();
+      console.log("approve receipt", approveReceipt);
+
       const tx = await stakingContract.stake(amountToStake, {
         maxFeePerGas: maxFeePerGas,
       });
@@ -93,6 +109,7 @@ const StakeAmount = (props: Props) => {
       setIsLoading(false);
       reset();
       setDebouncedValue("");
+      setAvailableStakingTokenBalance();
       setTotalStakedAmount();
       setTotalApprovedAmount();
     } catch (error) {
@@ -107,8 +124,8 @@ const StakeAmount = (props: Props) => {
   });
 
   const handlePricePercentClick = (percent: number) => {
-    if (!parseFloat(totalApprovedAmount)) return;
-    const amount = (parseFloat(totalApprovedAmount) * percent) / 100;
+    if (!parseFloat(availableStakingTokenBalance)) return;
+    const amount = (parseFloat(availableStakingTokenBalance) * percent) / 100;
     setValue("amount", amount.toString());
   };
 
@@ -160,7 +177,9 @@ const StakeAmount = (props: Props) => {
 
   useEffect(() => {
     if (!debouncedValue) return;
-    if (parseFloat(debouncedValue) <= parseFloat(totalApprovedAmount)) {
+    if (
+      parseFloat(debouncedValue) <= parseFloat(availableStakingTokenBalance)
+    ) {
       clearErrors("amount");
       estimateGas(debouncedValue);
     } else {
@@ -229,7 +248,7 @@ const StakeAmount = (props: Props) => {
           loading={isLoading}
           className="w-full"
         >
-          Stake
+          Approve and Stake
         </Button>
       </form>
     </div>
