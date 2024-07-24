@@ -113,6 +113,7 @@ const Repay = (props: Props) => {
       setTotalStakedAmount();
       setTotalApprovedAmount();
       setTotalBorrowedAmount();
+      getTotalRepayAmount();
     } catch (error) {
       toast.dismiss();
       setIsLoading(false);

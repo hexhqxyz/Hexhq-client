@@ -54,7 +54,12 @@ const Layout = ({ children }: Props) => {
     setStakingDetails,
     setUserDetails,
   } = useStakingStore();
-  const { setAvailableStakingTokenBalance,tokenDetails,availableStakingTokenBalance,availableRewardTokenBalance } = useTokenStore();
+  const {
+    setAvailableStakingTokenBalance,
+    tokenDetails,
+    availableStakingTokenBalance,
+    availableRewardTokenBalance,
+  } = useTokenStore();
   const { address } = useWeb3ModalAccount();
   const { signer } = useWeb3Store();
   useInitializeStaking();
@@ -69,8 +74,8 @@ const Layout = ({ children }: Props) => {
     setUserDetails();
   }, [address, signer]);
 
-  console.log("user details:", userDetails)
-  console.log("staking details:", stakingDetails)
+  console.log("user details:", userDetails);
+  console.log("staking details:", stakingDetails);
 
   return (
     <div>
@@ -97,53 +102,110 @@ const Layout = ({ children }: Props) => {
 
           <div className="grid grid-cols-5 gap-x-4 w-11/12 mt-6 reverse mb-8">
             <div className="col-span-3 space-y-8">
-            <Card className="border p-4">
-      <CardTitle className="text-xl">Curated for you</CardTitle>
-      <div className="mt-6">
-        <div className=" space-y-2">
-        <InfoLabel isSeperator={false} className="flex justify-between" label="How much you can borrow?" value={`${userDetails.borrowLimit} dUSD`} />
-         <InfoLabel isSeperator={false} className="flex justify-between" label="Borrowed amount" value={`${userDetails.borrowedAmount} dUSD`} />
-        <InfoLabel isSeperator={false} className="flex justify-between" label="Interest payable" value={`${userDetails.interestPayable} dUSD`} />
-        <InfoLabel isSeperator={false} className="flex justify-between" label="Amount you need to repay" value={`${userDetails.repayAmount} dUSD`} />
-        <InfoLabel isSeperator={false} className="flex justify-between" tooltip="Amount available to use in colletral" label="Colletral amount" value={`${totalStakedAmount} DTX`} />
+              <Card className="border p-4">
+                <CardTitle className="text-xl">Curated for you</CardTitle>
+                <div className="mt-6">
+                  <div className=" space-y-2">
+                    <InfoLabel
+                      isSeperator={false}
+                      className="flex justify-between"
+                      label="How much you can borrow?"
+                      value={`${userDetails.borrowLimit} dUSD`}
+                    />
+                    <InfoLabel
+                      isSeperator={false}
+                      className="flex justify-between"
+                      label="Borrowed amount"
+                      value={`${userDetails.borrowedAmount} dUSD`}
+                    />
+                    <InfoLabel
+                      isSeperator={false}
+                      className="flex justify-between"
+                      label="Interest payable"
+                      value={`${userDetails.interestPayable} dUSD`}
+                    />
+                    <InfoLabel
+                      isSeperator={false}
+                      className="flex justify-between"
+                      label="Amount you need to repay"
+                      value={`${userDetails.repayAmount} dUSD`}
+                    />
+                    <InfoLabel
+                      isSeperator={false}
+                      className="flex justify-between"
+                      tooltip="Amount available to use in colletral"
+                      label="Colletral amount"
+                      value={`${totalStakedAmount} DTX`}
+                    />
+                  </div>
+                </div>
+              </Card>
 
-        </div>
-      </div>
-    </Card>
-
-            {/* <InfoWrapper title="Curated for you">
-                <InfoLabel label="Borrow Limit" value={`${userDetails.borrowLimit} dUSD`} />
-                <InfoLabel label="Borrowed amount" value={`${userDetails.borrowedAmount} dUSD`} />
-                <InfoLabel label="Interest payable" value={`${userDetails.interestPayable} dUSD`} />
-                <InfoLabel label="Repay amount" value={`${userDetails.repayAmount} dUSD`} />
-                <InfoLabel isSeperator={false} label="Colletral amount" value={`${totalStakedAmount} DTX`} />
-              </InfoWrapper> */}
               <InfoWrapper title="Stake info">
-                <InfoLabel tooltip="Total amount staked in the pool" label="Total staked" value={`${formatNumber(stakingDetails.totalStaked)} DTX`} />
-                <InfoLabel tooltip="Time when the last stake activity happened on the contract" isSeperator={false} label="Last updated" value={`${formatDistanceToNow(stakingDetails.lastUpdated, {addSuffix: true,includeSeconds: true})}`} />
+                <InfoLabel
+                  tooltip="Total amount staked in the pool"
+                  label="Total staked"
+                  value={`${formatNumber(stakingDetails.totalStaked)} DTX`}
+                />
+                <InfoLabel
+                  tooltip="Time when the last stake activity happened on the contract"
+                  isSeperator={false}
+                  label="Last updated"
+                  value={`${formatDistanceToNow(stakingDetails.lastUpdated, {
+                    addSuffix: true,
+                    includeSeconds: true,
+                  })}`}
+                />
               </InfoWrapper>
               <InfoWrapper title="Borrow info">
                 <InfoLabel label="Total borrow" value={"Soon"} />
-                <InfoLabel label="Interest rate (APY)" value={`${stakingDetails.interestRate}%`} />
-                <InfoLabel tooltip="At a time you can borrow upto 80% of the value of your colletral amount" isSeperator={false} label="Collateral factor" value={`${80}%`} />
+                <InfoLabel
+                  label="Interest rate (APY)"
+                  value={`${stakingDetails.interestRate}%`}
+                />
+                <InfoLabel
+                  tooltip="At a time you can borrow upto 80% of the value of your colletral amount"
+                  isSeperator={false}
+                  label="Collateral factor"
+                  value={`${80}%`}
+                />
               </InfoWrapper>
               <InfoWrapper title="dUSD info">
                 <InfoLabel label="Token name" value={tokenDetails.dusd.name} />
-                <InfoLabel label="Total Symbol" value={tokenDetails.dusd.symbol} />
-                <InfoLabel label="Total supply" value={formatNumber(tokenDetails.dusd.totalSupply)} />
-                <InfoLabel label="Your balance" value={`${formatNumber(availableRewardTokenBalance)} ${tokenDetails.dusd.symbol}`} isSeperator={false} />
+                <InfoLabel
+                  label="Total Symbol"
+                  value={tokenDetails.dusd.symbol}
+                />
+                <InfoLabel
+                  label="Total supply"
+                  value={formatNumber(tokenDetails.dusd.totalSupply)}
+                />
+                <InfoLabel
+                  label="Your balance"
+                  value={`${formatNumber(availableRewardTokenBalance)} ${
+                    tokenDetails.dusd.symbol
+                  }`}
+                  isSeperator={false}
+                />
               </InfoWrapper>
               <InfoWrapper title="Staking token info">
                 <InfoLabel label="Token name" value={tokenDetails.dtx.name} />
-                <InfoLabel label="Total Symbol" value={tokenDetails.dtx.symbol} />
-                <InfoLabel label="Total supply" value={formatNumber(tokenDetails.dtx.totalSupply)} />
-                <InfoLabel label="Your balance" value={`${formatNumber(availableStakingTokenBalance)} ${tokenDetails.dtx.symbol}`} isSeperator={false} />
+                <InfoLabel
+                  label="Total Symbol"
+                  value={tokenDetails.dtx.symbol}
+                />
+                <InfoLabel
+                  label="Total supply"
+                  value={formatNumber(tokenDetails.dtx.totalSupply)}
+                />
+                <InfoLabel
+                  label="Your balance"
+                  value={`${formatNumber(availableStakingTokenBalance)} ${
+                    tokenDetails.dtx.symbol
+                  }`}
+                  isSeperator={false}
+                />
               </InfoWrapper>
-
-            
-             
-             
-
             </div>
             <div className="w-full h-fit flex col-span-2 justify-center items-center flex-col mx-auto border bg-background shadow-lg rounded-lg px-4 lg:px-0 sticky top-4">
               <div className="border-b w-full rounded-md">
