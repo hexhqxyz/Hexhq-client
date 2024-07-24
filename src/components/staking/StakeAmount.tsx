@@ -191,9 +191,14 @@ const StakeAmount = (props: Props) => {
 
   return (
     <div className="">
-      <Heading variant="h3" className="mb-4">
+      <Heading variant="h3" className="mb-1">
         Stake Amount
       </Heading>
+        <p className="mb-4 text-sm text-muted-foreground">
+          Stake your DTX tokens easily by entering the amount and clicking
+          Approve and Stake. Track your staked amount and gas fees in real-time.
+        </p>
+
       <form onSubmit={onSubmit} className="space-y-2">
         <CryptoInput
           onMaxClick={() => {

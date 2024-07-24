@@ -123,9 +123,13 @@ const WithdrawAmount = (props: Props) => {
 
   return (
     <div className="">
-      <Heading variant="h3" className="mb-4">
+      <Heading variant="h3" className="mb-1">
         Withdraw amount
       </Heading>
+      <p className="mb-4 text-sm text-muted-foreground">
+  Withdraw your staked DTX tokens by entering the amount and clicking Withdraw. Track your staked amount in real-time.
+</p>
+
       <form onSubmit={onSubmit} className="space-y-4">
         <CryptoInput
           onMaxClick={() => {
