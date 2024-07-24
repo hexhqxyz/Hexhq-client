@@ -172,7 +172,7 @@ const Borrow = (props: Props) => {
       console.log("total staked amount:", totalStakedAmount);
       setError("amount", {
         message:
-          "You need to supply tokens and enable them as collateral before you can borrow TUSD from this pool",
+          "You need to stake DTX tokens and enable them as collateral before you can borrow dUSD from this pool",
       });
       return;
     }
