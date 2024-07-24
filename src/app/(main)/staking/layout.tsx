@@ -105,7 +105,7 @@ const Layout = ({ children }: Props) => {
          <InfoLabel isSeperator={false} className="flex justify-between" label="Borrowed amount" value={`${userDetails.borrowedAmount} dUSD`} />
         <InfoLabel isSeperator={false} className="flex justify-between" label="Interest payable" value={`${userDetails.interestPayable} dUSD`} />
         <InfoLabel isSeperator={false} className="flex justify-between" label="Amount you need to repay" value={`${userDetails.repayAmount} dUSD`} />
-        <InfoLabel isSeperator={false} className="flex justify-between" label="Colletral amount" value={`${totalStakedAmount} DTX`} />
+        <InfoLabel isSeperator={false} className="flex justify-between" tooltip="Amount available to use in colletral" label="Colletral amount" value={`${totalStakedAmount} DTX`} />
 
         </div>
       </div>
@@ -119,13 +119,13 @@ const Layout = ({ children }: Props) => {
                 <InfoLabel isSeperator={false} label="Colletral amount" value={`${totalStakedAmount} DTX`} />
               </InfoWrapper> */}
               <InfoWrapper title="Stake info">
-                <InfoLabel label="Total staked" value={`${formatNumber(stakingDetails.totalStaked)} DTX`} />
-                <InfoLabel isSeperator={false} label="Last updated" value={`${formatDistanceToNow(stakingDetails.lastUpdated, {addSuffix: true,includeSeconds: true})}`} />
+                <InfoLabel tooltip="Total amount staked in the pool" label="Total staked" value={`${formatNumber(stakingDetails.totalStaked)} DTX`} />
+                <InfoLabel tooltip="Time when the last stake activity happened on the contract" isSeperator={false} label="Last updated" value={`${formatDistanceToNow(stakingDetails.lastUpdated, {addSuffix: true,includeSeconds: true})}`} />
               </InfoWrapper>
               <InfoWrapper title="Borrow info">
                 <InfoLabel label="Total borrow" value={"Soon"} />
                 <InfoLabel label="Interest rate (APY)" value={`${stakingDetails.interestRate}%`} />
-                <InfoLabel isSeperator={false} label="Collateral factor" value={`${80}%`} />
+                <InfoLabel tooltip="At a time you can borrow upto 80% of the value of your colletral amount" isSeperator={false} label="Collateral factor" value={`${80}%`} />
               </InfoWrapper>
               <InfoWrapper title="dUSD info">
                 <InfoLabel label="Token name" value={tokenDetails.dusd.name} />

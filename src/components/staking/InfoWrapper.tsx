@@ -3,22 +3,29 @@ import { Card, CardTitle } from "../ui/card";
 import { Heading } from "../ui/Typography";
 import { Separator } from "../ui/separator";
 import { cn } from "@/lib/utils";
+import { TooltipWrapper } from "../ui/tooltip";
 
 type InfoLabelProps = {
   label: string;
   value: string;
   isSeperator?: boolean;
   className?: string;
+  tooltip?: string;
 };
 export const InfoLabel = ({
   label,
   value,
   isSeperator = true,
+  tooltip,
   className,
 }: InfoLabelProps) => (
   <>
     <div className={cn("space-y-1", className)}>
-      <p className="text-sm">{label}</p>
+    <div className="flex items-center gap-x-1">
+        <span className="text-sm">{label}</span>
+        {tooltip && <TooltipWrapper>{tooltip}</TooltipWrapper>}
+      </div>
+
       <Heading variant="h5">{value}</Heading>
     </div>
     {isSeperator && (
