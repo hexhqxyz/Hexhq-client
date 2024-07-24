@@ -218,6 +218,11 @@ const StakeAmount = (props: Props) => {
             </Button>
           ))}
         </div>
+        <LabelValueRow
+          tooltip="You can stake 100% tokens that are owned by you"
+          label="Suppliable amount"
+          value={<>{formatNumber(availableStakingTokenBalance)} DTX</>}
+        />
         {debouncedValue && (
           <div className="bg-secondary rounded-lg px-2 py-2 mt-2">
             <LabelValueRow

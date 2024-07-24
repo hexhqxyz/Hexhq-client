@@ -113,6 +113,7 @@ const Repay = (props: Props) => {
       setTotalStakedAmount();
       setTotalApprovedAmount();
       setTotalBorrowedAmount();
+      getTotalRepayAmount();
     } catch (error) {
       toast.dismiss();
       setIsLoading(false);
@@ -189,7 +190,7 @@ const Repay = (props: Props) => {
         <div className="bg-secondary rounded-lg px-2 py-2 mt-2">
           <LabelValueRow
             tooltip="Total amount you need to pay (principle + interest)"
-            label="Total ammount to repay*"
+            label="Total amount to repay*"
             value={<>{formatNumber(totalAmountToRepay)} dUSD</>}
           />
         </div>

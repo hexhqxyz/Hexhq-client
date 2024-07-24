@@ -150,6 +150,11 @@ const WithdrawAmount = (props: Props) => {
             </Button>
           ))}
         </div>
+        <LabelValueRow
+          tooltip="You can withdraw 100% of the staked balance (your balance will be locked if you have used your staked balance as colletral)"
+          label="Withdrawable amount"
+          value={<>{formatNumber(totalStakedAmount)} DTX</>}
+        />
         {debouncedValue && (
           <div className="bg-secondary rounded-lg px-2 py-2 mt-2">
             <LabelValueRow
