@@ -1,9 +1,19 @@
 import { cn } from "@/lib/utils";
-import { BanknoteIcon, CircleDollarSign, CurrencyIcon, GanttChart, HandCoinsIcon, Home, HomeIcon, PlaneTakeoff, PlaneTakeoffIcon, SquareMousePointer, SquareMousePointerIcon } from "lucide-react";
+import { ArrowDownUpIcon, BanknoteIcon, CircleDollarSign, CurrencyIcon, GanttChart, HandCoinsIcon, Home, HomeIcon, PlaneTakeoff, PlaneTakeoffIcon, SquareMousePointer, SquareMousePointerIcon, View, ViewIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
 export const links = [
+  {
+    title: "Faucet",
+    subLinks: [
+      {
+        href: "/faucet",
+        label: "Faucet",
+        icon: <CircleDollarSign className="text-muted-foreground w-5 h-5" />,
+      },
+    ],
+  },
   {
     title: "Staking",
     subLinks: [
@@ -34,13 +44,24 @@ export const links = [
       },
     ],
   },
+ 
   {
-    title: "Faucet",
+    title: "AMM (Swap)",
     subLinks: [
       {
-        href: "/faucet",
-        label: "Faucet",
-        icon: <CircleDollarSign className="text-muted-foreground w-5 h-5" />,
+        href: "/amm/swap",
+        label: "Swap",
+        icon: <ArrowDownUpIcon className="text-muted-foreground w-5 h-5" />,
+      },
+      {
+        href: "/amm/liquidity",
+        label: "Provide liquidity",
+        icon: <HandCoinsIcon className="text-muted-foreground w-5 h-5" />,
+      },
+      {
+        href: "/amm/tokens",
+        label: "Explore",
+        icon: <ViewIcon className="text-muted-foreground w-5 h-5" />,
       },
     ],
   },

@@ -28,14 +28,10 @@ type FormData = {
 };
 
 const StakeAmount = (props: Props) => {
-  const {
-    totalApprovedAmount,
-    setTotalStakedAmount,
-    setTotalApprovedAmount,
-    totalStakedAmount,
-    stakingContract,
-    stakingTokenContract,
-  } = useStakingStore();
+  const { setTotalStakedAmount, totalStakedAmount, stakingContract } =
+    useStakingStore();
+  const stakingTokenContract = useTokenStore().stakingTokenContract;
+
   const { provider } = useWeb3Store();
   const { availableStakingTokenBalance, setAvailableStakingTokenBalance } =
     useTokenStore();
@@ -111,7 +107,6 @@ const StakeAmount = (props: Props) => {
       setDebouncedValue("");
       setAvailableStakingTokenBalance();
       setTotalStakedAmount();
-      setTotalApprovedAmount();
     } catch (error) {
       toast.dismiss();
       setIsLoading(false);
@@ -194,10 +189,10 @@ const StakeAmount = (props: Props) => {
       <Heading variant="h3" className="mb-1">
         Stake Amount
       </Heading>
-        <p className="mb-4 text-sm text-muted-foreground">
-          Stake your DTX tokens easily by entering the amount and clicking
-          Approve and Stake. Track your staked amount and gas fees in real-time.
-        </p>
+      <p className="mb-4 text-sm text-muted-foreground">
+        Stake your DTX tokens easily by entering the amount and clicking Approve
+        and Stake. Track your staked amount and gas fees in real-time.
+      </p>
 
       <form onSubmit={onSubmit} className="space-y-2">
         <CryptoInput

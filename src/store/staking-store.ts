@@ -2,11 +2,11 @@ import { create } from "zustand";
 import { Contract, ethers } from "ethers";
 
 import { useWeb3Store } from "./signer-provider-store";
-import { STAKING_ADDRESS } from "@/lib/constants";
 
 type State = {
   stakingDetails: {
     totalStaked: string;
+    totalBorrowed: string;
     lastUpdated: string;
     interestRate: string;
   };
@@ -17,21 +17,15 @@ type State = {
     interestPayable: string; // how much interest user needs to pay
     maxBorrow: string; // 80%
   };
-  totalApprovedAmount: string;
   totalBorrowedAmount: string;
   totalStakedAmount: string;
   stakingContract: Contract | null;
-  stakingTokenContract: Contract | null;
-  rewardTokenContract: Contract | null;
   totalRewardsEarned: string;
 };
 type Action = {
-  setTotalApprovedAmount: () => void;
   setTotalStakedAmount: () => void;
   setTotalBorrowedAmount: () => void;
   setStakingContract: (contract: Contract) => void;
-  setStakingTokenContract: (contract: Contract) => void;
-  setRewardTokenContract: (contract: Contract) => void;
   setTotalRewardsEarned: (val: string) => void;
   setStakingDetails: () => void;
   setUserDetails: () => void;
@@ -39,7 +33,6 @@ type Action = {
 };
 
 const initialState: State = {
-  totalApprovedAmount: "0",
   totalBorrowedAmount: "0",
   totalStakedAmount: "0",
   totalRewardsEarned: "0",
@@ -47,6 +40,7 @@ const initialState: State = {
     totalStaked: "0",
     lastUpdated: "0",
     interestRate: "0",
+    totalBorrowed: "0",
   },
   userDetails: {
     borrowedAmount: "0",
@@ -56,8 +50,6 @@ const initialState: State = {
     maxBorrow: "0",
   },
   stakingContract: null,
-  rewardTokenContract: null,
-  stakingTokenContract: null,
 };
 
 export const useStakingStore = create<State & Action>((set, get) => ({
@@ -67,7 +59,8 @@ export const useStakingStore = create<State & Action>((set, get) => ({
       const { stakingContract } = get();
       if (!stakingContract) return;
 
-      // const totalStaked = await stakingContract.totalStakedTokens();
+      const totalStaked = await stakingContract.totalStakedTokens();
+      const totalBorrowed = await stakingContract.totalBorrowedAmount();
       // console.log("total staked.........", totalStaked)
       const lastUpdated = await stakingContract.lastUpdateTime();
       const interestRate = await stakingContract.interestRate();
@@ -75,7 +68,8 @@ export const useStakingStore = create<State & Action>((set, get) => ({
 
       set({
         stakingDetails: {
-          totalStaked: ethers.formatUnits("2000000000000000000000", 18),
+          totalStaked: ethers.formatUnits(totalStaked, 18),
+          totalBorrowed: ethers.formatUnits(totalBorrowed, 18),
           lastUpdated: new Date(Number(lastUpdated) * 1000).toISOString(),
           interestRate: interestRate.toString(),
         },
@@ -139,31 +133,9 @@ export const useStakingStore = create<State & Action>((set, get) => ({
     }
   },
 
-  setTotalApprovedAmount: async () => {
-    try {
-      const address = useWeb3Store.getState().address;
-      const { stakingTokenContract } = get(); // Get the current state
-      if (!stakingTokenContract) return;
 
-      const allowance = await stakingTokenContract.allowance(
-        address,
-        STAKING_ADDRESS
-      );
-      const amount = ethers.formatUnits(allowance, 18);
-
-      set({ totalApprovedAmount: amount });
-    } catch (error) {
-      console.log("error occured........", error);
-    }
-  },
   setStakingContract(contract) {
     set({ stakingContract: contract });
-  },
-  setStakingTokenContract(contract) {
-    set({ stakingTokenContract: contract });
-  },
-  setRewardTokenContract(contract) {
-    set({ rewardTokenContract: contract });
   },
   reset: () => {
     set(initialState);

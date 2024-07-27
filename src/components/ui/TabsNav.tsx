@@ -11,9 +11,15 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
     href: string;
     title: string;
   }[];
+  linkClassName?: string;
 }
 
-export function TabsNav({ className, items, ...props }: SidebarNavProps) {
+export function TabsNav({
+  className,
+  linkClassName,
+  items,
+  ...props
+}: SidebarNavProps) {
   const pathname = usePathname();
 
   return (
@@ -30,7 +36,8 @@ export function TabsNav({ className, items, ...props }: SidebarNavProps) {
           href={item.href}
           className={cn(
             pathname === item.href && "bg-background text-foreground shadow-sm",
-            "inline-flex w-full rounded-md items-center justify-center whitespace-nowrap px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            "inline-flex w-full rounded-md items-center justify-center whitespace-nowrap px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+            linkClassName
           )}
         >
           {item.title}

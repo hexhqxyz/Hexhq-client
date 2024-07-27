@@ -31,15 +31,16 @@ type FormData = {
 const Repay = (props: Props) => {
   const {
     setTotalStakedAmount,
-    setTotalApprovedAmount,
     totalBorrowedAmount,
-    rewardTokenContract,
     setTotalBorrowedAmount,
     totalStakedAmount,
     stakingContract,
-    stakingTokenContract,
   } = useStakingStore();
-  const { setAvailableStakingTokenBalance } = useTokenStore();
+  const {
+    stakingTokenContract,
+    rewardTokenContract,
+    setAvailableStakingTokenBalance,
+  } = useTokenStore();
   const address = useWeb3Store().address;
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -111,7 +112,6 @@ const Repay = (props: Props) => {
       reset();
       setAvailableStakingTokenBalance();
       setTotalStakedAmount();
-      setTotalApprovedAmount();
       setTotalBorrowedAmount();
       getTotalRepayAmount();
     } catch (error) {

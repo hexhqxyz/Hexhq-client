@@ -45,20 +45,20 @@ const tabItems = [
 
 const Layout = ({ children }: Props) => {
   const {
-    setTotalApprovedAmount,
-    setTotalStakedAmount,
-    setTotalBorrowedAmount,
     totalStakedAmount,
+    totalBorrowedAmount,
     userDetails,
     stakingDetails,
+    setTotalStakedAmount,
+    setTotalBorrowedAmount,
     setStakingDetails,
     setUserDetails,
   } = useStakingStore();
   const {
-    setAvailableStakingTokenBalance,
     tokenDetails,
     availableStakingTokenBalance,
     availableRewardTokenBalance,
+    setAvailableStakingTokenBalance,
   } = useTokenStore();
   const { address } = useWeb3ModalAccount();
   const { signer } = useWeb3Store();
@@ -66,7 +66,6 @@ const Layout = ({ children }: Props) => {
 
   useEffect(() => {
     if (!address || !signer) return;
-    setTotalApprovedAmount();
     setTotalStakedAmount();
     setAvailableStakingTokenBalance();
     setTotalBorrowedAmount();
@@ -158,7 +157,7 @@ const Layout = ({ children }: Props) => {
                 />
               </InfoWrapper>
               <InfoWrapper title="Borrow info">
-                <InfoLabel label="Total borrow" value={"Soon"} />
+                <InfoLabel label="Total borrow" value={`${totalBorrowedAmount} ${tokenDetails.dusd.symbol}`} />
                 <InfoLabel
                   label="Interest rate (APY)"
                   value={`${stakingDetails.interestRate}%`}

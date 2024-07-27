@@ -17,6 +17,7 @@ import {
 import { defaultError } from "@/lib/errors";
 import { ApproveTokenSchema } from "@/lib/zod-validation";
 import { useStakingStore } from "@/store/staking-store";
+import { useTokenStore } from "@/store/token-store";
 
 type Props = {};
 
@@ -25,7 +26,7 @@ type FormData = {
 };
 
 const ApproveToken = (props: Props) => {
-  const { totalApprovedAmount, setTotalApprovedAmount,stakingTokenContract } = useStakingStore();
+  const { totalApprovedAmount, setTotalApprovedAmount,stakingTokenContract } = useTokenStore();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
