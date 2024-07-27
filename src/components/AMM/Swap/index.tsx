@@ -179,6 +179,15 @@ const Swap = (props: Props) => {
               }
             />
           </div>
+
+          <Button
+            type="submit"
+            loading={isLoading || swapDetailsLoading}
+            size={"lg"}
+            className="w-full mt-2"
+          >
+            Swap
+          </Button>
         </form>
       </div>
     </div>
