@@ -1,8 +1,11 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import ScreenLoading from "@/components/ui/ScreenLoading";
 import useInitializeAmm from "@/hooks/use-initialize-amm";
+import { useAmmStore } from "@/store/amm-store";
+import { useWeb3ModalAccount } from "@web3modal/ethers/react";
+import { useWeb3Store } from "@/store/signer-provider-store";
 
 type Props = {
   children: React.ReactNode;
@@ -16,7 +19,16 @@ const tabItems = [
 ];
 
 const Layout = ({ children }: Props) => {
+  const address = useWeb3ModalAccount().address;
+  const signer = useWeb3Store().signer;
+
   useInitializeAmm();
+  const setTokenPrices = useAmmStore().setCurrentTokenPrices;
+
+  useEffect(() => {
+    if (!address || !signer) return;
+    setTokenPrices();
+  }, [address, signer]);
 
   return (
     <div>

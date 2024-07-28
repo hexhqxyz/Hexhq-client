@@ -11,10 +11,11 @@ import { z } from "zod";
 import { TOKEN_TYPE } from "@/lib/types";
 import { useAmmStore } from "@/store/amm-store";
 import {
+  AMM_CONTRACT_ADDRESS,
   REWARD_TOKEN_ADDRESS,
   STAKING_TOKEN_CONTRACT_ADDRESS,
 } from "@/lib/constants";
-import { ethers } from "ethers";
+import { ethers, TransactionReceipt } from "ethers";
 import { useDebounceCallback } from "usehooks-ts";
 import { useTokenStore } from "@/store/token-store";
 import { useStakingStore } from "@/store/staking-store";
@@ -23,6 +24,7 @@ import { useWeb3Store } from "@/store/signer-provider-store";
 import { decodeAmmError } from "@/lib/decodeError";
 import { formatNumber } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 
 type Props = {};
 
@@ -42,25 +44,107 @@ const Swap = (props: Props) => {
     availableStakingTokenBalance,
     availableRewardTokenBalance,
     tokenDetails,
+    stakingTokenContract,
+    rewardTokenContract,
+    setAvailableStakingTokenBalance,
   } = useTokenStore();
 
-  const ammContract = useAmmStore().ammContract;
+  const { ammContract, priceToken1InToken2,priceToken2InToken1,setCurrentTokenPrices } = useAmmStore();
   const provider = useWeb3Store().provider;
 
-  const { handleSubmit, setValue, register, getValues } = useForm<
-    z.infer<typeof swapSchema>
-  >({
-    resolver: zodResolver(swapSchema),
-    defaultValues: {
-      fromAmount: "",
-      toAmount: "",
-    },
-  });
+  const { handleSubmit, setValue, register, getValues, setError, reset } =
+    useForm<z.infer<typeof swapSchema>>({
+      resolver: zodResolver(swapSchema),
+      defaultValues: {
+        fromAmount: "",
+        toAmount: "",
+      },
+    });
 
   const onSubmit = handleSubmit(async (data) => {
+    if (
+      parseFloat(data.fromAmount) <= 0 ||
+      parseFloat(data.fromAmount) > parseFloat(availableStakingTokenBalance)
+    ) {
+      setError("fromAmount", {
+        message: "Amount must be below or equal to the approved DTX tokens ",
+      });
+      return;
+    }
+    if (!ammContract || !stakingTokenContract || !rewardTokenContract) return;
     setIsLoading(true);
-    console.log("data:", data);
-    setIsLoading(false);
+    try {
+      console.log("data:", data);
+
+      const maxFeePerGas = ethers.parseUnits("100", "gwei"); // 100 gwei
+      const amountToSend = ethers.parseUnits(data.fromAmount, 18).toString();
+      const tokenIn =
+        fromToken === "DTX"
+          ? STAKING_TOKEN_CONTRACT_ADDRESS
+          : REWARD_TOKEN_ADDRESS;
+      const minAmountOut = ethers
+        .parseUnits(calculateMinReceived(data.fromAmount), 18)
+        .toString();
+
+      let approveTx;
+      if (fromToken === "DTX") {
+        approveTx = await stakingTokenContract.approve(
+          AMM_CONTRACT_ADDRESS,
+          amountToSend,
+          {
+            maxFeePerGas: maxFeePerGas,
+          }
+        );
+      } else if (fromToken === "dUSD") {
+        approveTx = await rewardTokenContract.approve(
+          AMM_CONTRACT_ADDRESS,
+          amountToSend,
+          {
+            maxFeePerGas: maxFeePerGas,
+          }
+        );
+      } else {
+        throw new Error("Something went wrong");
+      }
+
+      const approveReceipt: TransactionReceipt = await approveTx?.wait();
+      console.log("approve receipt", approveReceipt);
+
+      const swapTx = await ammContract.swap(
+        tokenIn,
+        amountToSend,
+        minAmountOut,
+        { maxFeePerGas: maxFeePerGas }
+      );
+      const toastId = toast.loading(
+        "Swapping is being done! This may take a few moments"
+      );
+
+      const receipt:TransactionReceipt = await swapTx.wait();
+
+      toast.success("Swap successful! ✅", {
+        description: `Swapped ${data.fromAmount} ${fromToken} for ${swapQuotes.amountOut} ${toToken}`,
+        action: {
+          label: "See Tx",
+          onClick: () => {
+            window.open(`https://sepolia.etherscan.io/tx/${receipt.hash}`);
+          },
+        },
+        id: toastId,
+      });
+      setIsLoading(false);
+      reset();
+      setAvailableStakingTokenBalance();
+      setCurrentTokenPrices();
+    } catch (error) {
+      toast.dismiss();
+      setIsLoading(false);
+      console.log("error:", error);
+      const parsedError = await decodeAmmError(error);
+      toast.error(parsedError.title, {
+        description: parsedError.description || "",
+      });
+    }
   });
   const handleTokenChange = (
     field: "fromToken" | "toToken",
@@ -151,9 +235,9 @@ const Swap = (props: Props) => {
       setSwapQuotes({
         amountOut: "0.0",
         fee: "0.0",
-        newPrice: "0.0"
-      })
-      setEstimatedGasFees("0.0")
+        newPrice: "0.0",
+      });
+      setEstimatedGasFees("0.0");
     }
     debouncedGetSwapDetails(fromOrTo, token, amount);
   };
@@ -161,7 +245,15 @@ const Swap = (props: Props) => {
   const calculateMinReceived = (amount: string) => {
     const slippage = 0.05; // 5% slippage
     const minAmountOut = parseFloat(amount) * (1 - slippage);
-    return minAmountOut;
+    return minAmountOut.toString();
+  };
+
+  const calculatePriceImpact = () => {
+    const currentPrice = fromToken === "DTX" ? priceToken1InToken2 : priceToken2InToken1;
+    const newPrice = parseFloat(swapQuotes.newPrice);
+    const priceImpact =
+      ((newPrice - parseFloat(currentPrice)) / parseFloat(currentPrice)) * 100;
+    return priceImpact.toFixed(2);
   };
 
   return (
@@ -170,12 +262,15 @@ const Swap = (props: Props) => {
         <form onSubmit={onSubmit} className="">
           <div className="mb-8">
             <SwapInput
+              disabled={isLoading}
               defaultValue={fromToken || "DTX"}
               selectValue={fromToken}
               onSelectChange={(value: any) =>
                 handleTokenChange("fromToken", value)
               }
-              balance={`${availableStakingTokenBalance} ${tokenDetails.dtx.symbol}`}
+              balance={`${formatNumber(availableStakingTokenBalance)} ${
+                tokenDetails.dtx.symbol
+              }`}
               {...register("fromAmount")}
               onChange={(e) =>
                 getRequiredTokenAmount("fromAmount", fromToken, e.target.value)
@@ -185,6 +280,7 @@ const Swap = (props: Props) => {
           <div className="flex justify-center !-mt-11 !-mb-11 items-center relative z-50">
             <Button
               onClick={handleSwap}
+              type="button"
               variant={"outline"}
               size={"sm"}
               className="text-muted-foreground rounded-full"
@@ -194,12 +290,15 @@ const Swap = (props: Props) => {
           </div>
           <div className="mt-8">
             <SwapInput
+              disabled={isLoading}
               selectValue={toToken}
               defaultValue={toToken || "dUSD"}
               onSelectChange={(value: any) =>
                 handleTokenChange("toToken", value)
               }
-              balance={`${availableRewardTokenBalance} ${tokenDetails.dusd.symbol}`}
+              balance={`${formatNumber(availableRewardTokenBalance)} ${
+                tokenDetails.dusd.symbol
+              }`}
               {...register("toAmount")}
               onChange={(e) =>
                 getRequiredTokenAmount("toAmount", toToken, e.target.value)
@@ -219,21 +318,31 @@ const Swap = (props: Props) => {
 
         {/* Swap info */}
         <div className="my-2 p-2">
-          <LabelValueRow
-            label="Price impact"
-            value="-03%"
-            tooltip="The impact your trade has on the market price of this pool."
-          />
-          <LabelValueRow
-            label={"Est. received"}
-            value={`~${formatNumber(swapQuotes.amountOut)} ${toToken}`}
-          />
-          <LabelValueRow
-            label="Min. received"
-            value={`${formatNumber(
-              calculateMinReceived(swapQuotes.amountOut)
-            )} ${toToken}`}
-          />
+          {parseFloat(swapQuotes.amountOut) > 0 && (
+            <>
+              <LabelValueRow
+                label="Price impact"
+                value={`${calculatePriceImpact()}%`}
+                tooltip="The impact your trade has on the market price of this pool."
+              />
+              <LabelValueRow
+                label={"Est. received"}
+                value={`~${formatNumber(swapQuotes.amountOut)} ${toToken}`}
+              />
+              <LabelValueRow
+                label="Min. received"
+                value={`${formatNumber(
+                  calculateMinReceived(swapQuotes.amountOut)
+                )} ${toToken}`}
+              />
+              <LabelValueRow
+                label="Fee (1%)"
+                value={`${formatNumber(swapQuotes.fee)} ${fromToken}`}
+                tooltip="This fee is applied on select token pairs. It is paid in the output token and has already been factored into the quote."
+              />
+            </>
+          )}
+
           <LabelValueRow
             label="Max. slippage"
             value={
@@ -241,16 +350,12 @@ const Swap = (props: Props) => {
                 <span>
                   <Badge variant="secondary">Auto</Badge>
                 </span>{" "}
-                0.5%
+                5%
               </>
             }
             tooltip="The maximum price movement before your transaction will revert."
           />
-          <LabelValueRow
-            label="Fee (1%)"
-            value={`${formatNumber(swapQuotes.fee)} ${fromToken}`}
-            tooltip="This fee is applied on select token pairs to ensure the best experience with Uniswap. It is paid in the output token and has already been factored into the quote."
-          />
+
           <LabelValueRow
             label="Network cost"
             value={`$${formatNumber(estimatedGasFees)}`}

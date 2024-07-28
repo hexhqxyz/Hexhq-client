@@ -43,7 +43,7 @@ export const TooltipWrapper = ({ children, trigger }: TooltipWrapperProps) => {
             </>
           )}
         </TooltipTrigger>
-        <TooltipContent>{children}</TooltipContent>
+        <TooltipContent className="md:max-w-md max-w-sm">{children}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
