@@ -58,7 +58,6 @@ const Layout = ({ children }: Props) => {
     tokenDetails,
     availableStakingTokenBalance,
     availableRewardTokenBalance,
-    setAvailableStakingTokenBalance,
   } = useTokenStore();
   const { address } = useWeb3ModalAccount();
   const { signer } = useWeb3Store();
@@ -67,7 +66,6 @@ const Layout = ({ children }: Props) => {
   useEffect(() => {
     if (!address || !signer) return;
     setTotalStakedAmount();
-    setAvailableStakingTokenBalance();
     setTotalBorrowedAmount();
     setStakingDetails();
     setUserDetails();

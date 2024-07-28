@@ -20,7 +20,7 @@ const Page = (props: Props) => {
   ];
 
   return (
-    <div className="w-96 space-y-2">
+    <div className="w-fit space-y-2">
       <div className="mb-4">
         <Heading variant="h2" className="text-5xl">
           Trade

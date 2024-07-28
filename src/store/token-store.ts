@@ -59,6 +59,7 @@ export const useTokenStore = create<State & Action>((set, get) => ({
   ...initialState,
   setAvailableStakingTokenBalance: async () => {
     try {
+      console.log("set available token balance...")
       const { stakingTokenContract, rewardTokenContract } = get();
       const address = useWeb3Store.getState().address;
       if (

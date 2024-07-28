@@ -15,11 +15,11 @@ export const shortenString = (
   return `${val.slice(0, start)}...${val.slice(end)}`;
 };
 
-export function formatNumber(value: string | null | any) {
+export function formatNumber(value: string | null | any, humanify:boolean = true) {
   if (!value) return "0.0";
   const floatValue = parseFloat(value);
 
-  if (floatValue >= 1000) {
+  if (floatValue >= 1000 && humanify) {
     return numeral(floatValue).format('0.[0]a');
   }
   if (floatValue === 0) {

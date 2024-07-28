@@ -16,6 +16,13 @@ import {
 } from "@/lib/constants";
 import { ethers } from "ethers";
 import { useDebounceCallback } from "usehooks-ts";
+import { useTokenStore } from "@/store/token-store";
+import { useStakingStore } from "@/store/staking-store";
+import { LabelValueRow } from "@/components/ui/label";
+import { useWeb3Store } from "@/store/signer-provider-store";
+import { decodeAmmError } from "@/lib/decodeError";
+import { formatNumber } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 type Props = {};
 
@@ -25,12 +32,20 @@ const Swap = (props: Props) => {
     fee: "0",
     newPrice: "0",
   });
+
+  const [estimatedGasFees, setEstimatedGasFees] = useState("0.00");
   const [fromToken, setFromToken] = useState<TOKEN_TYPE>("DTX");
   const [toToken, setToToken] = useState<TOKEN_TYPE>("dUSD");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [swapDetailsLoading, setSwapDetailsLoading] = useState(false);
+  const {
+    availableStakingTokenBalance,
+    availableRewardTokenBalance,
+    tokenDetails,
+  } = useTokenStore();
 
   const ammContract = useAmmStore().ammContract;
+  const provider = useWeb3Store().provider;
 
   const { handleSubmit, setValue, register, getValues } = useForm<
     z.infer<typeof swapSchema>
@@ -90,8 +105,6 @@ const Swap = (props: Props) => {
 
       const parsedAmount = ethers.parseUnits(amount, 18).toString();
 
-      console.log("calling api...");
-
       const details = await ammContract.getSwapDetails(
         tokenAddress,
         parsedAmount
@@ -107,9 +120,12 @@ const Swap = (props: Props) => {
       });
       setValue(
         fromOrTo === "fromAmount" ? "toAmount" : "fromAmount",
-        amountOut
+        formatNumber(amountOut, false)
       );
-    } catch (error) {}
+      setEstimatedGasFees("0.24")
+    } catch (error) {
+      console.log("error in swap details..", error);
+    }
   };
 
   const debouncedGetSwapDetails = useDebounceCallback(
@@ -137,6 +153,13 @@ const Swap = (props: Props) => {
     }
     debouncedGetSwapDetails(fromOrTo, token, amount);
   };
+
+  const calculateMinReceived = (amount: string) => {
+    const slippage = 0.05; // 5% slippage
+    const minAmountOut = (parseFloat(amount) * (1 - slippage));
+    return minAmountOut;
+  };
+
   return (
     <div>
       <div className="">
@@ -148,7 +171,7 @@ const Swap = (props: Props) => {
               onSelectChange={(value: any) =>
                 handleTokenChange("fromToken", value)
               }
-              balance="1000"
+              balance={`${availableStakingTokenBalance} ${tokenDetails.dtx.symbol}`}
               {...register("fromAmount")}
               onChange={(e) =>
                 getRequiredTokenAmount("fromAmount", fromToken, e.target.value)
@@ -172,7 +195,7 @@ const Swap = (props: Props) => {
               onSelectChange={(value: any) =>
                 handleTokenChange("toToken", value)
               }
-              balance="1000"
+              balance={`${availableRewardTokenBalance} ${tokenDetails.dusd.symbol}`}
               {...register("toAmount")}
               onChange={(e) =>
                 getRequiredTokenAmount("toAmount", toToken, e.target.value)
@@ -189,6 +212,35 @@ const Swap = (props: Props) => {
             Swap
           </Button>
         </form>
+
+        {/* Swap info */}
+        <div className="my-2 p-2">
+          <LabelValueRow
+            label="Price impact"
+            value="-03%"
+            tooltip="The impact your trade has on the market price of this pool."
+          />
+          <LabelValueRow
+            label={"Est. received"}
+            value={`~${formatNumber(swapQuotes.amountOut)} ${toToken}`}
+          />
+          <LabelValueRow label="Min. received" value={`${formatNumber(calculateMinReceived(swapQuotes.amountOut))} ${toToken}`} />
+          <LabelValueRow
+            label="Max. slippage"
+            value={<><span><Badge variant="secondary">Auto</Badge></span> 0.5%</>}
+            tooltip="The maximum price movement before your transaction will revert."
+          />
+          <LabelValueRow
+            label="Fee (1%)"
+            value={`${formatNumber(swapQuotes.fee)} ${fromToken}`}
+            tooltip="This fee is applied on select token pairs to ensure the best experience with Uniswap. It is paid in the output token and has already been factored into the quote."
+          />
+          <LabelValueRow
+            label="Network cost"
+            value={`$${formatNumber(estimatedGasFees)}`}
+            tooltip="The maximum price movement before your transaction will revert."
+          />
+        </div>
       </div>
     </div>
   );
