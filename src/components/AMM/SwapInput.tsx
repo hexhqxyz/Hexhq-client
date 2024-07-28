@@ -15,6 +15,7 @@ import {
 import { useTokenStore } from "@/store/token-store";
 import { WalletIcon } from "lucide-react";
 import { TOKEN_TYPE } from "@/lib/types";
+import { FieldError } from "react-hook-form";
 
 export interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   defaultValue?: TOKEN_TYPE;
@@ -24,6 +25,7 @@ export interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   amount?: string;
   onAmountChange?: (val: string) => void;
   selectValue: TOKEN_TYPE;
+  error?: FieldError | undefined;
 }
 
 const SwapInput = React.forwardRef<HTMLInputElement, Props>(
@@ -34,6 +36,7 @@ const SwapInput = React.forwardRef<HTMLInputElement, Props>(
       balance,
       onSelectChange,
       amount,
+      error,
       onAmountChange,
       selectValue,
       ...props
@@ -95,6 +98,9 @@ const SwapInput = React.forwardRef<HTMLInputElement, Props>(
               </Select>
             </div>
           </div>
+          {error && (
+            <p className="text-red-500 text-sm -mt-2 pl-4">{error.message}</p>
+          )}
 
           <div className="flex justify-between items-center">
             <div></div>

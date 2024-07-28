@@ -7,16 +7,22 @@ import { Heading } from "@/components/ui/Typography";
 import { formatNumber, formatNumberSmall } from "@/lib/utils";
 import { useAmmStore } from "@/store/amm-store";
 import { useTokenStore } from "@/store/token-store";
-import { SettingsIcon, TrendingUp } from "lucide-react";
+import { GitCommitVertical, SettingsIcon, TrendingUp } from "lucide-react";
 import React, { useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import InfoCard from "@/components/ui/InfoCard";
+import { Badge } from "@/components/ui/badge";
 
 type Props = {};
 
 const Page = (props: Props) => {
   const [toggle, setToggle] = useState(false);
   const tokenDetails = useTokenStore().tokenDetails;
-  const { priceToken1InToken2, priceToken2InToken1 } =
-    useAmmStore();
+  const { priceToken1InToken2, priceToken2InToken1 } = useAmmStore();
   const tabItems = [
     {
       title: "Swap",
@@ -51,9 +57,36 @@ const Page = (props: Props) => {
           <TabsNav linkClassName="bg-secondary shadow-none" items={tabItems} />
         </div>
         <div>
-          <Button variant={"ghost"} size={"icon"}>
-            <SettingsIcon className="text-muted-foreground" />
-          </Button>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant={"ghost"} size={"icon"}>
+                <SettingsIcon className="text-muted-foreground" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80">
+              <div className="grid gap-4">
+                <div className="space-y-2">
+                  <h4 className="font-medium leading-none">Settings</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Adjust to your personal preferences.
+                  </p>
+                </div>
+                <div className="grid gap-2">
+                  <InfoCard
+                    title="Slippage"
+                    icon={<GitCommitVertical />}
+                    value={
+                      <p className="flex items-center gap-x-2">
+                        5%
+                        <Badge variant="secondary">Auto</Badge>
+                      </p>
+                    }
+                    subValue="of the amount"
+                  />
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
       <Swap />

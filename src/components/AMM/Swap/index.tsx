@@ -49,17 +49,30 @@ const Swap = (props: Props) => {
     setAvailableStakingTokenBalance,
   } = useTokenStore();
 
-  const { ammContract, priceToken1InToken2,priceToken2InToken1,setCurrentTokenPrices } = useAmmStore();
+  const {
+    ammContract,
+    priceToken1InToken2,
+    priceToken2InToken1,
+    setCurrentTokenPrices,
+  } = useAmmStore();
   const provider = useWeb3Store().provider;
 
-  const { handleSubmit, setValue, register, getValues, setError, reset } =
-    useForm<z.infer<typeof swapSchema>>({
-      resolver: zodResolver(swapSchema),
-      defaultValues: {
-        fromAmount: "",
-        toAmount: "",
-      },
-    });
+  const {
+    handleSubmit,
+    setValue,
+    register,
+    getValues,
+    setError,
+    reset,
+    clearErrors,
+    formState: { errors },
+  } = useForm<z.infer<typeof swapSchema>>({
+    resolver: zodResolver(swapSchema),
+    defaultValues: {
+      fromAmount: "",
+      toAmount: "",
+    },
+  });
 
   const onSubmit = handleSubmit(async (data) => {
     if (
@@ -120,7 +133,7 @@ const Swap = (props: Props) => {
         "Swapping is being done! This may take a few moments"
       );
 
-      const receipt:TransactionReceipt = await swapTx.wait();
+      const receipt: TransactionReceipt = await swapTx.wait();
 
       toast.success("Swap successful! ✅", {
         description: `Swapped ${data.fromAmount} ${fromToken} for ${swapQuotes.amountOut} ${toToken}`,
@@ -239,6 +252,7 @@ const Swap = (props: Props) => {
       });
       setEstimatedGasFees("0.0");
     }
+    clearErrors();
     debouncedGetSwapDetails(fromOrTo, token, amount);
   };
 
@@ -249,7 +263,8 @@ const Swap = (props: Props) => {
   };
 
   const calculatePriceImpact = () => {
-    const currentPrice = fromToken === "DTX" ? priceToken1InToken2 : priceToken2InToken1;
+    const currentPrice =
+      fromToken === "DTX" ? priceToken1InToken2 : priceToken2InToken1;
     const newPrice = parseFloat(swapQuotes.newPrice);
     const priceImpact =
       ((newPrice - parseFloat(currentPrice)) / parseFloat(currentPrice)) * 100;
@@ -265,6 +280,7 @@ const Swap = (props: Props) => {
               disabled={isLoading}
               defaultValue={fromToken || "DTX"}
               selectValue={fromToken}
+              error={errors.fromAmount}
               onSelectChange={(value: any) =>
                 handleTokenChange("fromToken", value)
               }
@@ -293,6 +309,7 @@ const Swap = (props: Props) => {
               disabled={isLoading}
               selectValue={toToken}
               defaultValue={toToken || "dUSD"}
+              error={errors.toAmount}
               onSelectChange={(value: any) =>
                 handleTokenChange("toToken", value)
               }
