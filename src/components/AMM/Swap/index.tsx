@@ -28,9 +28,9 @@ type Props = {};
 
 const Swap = (props: Props) => {
   const [swapQuotes, setSwapQuotes] = useState({
-    amountOut: "0",
-    fee: "0",
-    newPrice: "0",
+    amountOut: "0.0",
+    fee: "0.0",
+    newPrice: "0.0",
   });
 
   const [estimatedGasFees, setEstimatedGasFees] = useState("0.00");
@@ -75,14 +75,12 @@ const Swap = (props: Props) => {
     }
   };
 
-  const handleSwap = () => {
+  const handleSwap = async () => {
     const fromAmount = getValues().fromAmount;
     const toAmount = getValues().toAmount;
     setFromToken(toToken);
     setToToken(fromToken);
 
-    console.log("from amount:", fromAmount);
-    console.log("to amount:", toAmount);
     setValue("fromAmount", toAmount);
     setValue("toAmount", fromAmount);
   };
@@ -122,7 +120,7 @@ const Swap = (props: Props) => {
         fromOrTo === "fromAmount" ? "toAmount" : "fromAmount",
         formatNumber(amountOut, false)
       );
-      setEstimatedGasFees("0.24")
+      setEstimatedGasFees("0.24");
     } catch (error) {
       console.log("error in swap details..", error);
     }
@@ -150,13 +148,19 @@ const Swap = (props: Props) => {
       } else {
         setValue("fromAmount", "");
       }
+      setSwapQuotes({
+        amountOut: "0.0",
+        fee: "0.0",
+        newPrice: "0.0"
+      })
+      setEstimatedGasFees("0.0")
     }
     debouncedGetSwapDetails(fromOrTo, token, amount);
   };
 
   const calculateMinReceived = (amount: string) => {
     const slippage = 0.05; // 5% slippage
-    const minAmountOut = (parseFloat(amount) * (1 - slippage));
+    const minAmountOut = parseFloat(amount) * (1 - slippage);
     return minAmountOut;
   };
 
@@ -224,10 +228,22 @@ const Swap = (props: Props) => {
             label={"Est. received"}
             value={`~${formatNumber(swapQuotes.amountOut)} ${toToken}`}
           />
-          <LabelValueRow label="Min. received" value={`${formatNumber(calculateMinReceived(swapQuotes.amountOut))} ${toToken}`} />
+          <LabelValueRow
+            label="Min. received"
+            value={`${formatNumber(
+              calculateMinReceived(swapQuotes.amountOut)
+            )} ${toToken}`}
+          />
           <LabelValueRow
             label="Max. slippage"
-            value={<><span><Badge variant="secondary">Auto</Badge></span> 0.5%</>}
+            value={
+              <>
+                <span>
+                  <Badge variant="secondary">Auto</Badge>
+                </span>{" "}
+                0.5%
+              </>
+            }
             tooltip="The maximum price movement before your transaction will revert."
           />
           <LabelValueRow
