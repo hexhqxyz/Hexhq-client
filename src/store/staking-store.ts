@@ -58,12 +58,13 @@ export const useStakingStore = create<State & Action>((set, get) => ({
     try {
       const { stakingContract } = get();
       if (!stakingContract) return;
-
+      
       const totalStaked = await stakingContract.totalStakedTokens();
       const totalBorrowed = await stakingContract.totalBorrowedAmount();
       // console.log("total staked.........", totalStaked)
       const lastUpdated = await stakingContract.lastUpdateTime();
       const interestRate = await stakingContract.interestRate();
+      console.log("here...", )
       console.log("interest rate.............", interestRate);
 
       set({
