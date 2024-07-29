@@ -114,11 +114,11 @@ const MenuLink = ({
 const MySidebar = (props: Props) => {
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-center h-14 border-b">
+      {/* <div className="flex items-center justify-center h-14 border-b pb-4">
         <div>Tokens - DTX and dUSD</div>
-      </div>
+      </div> */}
       <div className="overflow-y-auto overflow-x-hidden flex-grow">
-        <ul className="flex flex-col py-4 space-y-1">
+        <ul className="flex flex-col space-y-1">
           {links.map((item, index) => (
             <>
               <li className="px-5">
