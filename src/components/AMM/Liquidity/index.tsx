@@ -135,9 +135,39 @@ const ProvideLiquidity = (props: Props) => {
   };
 
   const onSubmit = handleSubmit(async (data) => {
+    if (parseFloat(data.fromAmount) <= 0) {
+      setError("fromAmount", {
+        message: "Amount must be greater then zero ",
+      });
+      return;
+    }
+
+    if (fromToken === "DTX") {
+      if (
+        parseFloat(data.fromAmount) > parseFloat(availableStakingTokenBalance)
+      ) {
+        setError("fromAmount", {
+          message: "Amount cannot be greater then the available DTX tokens",
+        });
+        return;
+      }
+    } else if (fromToken === "dUSD") {
+      if (
+        parseFloat(data.fromAmount) > parseFloat(availableRewardTokenBalance)
+      ) {
+        setError("fromAmount", {
+          message: "Amount cannot be greater then the available dUSD tokens",
+        });
+
+        return;
+      }
+    }
+    
+    if (!ammContract || !stakingTokenContract || !rewardTokenContract) return;
+
     try {
       setIsLoading(true);
-      console.log("data:", data)
+      console.log("data:", data);
     } catch (error) {}
 
     setIsLoading(false);
@@ -180,6 +210,7 @@ const ProvideLiquidity = (props: Props) => {
               defaultValue={fromToken || "DTX"}
               selectValue={fromToken}
               disabled={isLoading}
+              error={errors.fromAmount}
               isSelectDisabled={true}
               onSelectChange={(value: any) =>
                 handleTokenChange("fromToken", value)
@@ -207,6 +238,7 @@ const ProvideLiquidity = (props: Props) => {
               selectValue={toToken}
               isSelectDisabled={true}
               disabled={isLoading}
+              error={errors.toAmount}
               onSelectChange={(value: any) =>
                 handleTokenChange("toToken", value)
               }
