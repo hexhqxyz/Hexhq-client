@@ -5,19 +5,28 @@ import {
 } from "@web3modal/ethers/react";
 import { BrowserProvider } from "ethers";
 import { useWeb3Store } from "@/store/signer-provider-store";
+import useInitializeTokens from "./use-initialize-tokens";
 
 const useInitializeWeb3 = () => {
   const { walletProvider } = useWeb3ModalProvider();
-  const { isConnected,chainId,status,address } = useWeb3ModalAccount();
-  const { setProvider, setSigner, setIsConnected,reset,setAddress } =
+  const { isConnected, chainId, status, address } = useWeb3ModalAccount();
+  const { setProvider, setSigner, setIsConnected, reset, setAddress } =
     useWeb3Store();
+  useInitializeTokens();
 
   useEffect(() => {
     const initialize = async () => {
-      if(status === "disconnected") {
+      if (status === "disconnected") {
         reset();
       }
-      if (!walletProvider || !address || !isConnected || !chainId ||  ![1337,1,11155111].includes(chainId)) return;
+      if (
+        !walletProvider ||
+        !address ||
+        !isConnected ||
+        !chainId ||
+        ![1337, 1, 11155111].includes(chainId)
+      )
+        return;
 
       const ethersProvider = new BrowserProvider(walletProvider);
       setProvider(ethersProvider);
@@ -30,7 +39,7 @@ const useInitializeWeb3 = () => {
     };
 
     initialize();
-  }, [walletProvider, setProvider, setSigner, setIsConnected,status]);
+  }, [walletProvider, setProvider, setSigner, setIsConnected, status]);
 };
 
 export default useInitializeWeb3;

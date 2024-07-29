@@ -3,28 +3,26 @@ import { Contract } from "ethers";
 
 import {
   REWARD_TOKEN_ADDRESS,
-STAKING_ADDRESS,
   STAKING_TOKEN_CONTRACT_ADDRESS,
 } from "@/lib/constants";
 import STAKING_TOKEN_ABI from "@/lib/abis/StakingToken.json";
-import STAKING_ABI from "@/lib/abis/Staking.json";
 import REWARD_ABI from "@/lib/abis/RewardToken.json";
-import { useStakingStore } from "@/store/staking-store";
 import { useWeb3Store } from "@/store/signer-provider-store";
+import { useTokenStore } from "@/store/token-store";
 
-const useInitializeStaking = () => {
+const useInitializeTokens = () => {
   const { signer } = useWeb3Store();
-  const { setStakingContract } = useStakingStore();
+  const {
+    setStakingTokenContract,
+    setRewardTokenContract,
+    setAvailableStakingTokenBalance,
+  } = useTokenStore();
 
   useEffect(() => {
     const initialize = async () => {
+      console.log("initializing...");
       if (!signer) return;
-      
-      const stakingContract = new Contract(
-        STAKING_ADDRESS,
-        STAKING_ABI.abi,
-        signer
-      );
+      console.log("initializing after signer...");
 
       const stakingTokenContract = new Contract(
         STAKING_TOKEN_CONTRACT_ADDRESS,
@@ -37,12 +35,15 @@ const useInitializeStaking = () => {
         REWARD_ABI.abi,
         signer
       );
+      console.log("stakingTokenContract", stakingTokenContract);
 
-      setStakingContract(stakingContract);
+      setStakingTokenContract(stakingTokenContract);
+      setRewardTokenContract(rewardTokenContract);
+      setAvailableStakingTokenBalance();
     };
 
     initialize();
   }, [signer]);
 };
 
-export default useInitializeStaking;
+export default useInitializeTokens;

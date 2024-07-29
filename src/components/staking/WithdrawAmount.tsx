@@ -100,7 +100,7 @@ const WithdrawAmount = (props: Props) => {
 
   const handlePricePercentClick = (percent: number) => {
     const amount = (Number(totalStakedAmount) * percent) / 100;
-    setValue("amount", parseFloat(amount.toString()).toFixed(2));
+    setValue("amount", amount.toString());
   };
 
   const amount = watch("amount");

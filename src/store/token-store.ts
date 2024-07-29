@@ -1,8 +1,9 @@
 import { create } from "zustand";
-import { ethers } from "ethers";
+import { Contract, ethers } from "ethers";
 
 import { useWeb3Store } from "./signer-provider-store";
 import { useStakingStore } from "./staking-store";
+import { STAKING_ADDRESS } from "@/lib/constants";
 
 type State = {
   tokenDetails: {
@@ -19,10 +20,17 @@ type State = {
   };
   availableStakingTokenBalance: string;
   availableRewardTokenBalance: string;
+  totalApprovedAmount: string;
+
+  stakingTokenContract: Contract | null;
+  rewardTokenContract: Contract | null;
 };
 type Action = {
   setAvailableStakingTokenBalance: () => void;
-  // setTokenDetails: () => void;
+  setStakingTokenContract: (contract: Contract) => void;
+  setRewardTokenContract: (contract: Contract) => void;
+  setTotalApprovedAmount: () => void;
+
   reset: () => void;
 };
 
@@ -41,14 +49,18 @@ const initialState: State = {
   },
   availableStakingTokenBalance: "0",
   availableRewardTokenBalance: "0",
+  totalApprovedAmount: "0",
+
+  rewardTokenContract: null,
+  stakingTokenContract: null,
 };
 
 export const useTokenStore = create<State & Action>((set, get) => ({
   ...initialState,
   setAvailableStakingTokenBalance: async () => {
     try {
-      const { stakingTokenContract, rewardTokenContract } =
-        useStakingStore.getState();
+      console.log("set available token balance...")
+      const { stakingTokenContract, rewardTokenContract } = get();
       const address = useWeb3Store.getState().address;
       if (
         !stakingTokenContract ||
@@ -72,6 +84,31 @@ export const useTokenStore = create<State & Action>((set, get) => ({
       console.log("error in the available token balance:", error);
     }
   },
+  setStakingTokenContract(contract) {
+    set({ stakingTokenContract: contract });
+  },
+  setRewardTokenContract(contract) {
+    set({ rewardTokenContract: contract });
+  },
+
+  setTotalApprovedAmount: async () => {
+    try {
+      const address = useWeb3Store.getState().address;
+      const { stakingTokenContract } = get(); // Get the current state
+      if (!stakingTokenContract) return;
+
+      const allowance = await stakingTokenContract.allowance(
+        address,
+        STAKING_ADDRESS
+      );
+      const amount = ethers.formatUnits(allowance, 18);
+
+      set({ totalApprovedAmount: amount });
+    } catch (error) {
+      console.log("error occured........", error);
+    }
+  },
+
   // setTokenDetails: async () => {
   //   try {
   //     const { stakingTokenContract, rewardTokenContract } =

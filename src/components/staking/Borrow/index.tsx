@@ -30,16 +30,13 @@ type FormData = {
 
 const Borrow = (props: Props) => {
   const {
-    totalApprovedAmount,
     setTotalStakedAmount,
-    setTotalApprovedAmount,
     totalBorrowedAmount,
     setTotalBorrowedAmount,
     totalStakedAmount,
     stakingContract,
-    stakingTokenContract,
   } = useStakingStore();
-  const { availableStakingTokenBalance, setAvailableStakingTokenBalance } =
+  const { availableStakingTokenBalance, setAvailableStakingTokenBalance,stakingTokenContract } =
     useTokenStore();
   const address = useWeb3Store().address;
 
@@ -109,7 +106,6 @@ const Borrow = (props: Props) => {
       setDebouncedValue("");
       setAvailableStakingTokenBalance();
       setTotalStakedAmount();
-      setTotalApprovedAmount();
       setTotalBorrowedAmount();
       getBorrowingLimit();
     } catch (error) {

@@ -45,17 +45,16 @@ const tabItems = [
 
 const Layout = ({ children }: Props) => {
   const {
-    setTotalApprovedAmount,
-    setTotalStakedAmount,
-    setTotalBorrowedAmount,
     totalStakedAmount,
+    totalBorrowedAmount,
     userDetails,
     stakingDetails,
+    setTotalStakedAmount,
+    setTotalBorrowedAmount,
     setStakingDetails,
     setUserDetails,
   } = useStakingStore();
   const {
-    setAvailableStakingTokenBalance,
     tokenDetails,
     availableStakingTokenBalance,
     availableRewardTokenBalance,
@@ -66,16 +65,11 @@ const Layout = ({ children }: Props) => {
 
   useEffect(() => {
     if (!address || !signer) return;
-    setTotalApprovedAmount();
     setTotalStakedAmount();
-    setAvailableStakingTokenBalance();
     setTotalBorrowedAmount();
     setStakingDetails();
     setUserDetails();
   }, [address, signer]);
-
-  console.log("user details:", userDetails);
-  console.log("staking details:", stakingDetails);
 
   return (
     <div>
@@ -89,7 +83,7 @@ const Layout = ({ children }: Props) => {
                 <DollarSignIcon className="h-4 w-4 text-muted-foreground" />
               }
               title="Your Staked Balance"
-              value={`${totalStakedAmount} DTX`}
+              value={`${formatNumber(totalStakedAmount)} DTX`}
               subValue="As of now"
             />
 
@@ -110,32 +104,32 @@ const Layout = ({ children }: Props) => {
                       isSeperator={false}
                       className="flex justify-between"
                       label="How much you can borrow?"
-                      value={`${userDetails.borrowLimit} dUSD`}
+                      value={`${formatNumber(userDetails.borrowLimit)} dUSD`}
                     />
                     <InfoLabel
                       isSeperator={false}
                       className="flex justify-between"
                       label="Borrowed amount"
-                      value={`${userDetails.borrowedAmount} dUSD`}
+                      value={`${formatNumber(userDetails.borrowedAmount)} dUSD`}
                     />
                     <InfoLabel
                       isSeperator={false}
                       className="flex justify-between"
                       label="Interest payable"
-                      value={`${userDetails.interestPayable} dUSD`}
+                      value={`${formatNumber(userDetails.interestPayable)} dUSD`}
                     />
                     <InfoLabel
                       isSeperator={false}
                       className="flex justify-between"
                       label="Amount you need to repay"
-                      value={`${userDetails.repayAmount} dUSD`}
+                      value={`${formatNumber(userDetails.repayAmount)} dUSD`}
                     />
                     <InfoLabel
                       isSeperator={false}
                       className="flex justify-between"
                       tooltip="Amount available to use in colletral"
                       label="Colletral amount"
-                      value={`${totalStakedAmount} DTX`}
+                      value={`${formatNumber(totalStakedAmount)} DTX`}
                     />
                   </div>
                 </div>
@@ -145,7 +139,7 @@ const Layout = ({ children }: Props) => {
                 <InfoLabel
                   tooltip="Total amount staked in the pool"
                   label="Total staked"
-                  value={`${formatNumber(stakingDetails.totalStaked)} DTX`}
+                  value={`${formatNumber(formatNumber(stakingDetails.totalStaked))} DTX`}
                 />
                 <InfoLabel
                   tooltip="Time when the last stake activity happened on the contract"
@@ -158,7 +152,7 @@ const Layout = ({ children }: Props) => {
                 />
               </InfoWrapper>
               <InfoWrapper title="Borrow info">
-                <InfoLabel label="Total borrow" value={"Soon"} />
+                <InfoLabel label="Total borrow" value={`${formatNumber(totalBorrowedAmount)} ${tokenDetails.dusd.symbol}`} />
                 <InfoLabel
                   label="Interest rate (APY)"
                   value={`${stakingDetails.interestRate}%`}
