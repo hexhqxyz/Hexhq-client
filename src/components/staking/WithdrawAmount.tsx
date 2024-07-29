@@ -183,7 +183,7 @@ const WithdrawAmount = (props: Props) => {
           loading={isLoading}
           className="w-full"
         >
-          Withdraw
+          Withdraw 🙏
         </Button>
       </form>
     </div>

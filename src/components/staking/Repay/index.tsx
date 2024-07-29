@@ -202,7 +202,7 @@ const Repay = (props: Props) => {
           loading={isLoading}
           className="w-full !mt-4"
         >
-          Repay {formatNumber(totalAmountToRepay)} dUSD
+          Repay {formatNumber(totalAmountToRepay)} dUSD 🎯
         </Button>
       </form>
     </div>

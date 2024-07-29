@@ -261,7 +261,7 @@ const Borrow = (props: Props) => {
           loading={isLoading}
           className="w-full !mt-4"
         >
-          Borrow dUSD
+          Borrow dUSD 🚀
         </Button>
       </form>
     </div>

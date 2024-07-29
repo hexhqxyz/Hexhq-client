@@ -94,7 +94,7 @@ export default function ClaimReward() {
           </div>
           <DrawerFooter>
             <Button loading={loading} onClick={handleRewardClaim}>
-              {loading ? "Claiming..." : "Claim reward now"}
+              {loading ? "Claiming..." : "Claim reward now ❣️"}
             </Button>
             <DrawerClose asChild>
               <Button variant="outline">Cancel</Button>

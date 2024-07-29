@@ -347,7 +347,7 @@ const Swap = (props: Props) => {
             size={"lg"}
             className="w-full mt-2"
           >
-            Swap
+            Swap 🚀
           </Button>
         </form>
 

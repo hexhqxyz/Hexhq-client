@@ -253,7 +253,7 @@ const StakeAmount = (props: Props) => {
           loading={isLoading}
           className="w-full"
         >
-          Approve and Stake
+          Approve and Stake 🚀
         </Button>
       </form>
     </div>

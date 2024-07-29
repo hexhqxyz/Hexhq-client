@@ -16,11 +16,14 @@ import { useTokenStore } from "@/store/token-store";
 import { useWeb3Store } from "@/store/signer-provider-store";
 import { useAmmStore } from "@/store/amm-store";
 import {
+  AMM_CONTRACT_ADDRESS,
   REWARD_TOKEN_ADDRESS,
   STAKING_TOKEN_CONTRACT_ADDRESS,
 } from "@/lib/constants";
-import { ethers } from "ethers";
+import { ethers, TransactionReceipt } from "ethers";
 import { formatNumber } from "@/lib/utils";
+import { toast } from "sonner";
+import { decodeAmmError } from "@/lib/decodeError";
 
 type Props = {};
 
@@ -162,13 +165,120 @@ const ProvideLiquidity = (props: Props) => {
         return;
       }
     }
-    
+
     if (!ammContract || !stakingTokenContract || !rewardTokenContract) return;
 
     try {
-      setIsLoading(true);
       console.log("data:", data);
-    } catch (error) {}
+      setIsLoading(true);
+      const maxFeePerGas = ethers.parseUnits("100", "gwei"); // 100 gwei
+      const amount1ToSend = ethers.parseUnits(data.fromAmount, 18).toString();
+      //   const amount2ToSend = ethers.parseUnits(data.toAmount, 18).toString();
+      const tokenIn =
+        fromToken === "DTX"
+          ? STAKING_TOKEN_CONTRACT_ADDRESS
+          : REWARD_TOKEN_ADDRESS;
+
+      let approveTx;
+      const toastId = toast.loading("Please approve when prompted");
+
+      if (fromToken === "DTX") {
+        approveTx = await stakingTokenContract.approve(
+          AMM_CONTRACT_ADDRESS,
+          amount1ToSend,
+          {
+            maxFeePerGas: maxFeePerGas,
+          }
+        );
+      } else if (fromToken === "dUSD") {
+        approveTx = await rewardTokenContract.approve(
+          AMM_CONTRACT_ADDRESS,
+          amount1ToSend,
+          {
+            maxFeePerGas: maxFeePerGas,
+          }
+        );
+      } else {
+        throw new Error("Something went wrong");
+      }
+
+      const approveReceipt: TransactionReceipt = await approveTx?.wait();
+      console.log("approve receipt", approveReceipt);
+
+      if (toToken === "DTX") {
+        approveTx = await stakingTokenContract.approve(
+          AMM_CONTRACT_ADDRESS,
+          amount1ToSend,
+          {
+            maxFeePerGas: maxFeePerGas,
+          }
+        );
+      } else if (toToken === "dUSD") {
+        approveTx = await rewardTokenContract.approve(
+          AMM_CONTRACT_ADDRESS,
+          amount1ToSend,
+          {
+            maxFeePerGas: maxFeePerGas,
+          }
+        );
+      } else {
+        throw new Error("Something went wrong");
+      }
+
+      await approveTx?.wait();
+
+      toast.loading(
+        "Please confirm to provide liquidity to contract on your wallet",
+        {
+          id: toastId,
+        }
+      );
+
+      const liquidityTx = await ammContract
+        .provideLiquidity(tokenIn, amount1ToSend, {
+          maxFeePerGas: maxFeePerGas,
+        })
+        .then((data) => data)
+        .catch(async (err) => {
+          console.log("err:", err);
+          const parsedError = await decodeAmmError(err);
+          console.log("decodedErr in catch:", parsedError);
+          toast.error(parsedError.title, {
+            description: parsedError.description || "",
+          });
+          toast.dismiss(toastId);
+          throw new Error("");
+        });
+
+      toast.loading(
+        "Providing liquidity to the poool is being done! This may take a few moments",
+        {
+          id: toastId,
+        }
+      );
+
+      const receipt: TransactionReceipt = await liquidityTx.wait();
+
+      toast.success("Liquidity provided to the pool successful! ✅", {
+        description: `Provided liquidity for ${data.fromAmount} ${fromToken} and ${data.toAmount} ${toToken}`,
+        action: {
+          label: "See Tx",
+          onClick: () => {
+            window.open(`https://sepolia.etherscan.io/tx/${receipt.hash}`);
+          },
+        },
+        id: toastId,
+      });
+      setIsLoading(false);
+      console.log("data:", data);
+    } catch (error) {
+      console.log("error catch ............................", error);
+      //   const parsedError = await decodeAmmError(error);
+      //   console.log("decodedErr in catch:", parsedError);
+      //   toast.error(parsedError.title, {
+      //     description: parsedError.description || "",
+      //   });
+    }
 
     setIsLoading(false);
   });
@@ -258,7 +368,7 @@ const ProvideLiquidity = (props: Props) => {
           size={"lg"}
           className="w-full mt-2"
         >
-          Provide liquidity
+          Provide liquidity 🚀
         </Button>
       </form>
     </div>
