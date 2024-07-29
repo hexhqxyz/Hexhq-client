@@ -27,18 +27,30 @@ Label.displayName = LabelPrimitive.Root.displayName;
 
 type LabelValueRow = {
   label: React.ReactNode;
-  value: React.ReactNode;
+  value?: React.ReactNode;
   tooltip?: React.ReactNode;
   className?: string;
 };
-export const LabelValueRow = ({ label, value, tooltip,className }: LabelValueRow) => {
+export const LabelValueRow = ({
+  label,
+  value,
+  tooltip,
+  className,
+}: LabelValueRow) => {
   return (
-    <div className={cn("flex justify-between items-center text-muted-foreground", className)}>
+    <div
+      className={cn(
+        "flex justify-between items-center text-muted-foreground",
+        className
+      )}
+    >
       <div className="font-semibold py-1 rounded-sm flex items-center gap-x-1">
         <span>{label}</span>
         {tooltip && <TooltipWrapper>{tooltip}</TooltipWrapper>}
       </div>
-      <p className="py-1 rounded-sm flex items-center gap-x-2">{value}</p>
+      {value && (
+        <p className="py-1 rounded-sm flex items-center gap-x-2">{value}</p>
+      )}
     </div>
   );
 };

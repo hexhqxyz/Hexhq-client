@@ -16,6 +16,7 @@ import { useTokenStore } from "@/store/token-store";
 import { WalletIcon } from "lucide-react";
 import { TOKEN_TYPE } from "@/lib/types";
 import { FieldError } from "react-hook-form";
+import { cn } from "@/lib/utils";
 
 export interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   defaultValue?: TOKEN_TYPE;
@@ -26,6 +27,7 @@ export interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   onAmountChange?: (val: string) => void;
   selectValue: TOKEN_TYPE;
   error?: FieldError | undefined;
+  isSelectDisabled?: boolean;
 }
 
 const SwapInput = React.forwardRef<HTMLInputElement, Props>(
@@ -36,6 +38,7 @@ const SwapInput = React.forwardRef<HTMLInputElement, Props>(
       balance,
       onSelectChange,
       amount,
+      isSelectDisabled=false,
       error,
       onAmountChange,
       selectValue,
@@ -45,22 +48,23 @@ const SwapInput = React.forwardRef<HTMLInputElement, Props>(
   ) => {
     const tokenDetails = useTokenStore().tokenDetails;
     return (
-      <div className="space-y-2">
-        <div className="rounded-xl pr-2 pt-2 pb-4 bg-secondary space-y-2 ">
-          <div className="flex items-center">
-            <div className="flex items-center rounded-md">
+      <div className="space-y-2 w-full">
+        <div className={cn("rounded-xl pr-2 pt-2 pb-4 bg-secondary space-y-2 w-full ", className)}>
+          <div className="flex items-center w-full">
+            <div className="flex items-center rounded-md w-full">
               <input
-                className="bg-secondary text-3xl p-2 focus:outline-none ml-2 w-full disabled:cursor-not-allowed disabled:opacity-50"
+                className={cn("bg-secondary text-3xl p-2 focus:outline-none ml-2 w-full disabled:cursor-not-allowed disabled:opacity-50", className)}
                 placeholder="0.0"
                 ref={ref}
                 {...props}
               />
             </div>
-            <div className="">
+            <div className="w-max justify-end flex">
               <Select
                 defaultValue={defaultValue}
                 value={selectValue}
                 onValueChange={onSelectChange}
+                disabled={isSelectDisabled || props.disabled}
               >
                 <SelectTrigger className="w-max">
                   <SelectValue placeholder="Select token" />
