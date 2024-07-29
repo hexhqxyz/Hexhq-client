@@ -75,14 +75,32 @@ const Swap = (props: Props) => {
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    if (
-      parseFloat(data.fromAmount) <= 0 ||
-      parseFloat(data.fromAmount) > parseFloat(availableStakingTokenBalance)
-    ) {
+    if (parseFloat(data.fromAmount) <= 0) {
       setError("fromAmount", {
-        message: "Amount must be below or equal to the approved DTX tokens ",
+        message: "Amount must be greater then zero ",
       });
       return;
+    }
+
+    if (fromToken === "DTX") {
+      if (
+        parseFloat(data.fromAmount) > parseFloat(availableStakingTokenBalance)
+      ) {
+        setError("fromAmount", {
+          message: "Amount cannot be greater then the available DTX tokens",
+        });
+        return;
+      }
+    } else if (fromToken === "dUSD") {
+      if (
+        parseFloat(data.fromAmount) > parseFloat(availableRewardTokenBalance)
+      ) {
+        setError("fromAmount", {
+          message: "Amount cannot be greater then the available dUSD tokens",
+        });
+
+        return;
+      }
     }
     if (!ammContract || !stakingTokenContract || !rewardTokenContract) return;
     setIsLoading(true);

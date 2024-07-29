@@ -106,6 +106,7 @@ const SwapInput = React.forwardRef<HTMLInputElement, Props>(
             <div></div>
             <Button
               variant={"ghost"}
+              type="button"
               size={"sm"}
               className="items-center gap-x-2 text-muted-foreground"
             >
