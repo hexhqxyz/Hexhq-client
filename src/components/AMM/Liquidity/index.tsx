@@ -270,6 +270,9 @@ const ProvideLiquidity = (props: Props) => {
         id: toastId,
       });
       setIsLoading(false);
+      reset();
+      setAvailableStakingTokenBalance();
+      
       console.log("data:", data);
     } catch (error) {
       console.log("error catch ............................", error);
@@ -364,6 +367,7 @@ const ProvideLiquidity = (props: Props) => {
         </div>
         <Button
           type="submit"
+          variant={"invert"}
           loading={isLoading}
           size={"lg"}
           className="w-full mt-2"
