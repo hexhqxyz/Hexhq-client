@@ -39,7 +39,7 @@ const Page = (props: Props) => {
   ];
 
   return (
-    <div className="w-5/12 space-y-2 mt-2">
+    <div className="w-5/12 space-y-2 md:mt-8">
       {/* <div className="mb-4">
         <div className="space-y-1 mb-2">
           <Heading variant="h3">Withdraw your liquidity with ease.</Heading>
@@ -52,7 +52,7 @@ const Page = (props: Props) => {
       </div> */}
 
       <div className="border rounded-lg p-2">
-        <div className="border-b flex justify-between items-center py-4">
+        <div className="flex justify-between items-center py-2">
           <div>
             <Link
               className={cn(buttonVariants({ size: "icon", variant: "ghost" }))}

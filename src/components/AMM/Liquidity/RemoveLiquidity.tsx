@@ -36,10 +36,10 @@ const RemoveLiquidity = (props: Props) => {
 
   return (
     <div className="space-y-4 p-2">
-      <Card className="p-4 space-y-8">
-        <Heading variant="h4">Remove amount</Heading>
+      <Card className="px-4 py-2 space-y-8">
+      <Heading variant="h4">Remove amount</Heading>
         <CardContent className="p-0 space-y-8">
-          <Heading variant="h5" className="text-6xl">
+          <Heading variant="h5" className="text-5xl">
             {sliderValue}%
           </Heading>
           <div className="space-y-6">
@@ -74,7 +74,7 @@ const RemoveLiquidity = (props: Props) => {
       <div className="flex justify-center">
         <ArrowDown className="text-muted-foreground w-5 h-5" />
       </div>
-      <Card className="p-4 space-y-8">
+      <Card className="px-4 py-2 space-y-4">
         <Heading variant="h4">You&apos;ll receive </Heading>
         <CardContent className="p-0 space-y-2">
           <LabelValueRow
