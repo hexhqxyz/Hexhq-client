@@ -39,8 +39,8 @@ const Page = (props: Props) => {
   ];
 
   return (
-    <div className="w-5/12 space-y-2">
-      <div className="mb-4">
+    <div className="w-5/12 space-y-2 mt-2">
+      {/* <div className="mb-4">
         <div className="space-y-1 mb-2">
           <Heading variant="h3">Withdraw your liquidity with ease.</Heading>
           <p className="text-muted-foreground text-sm">
@@ -49,7 +49,7 @@ const Page = (props: Props) => {
             flexibility to manage your investments as you see fit!
           </p>
         </div>
-      </div>
+      </div> */}
 
       <div className="border rounded-lg p-2">
         <div className="border-b flex justify-between items-center py-4">
