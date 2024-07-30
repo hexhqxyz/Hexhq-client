@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import {
+  ActivityIcon,
   ArrowDownUpIcon,
   BanknoteIcon,
   CircleDollarSign,
@@ -54,14 +55,13 @@ export const links = [
         href: "/staking/repay",
         icon: <HandCoinsIcon className="text-muted-foreground w-5 h-5" />,
       },
-      {
-        label: "Activity",
-        href: "/staking/activity",
-        icon: <GanttChart className="text-muted-foreground w-5 h-5" />,
-      },
+      // {
+      //   label: "Activity",
+      //   href: "/staking/activity",
+      //   icon: <GanttChart className="text-muted-foreground w-5 h-5" />,
+      // },
     ],
   },
-
   {
     title: "AMM (Swap)",
     subLinks: [
@@ -77,12 +77,25 @@ export const links = [
         icon: <HandCoinsIcon className="text-muted-foreground w-5 h-5" />,
       },
       {
-        href: "/amm/tokens",
+        href: "/amm/swap",
         label: "Explore",
         icon: <ViewIcon className="text-muted-foreground w-5 h-5" />,
+        subLabel: "Coming soon",
+        subLabelColor: "blue",
       },
     ],
   },
+  {
+    title: "Activity",
+    subLinks: [
+      {
+        href: "/activity",
+        label: "Activity",
+        icon: <ActivityIcon className="text-muted-foreground w-5 h-5" />,
+      },
+    ],
+  },
+
 ];
 
 type Props = {};
@@ -157,6 +170,7 @@ const MySidebar = (props: Props) => {
                   }
                   label={item.label}
                   subLabel={item.subLabel}
+                  subLabelColor={(item?.subLabelColor as any) || "green"}
                 />
               ))}
             </>
