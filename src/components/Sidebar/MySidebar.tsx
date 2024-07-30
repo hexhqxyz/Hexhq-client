@@ -55,11 +55,11 @@ export const links = [
         href: "/staking/repay",
         icon: <HandCoinsIcon className="text-muted-foreground w-5 h-5" />,
       },
-      // {
-      //   label: "Activity",
-      //   href: "/staking/activity",
-      //   icon: <GanttChart className="text-muted-foreground w-5 h-5" />,
-      // },
+      {
+        label: "Activity",
+        href: "/staking/activity",
+        icon: <GanttChart className="text-muted-foreground w-5 h-5" />,
+      },
     ],
   },
   {
@@ -77,11 +77,9 @@ export const links = [
         icon: <HandCoinsIcon className="text-muted-foreground w-5 h-5" />,
       },
       {
-        href: "/amm/swap",
+        href: "/amm",
         label: "Explore",
         icon: <ViewIcon className="text-muted-foreground w-5 h-5" />,
-        subLabel: "Coming soon",
-        subLabelColor: "blue",
       },
     ],
   },
@@ -90,12 +88,11 @@ export const links = [
     subLinks: [
       {
         href: "/activity",
-        label: "Activity",
+        label: "My Activity",
         icon: <ActivityIcon className="text-muted-foreground w-5 h-5" />,
       },
     ],
   },
-
 ];
 
 type Props = {};
@@ -170,7 +167,7 @@ const MySidebar = (props: Props) => {
                   }
                   label={item.label}
                   subLabel={item.subLabel}
-                  subLabelColor={(item?.subLabelColor as any) || "green"}
+                  // subLabelColor={(item?.subLabelColor as any) || "green"}
                 />
               ))}
             </>

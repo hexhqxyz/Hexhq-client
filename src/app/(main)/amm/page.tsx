@@ -1,11 +1,14 @@
-import React from 'react'
+import PoolInfo from "@/components/AMM/main/PoolInfo";
+import React from "react";
 
-type Props = {}
+type Props = {};
 
 const page = (props: Props) => {
   return (
-    <div>page</div>
-  )
-}
+    <div className="w-full flex flex-col items-center">
+      <PoolInfo />
+    </div>
+  );
+};
 
-export default page
+export default page;
