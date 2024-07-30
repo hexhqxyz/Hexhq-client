@@ -23,6 +23,7 @@ import InfoCard from "@/components/ui/InfoCard";
 import { Badge } from "@/components/ui/badge";
 import ProvideLiquidity from "@/components/AMM/Liquidity";
 import Link from "next/link";
+import RemoveLiquidity from "@/components/AMM/Liquidity/RemoveLiquidity";
 
 type Props = {};
 
@@ -41,13 +42,11 @@ const Page = (props: Props) => {
     <div className="w-5/12 space-y-2">
       <div className="mb-4">
         <div className="space-y-1 mb-2">
-          <Heading variant="h3">
-            Put your funds to work by providing liquidity.
-          </Heading>
+          <Heading variant="h3">Withdraw your liquidity with ease.</Heading>
           <p className="text-muted-foreground text-sm">
-            When you add liquidity to a pool, you can receive a share of its
-            trading volume and potentially snag extra rewards when there are
-            incentives involved!
+            Removing liquidity allows you to reclaim your funds along with any
+            earned fees. It&apos;s a straightforward process, giving you the
+            flexibility to manage your investments as you see fit!
           </p>
         </div>
       </div>
@@ -55,7 +54,10 @@ const Page = (props: Props) => {
       <div className="border rounded-lg p-2">
         <div className="border-b flex justify-between items-center py-4">
           <div>
-            <Link className={cn(buttonVariants({size: "icon", variant: "ghost"}))} href={"/amm"}>
+            <Link
+              className={cn(buttonVariants({ size: "icon", variant: "ghost" }))}
+              href={"/amm"}
+            >
               <ArrowLeft className="text-muted-foreground w-6 h-6" />
             </Link>
           </div>
@@ -95,9 +97,7 @@ const Page = (props: Props) => {
             </Popover>
           </div>
         </div>
-        <div className="pt-4">
-          {/* <ProvideLiquidity /> */}
-        </div>
+        <div className="pt-4"><RemoveLiquidity /></div>
       </div>
     </div>
   );
