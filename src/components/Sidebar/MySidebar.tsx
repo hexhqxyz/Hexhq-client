@@ -1,5 +1,20 @@
 import { cn } from "@/lib/utils";
-import { ArrowDownUpIcon, BanknoteIcon, CircleDollarSign, CurrencyIcon, GanttChart, HandCoinsIcon, Home, HomeIcon, PlaneTakeoff, PlaneTakeoffIcon, SquareMousePointer, SquareMousePointerIcon, View, ViewIcon } from "lucide-react";
+import {
+  ArrowDownUpIcon,
+  BanknoteIcon,
+  CircleDollarSign,
+  CurrencyIcon,
+  GanttChart,
+  HandCoinsIcon,
+  Home,
+  HomeIcon,
+  PlaneTakeoff,
+  PlaneTakeoffIcon,
+  SquareMousePointer,
+  SquareMousePointerIcon,
+  View,
+  ViewIcon,
+} from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -30,7 +45,9 @@ export const links = [
       {
         label: "Borrow",
         href: "/staking/borrow",
-        icon: <SquareMousePointerIcon className="text-muted-foreground w-5 h-5" />,
+        icon: (
+          <SquareMousePointerIcon className="text-muted-foreground w-5 h-5" />
+        ),
       },
       {
         label: "Repay",
@@ -44,7 +61,7 @@ export const links = [
       },
     ],
   },
- 
+
   {
     title: "AMM (Swap)",
     subLinks: [
@@ -52,6 +69,7 @@ export const links = [
         href: "/amm/swap",
         label: "Swap",
         icon: <ArrowDownUpIcon className="text-muted-foreground w-5 h-5" />,
+        subLabel: "New",
       },
       {
         href: "/amm/liquidity",
@@ -86,7 +104,7 @@ const MenuLink = ({
   icon,
   label,
   subLabel,
-  subLabelColor = "blue",
+  subLabelColor = "green",
 }: MenuLinkProps) => {
   return (
     <Link
@@ -138,7 +156,7 @@ const MySidebar = (props: Props) => {
                     )
                   }
                   label={item.label}
-                  //   subLabel="1.2k"
+                  subLabel={item.subLabel}
                 />
               ))}
             </>

@@ -14,18 +14,21 @@ interface TemperatureSelectorProps {
   defaultValue: number;
   onValueChange: (val: number[]) => void;
   value: number;
+  disabled?: boolean;
 }
 
 export default function PercentageSlider({
   defaultValue,
   value,
   onValueChange,
+  disabled,
 }: TemperatureSelectorProps) {
   return (
     <div className="grid gap-2 pt-2">
       <HoverCard openDelay={200}>
         <HoverCardTrigger asChild>
           <Slider
+            disabled={disabled}
             id="temperature"
             max={100}
             min={0}

@@ -17,7 +17,8 @@ export const shortenString = (
 
 export function formatNumber(
   value: string | null | any,
-  humanify: boolean = true
+  humanify: boolean = true,
+  decimals = 2,
 ) {
   if (!value) return "0.0";
   const floatValue = parseFloat(value);
@@ -32,7 +33,7 @@ export function formatNumber(
   } else if (floatValue % 1 === 0) {
     return floatValue.toFixed(1);
   } else {
-    return floatValue.toFixed(2).replace(/\.?0+$/, "");
+    return floatValue.toFixed(decimals).replace(/\.?0+$/, "");
   }
 }
 

@@ -138,6 +138,7 @@ const ProvideLiquidity = (props: Props) => {
   };
 
   const onSubmit = handleSubmit(async (data) => {
+    let toastId: string | number | undefined ;
     if (parseFloat(data.fromAmount) <= 0) {
       setError("fromAmount", {
         message: "Amount must be greater then zero ",
@@ -180,7 +181,7 @@ const ProvideLiquidity = (props: Props) => {
           : REWARD_TOKEN_ADDRESS;
 
       let approveTx;
-      const toastId = toast.loading("Please approve when prompted");
+      toastId = toast.loading("Please approve when prompted");
 
       if (fromToken === "DTX") {
         approveTx = await stakingTokenContract.approve(
@@ -275,6 +276,7 @@ const ProvideLiquidity = (props: Props) => {
       
       console.log("data:", data);
     } catch (error) {
+      toast.dismiss();
       console.log("error catch ............................", error);
       //   const parsedError = await decodeAmmError(error);
       //   console.log("decodedErr in catch:", parsedError);
