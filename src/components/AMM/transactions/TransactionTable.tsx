@@ -23,6 +23,20 @@ import {
 } from "@/lib/constants";
 import { Heading } from "@/components/ui/Typography";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const LoadingScreen = () => (
+  <div className="flex flex-col space-y-3 p-4">
+    <Skeleton className="h-16 rounded-xl" />
+    <div className="space-y-4">
+      {Array(10)
+        .fill(0)
+        .map((item, index) => (
+          <Skeleton key={index} className="h-10" />
+        ))}
+    </div>
+  </div>
+);
 
 const transactionTypes = {
   swap: GET_SWAP_DATA,
@@ -160,7 +174,7 @@ export default function TransactionTable({
     variables: { first: PER_PAGE, skip: 0 },
   });
   console.log("data:", data);
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingScreen />;
   if (error) return <p>Error: {error.message}</p>;
   if (!data || !data[key]?.length)
     return (
