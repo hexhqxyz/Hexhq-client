@@ -11,7 +11,7 @@ import {
 } from "@/lib/services/graphql/queries";
 import { cn, formatNumber, shortenString } from "@/lib/utils";
 import { ethers } from "ethers";
-import { ArrowDown, InfoIcon, Loader2 } from "lucide-react";
+import { ArrowDown, InfoIcon } from "lucide-react";
 import Link from "next/link";
 import { LinkToken } from "./Token";
 import ReuseTable from "./ReuseTable";
@@ -22,7 +22,6 @@ import {
   STAKING_TOKEN_CONTRACT_ADDRESS,
 } from "@/lib/constants";
 import { Heading } from "@/components/ui/Typography";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const LoadingScreen = () => (

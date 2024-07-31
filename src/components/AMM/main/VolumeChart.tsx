@@ -33,6 +33,7 @@ import {
   getDateInterval,
   getHourInterval,
 } from "@/lib/utils/date";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const chartConfig = {
   views: {
@@ -64,7 +65,12 @@ export default function VolumeChart() {
       setChartData(formattedData as any);
     }
   }, [data, selectedPeriod]);
-  if (loading) return <div>loading....</div>;
+  if (loading)
+    return (
+      <div>
+        <Skeleton className="h-96 w-full" />
+      </div>
+    );
 
   if (error)
     return <div>Something went wrong. Please try to reload the page</div>;

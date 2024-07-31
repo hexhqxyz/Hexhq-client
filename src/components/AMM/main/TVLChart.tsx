@@ -33,6 +33,7 @@ import {
 import { ethers } from "ethers";
 import { processData, processDataCurrent } from "@/lib/utils/compare";
 import { formatXAxisDate } from "@/lib/utils/date";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const chartData = [
   { date: "January", tvl: 186 },
@@ -70,7 +71,12 @@ export function TVLChart() {
     }
   }, [data, selectedPeriod]);
 
-  if (loading) return <div>loading....</div>;
+  if (loading)
+    return (
+      <div>
+        <Skeleton className="h-96 w-full" />
+      </div>
+    );
   if (error)
     return <div>Something went wrong. Please try to reload the page</div>;
 
