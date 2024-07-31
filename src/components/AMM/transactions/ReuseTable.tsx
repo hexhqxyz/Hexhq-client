@@ -15,8 +15,8 @@ type ReuseTableProps = {
 };
 const ReuseTable = ({ labels, children }: ReuseTableProps) => {
   return (
-    <div>
-      <Table>
+    <div className="w-full">
+      <Table className="w-full">
         <TableHeader>
           <TableRow>
             {labels?.map((item, index) => (

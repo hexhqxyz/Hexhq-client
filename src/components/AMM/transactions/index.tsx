@@ -4,12 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import React, { useEffect, useState } from "react";
 import SwapTable from "./SwapTable";
+import AddTable from "./AddTable";
+import TransactionTable from "./TransactionTable";
 
 type Props = {};
 
 const AmmTransactions = (props: Props) => {
   const [selectedType, setSelectedType] = useState("swap");
-  
+
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="w-11/12">
@@ -35,9 +37,9 @@ const AmmTransactions = (props: Props) => {
           </CardHeader>
 
           <CardContent className="p-0">
-            {selectedType === "swap" && <SwapTable />}
-            {selectedType === "add" && <div>add table</div>}
-            {selectedType === "remove" && <div>remove table</div>}
+            {selectedType === "swap" && <TransactionTable type={"swap"} />}
+            {selectedType === "add" && <TransactionTable type={"add"} />}
+            {selectedType === "remove" && <TransactionTable type={"remove"} />}
           </CardContent>
         </Card>
       </div>

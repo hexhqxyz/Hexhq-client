@@ -57,15 +57,38 @@ export const GET_TVL_DATA = gql`
   }
 `;
 
-
 export const GET_SWAP_DATA = gql`
-  query {
-    swappeds(first: 100, orderBy: blockTimestamp, orderDirection: desc) {
+  query($first: Int!, $skip: Int!) {
+    swappeds(first: $first, skip: $skip, orderBy: blockTimestamp, orderDirection: desc) {
       swapper
       tokenIn
       tokenOut
       amountIn
       amountOut
+      blockTimestamp
+      transactionHash
+    }
+  }
+`;
+
+export const GET_ADD_LIQUIDITY_DATA = gql`
+  query($first: Int!, $skip: Int!) {
+    liquidityProvideds(first: $first, skip: $skip, orderBy: blockTimestamp, orderDirection: desc) {
+      provider
+      amount1
+      amount2
+      blockTimestamp
+      transactionHash
+    }
+  }
+`;
+
+export const GET_REMOVE_LIQUIDITY_DATA = gql`
+  query($first: Int!, $skip: Int!) {
+    liquidityRemoveds(first: $first, skip: $skip, orderBy: blockTimestamp, orderDirection: desc) {
+      provider
+      amount1
+      amount2
       blockTimestamp
       transactionHash
     }
