@@ -74,8 +74,6 @@ export function TVLChart() {
   if (error)
     return <div>Something went wrong. Please try to reload the page</div>;
 
-  console.log("chart data:", chartData);
-
   return (
     <Card>
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row w-full">
@@ -145,13 +143,13 @@ export function TVLChart() {
             <div className="flex items-center gap-2 font-medium leading-none">
               {trend.isUp ? (
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="h-8 w-8 text-green-500" /> TVL up by
-                  +{trend.percentage.toFixed(2)}%
+                  <TrendingUp className="h-8 w-8 text-green-500" /> TVL up by +
+                  {trend.percentage.toFixed(2)}%
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
-                  <TrendingDown className="h-8 w-8 text-destructive" /> TVL
-                  down by -{trend.percentage.toFixed(2)}% today
+                  <TrendingDown className="h-8 w-8 text-destructive" /> TVL down
+                  by -{trend.percentage.toFixed(2)}% today
                 </div>
               )}
             </div>

@@ -56,3 +56,18 @@ export const GET_TVL_DATA = gql`
     }
   }
 `;
+
+
+export const GET_SWAP_DATA = gql`
+  query {
+    swappeds(first: 100, orderBy: blockTimestamp, orderDirection: desc) {
+      swapper
+      tokenIn
+      tokenOut
+      amountIn
+      amountOut
+      blockTimestamp
+      transactionHash
+    }
+  }
+`;

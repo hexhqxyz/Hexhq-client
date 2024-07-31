@@ -1,6 +1,5 @@
 import React from "react";
 import VolumeChart from "./main/VolumeChart";
-import { Card } from "../ui/card";
 import { TVLChart } from "./main/TVLChart";
 
 type Props = {};

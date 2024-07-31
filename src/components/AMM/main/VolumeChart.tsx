@@ -69,8 +69,6 @@ export default function VolumeChart() {
   if (error)
     return <div>Something went wrong. Please try to reload the page</div>;
 
-  console.log("data:", data);
-
   return (
     <Card className="h-full">
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row w-full">
