@@ -19,11 +19,19 @@ export function HeroScrollDemo() {
         }
       >
         <Image
-          src={`/linear.webp`}
+          src={`/01_platform.png`}
           alt="hero"
           height={720}
           width={1400}
-          className="mx-auto rounded-2xl object-cover h-full object-left-top"
+          className="mx-auto rounded-2xl object-cover h-full object-left-top dark:block hidden"
+          draggable={false}
+        />
+        <Image
+          src={`/02_platform_trade.png`}
+          alt="hero"
+          height={720}
+          width={1400}
+          className="mx-auto rounded-2xl object-cover h-full object-left-top dark:hidden block"
           draggable={false}
         />
       </ContainerScroll>

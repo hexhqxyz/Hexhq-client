@@ -7,7 +7,7 @@ import useInitializeWeb3 from "@/hooks/initialize-web3";
 import { Button } from "@/components/ui/button";
 import ScreenLoading from "@/components/ui/ScreenLoading";
 import ResizableMain from "@/components/ResizableMain";
-import MySidebar from "@/components/Sidebar/MySidebar";
+import { ShootingStarsAndStarsBackgroundDemo } from "@/components/landing/StarsBackground";
 
 type Props = {
   children: React.ReactNode;
@@ -27,7 +27,11 @@ const Layout = ({ children }: Props) => {
   }
 
   if (!isConnected) {
-    return <div>please connect to continue</div>;
+    return (
+      <div className="w-full flex justify-center flex-col items-center p-4 space-y-4">
+        <ShootingStarsAndStarsBackgroundDemo />
+      </div>
+    );
   }
 
   if (chainId && ![1337, 1, 11155111].includes(chainId)) {
@@ -50,7 +54,7 @@ const Layout = ({ children }: Props) => {
         </div>
         <div className="lg:hidden block">
           {/* <MySidebar /> */}
-            <div className="">{children}</div>
+          <div className="">{children}</div>
         </div>
       </Suspense>
     </div>
