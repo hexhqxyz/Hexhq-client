@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import MySidebar, { MenuLink } from "./MySidebar";
 import {
   Drawer,
@@ -23,9 +23,11 @@ import { links } from "@/lib/links";
 type Props = {};
 
 const MobileSidebar = (props: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div>
-      <Drawer direction="left">
+      <Drawer direction="left" onOpenChange={setIsOpen} open={isOpen}>
         <DrawerTrigger asChild>
           <Button variant={"ghost"} size={"icon"}>
             <MenuIcon className="text-muted-foreground" />
@@ -60,18 +62,20 @@ const MobileSidebar = (props: Props) => {
                         </div>
                       </li>
                       {item.subLinks?.map((item, index) => (
-                        <MenuLink
-                          key={index}
-                          href={item.href}
-                          icon={
-                            <item.Icon className="text-muted-foreground h-5 w-5" /> || (
-                              <HomeIcon className="text-muted-foreground h-5 w-5" />
-                            )
-                          }
-                          label={item.label}
-                          subLabel={item.subLabel}
-                          // subLabelColor={(item?.subLabelColor as any) || "green"}
-                        />
+                        <div key={index} onClick={() => setIsOpen(false)}>
+                          <MenuLink
+                            href={item.href}
+                            icon={
+                              (
+                                <item.Icon className="text-muted-foreground h-5 w-5" />
+                              ) || (
+                                <HomeIcon className="text-muted-foreground h-5 w-5" />
+                              )
+                            }
+                            label={item.label}
+                            subLabel={item.subLabel}
+                          />
+                        </div>
                       ))}
                     </Fragment>
                   ))}
