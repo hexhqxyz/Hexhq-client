@@ -48,8 +48,7 @@ const Navbar = (props: Props) => {
       <div className="lg:flex items-center gap-x-2 hidden">
         <CommandMenu />
       </div>
-      <div className="flex items-center">
-        <ConnectButton />
+      <div className="flex items-center gap-x-1">
         <Link
           href={"https://github.com/SachinCoder1/Omni-DeFi"}
           className="md:block hidden"

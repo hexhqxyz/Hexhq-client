@@ -1,9 +1,10 @@
 import ConnectButton from "@/components/ConnectWallet";
+import LandingMain from "@/components/landing";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-     <ConnectButton /> 
+    <main className="min-h-screen w-full">
+      <LandingMain />
     </main>
   );
 }
