@@ -1,7 +1,5 @@
 import { gql } from "@apollo/client";
 
-const LATEST_ORDER = "orderBy: blockTimestamp, orderDirection: desc"
-
 export const GET_USER_ACTIVITIES = gql`
   query GetUserActivities($user: Bytes!, $first: Int!, $skip: Int!) {
     stakeds(where: { user: $user }, first: $first, skip: $skip) {

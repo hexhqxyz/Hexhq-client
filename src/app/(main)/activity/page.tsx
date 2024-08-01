@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn, shortenString } from "@/lib/utils";
-import { ActivityIcon } from "lucide-react";
+import { ActivityIcon, PlusCircleIcon } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -73,18 +73,18 @@ type Props = {};
 
 type ToggleLabelType = { label: string; value: string };
 type TabsContentWrapperProps = {
-  tabValue: string;
   toggleValue: string;
   onToggleChange: (val: string) => void;
   address: string;
   children: React.ReactNode;
   toggleLabels: ToggleLabelType[];
+  extraFilters?: React.ReactNode;
 };
 const TabsContentWrapper = ({
-  tabValue,
   toggleValue,
   onToggleChange,
   address,
+  extraFilters,
   toggleLabels,
   children,
 }: TabsContentWrapperProps) => {
@@ -101,7 +101,8 @@ const TabsContentWrapper = ({
           </PageHeaderDescription>
           <Badge variant={"outline"}>{shortenString(address)}</Badge>
         </div>
-        <div className="flex px-2 py-2">
+        <div className="flex px-2 py-2 gap-x-2">
+          {extraFilters}
           <ToggleGroup
             type="single"
             defaultValue={toggleLabels[0].value}
@@ -124,6 +125,7 @@ const TabsContentWrapper = ({
 
 const Page = (props: Props) => {
   const [selectedType, setSelectedType] = useState("swap");
+  const [selectedTokenFilter, setSelectedTokenFilter] = useState("transfer");
   const address = useWeb3Store().address;
 
   const handleTabChange = (val: string) => {
@@ -218,7 +220,6 @@ const Page = (props: Props) => {
 
                 <TabsContent value="liqudity">
                   <TabsContentWrapper
-                    tabValue="liqudity"
                     address={address}
                     onToggleChange={(val) => {
                       setSelectedType((prev) => val || prev);
@@ -240,7 +241,6 @@ const Page = (props: Props) => {
 
                 <TabsContent value="staking">
                   <TabsContentWrapper
-                    tabValue="staking"
                     address={address}
                     onToggleChange={(val) => {
                       setSelectedType((prev) => val || prev);
@@ -262,7 +262,6 @@ const Page = (props: Props) => {
 
                 <TabsContent value="loan">
                   <TabsContentWrapper
-                    tabValue="loan"
                     address={address}
                     onToggleChange={(val) => {
                       setSelectedType((prev) => val || prev);
@@ -276,20 +275,6 @@ const Page = (props: Props) => {
                     {selectedType === "repay" && (
                       <StakingTable type={"loanRepaid"} address={address} />
                     )}
-                  </TabsContentWrapper>
-                </TabsContent>
-
-                <TabsContent value="token">
-                  <TabsContentWrapper
-                    tabValue="token"
-                    address={address}
-                    onToggleChange={(val) => {
-                      setSelectedType((prev) => val || prev);
-                    }}
-                    toggleLabels={tokenLabels}
-                    toggleValue={selectedType}
-                  >
-                    Token
                   </TabsContentWrapper>
                 </TabsContent>
               </Tabs>

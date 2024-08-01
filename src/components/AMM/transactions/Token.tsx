@@ -46,6 +46,7 @@ export const LinkToken = ({ address }: { address: string }) => {
     <Link
       className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "p-1")}
       href={`https://sepolia.etherscan.io/token/${address}`}
+      target="_blank"
     >
       <Token address={address} />
     </Link>
