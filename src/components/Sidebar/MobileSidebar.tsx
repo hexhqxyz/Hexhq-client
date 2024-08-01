@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import MySidebar, { links, MenuLink } from "./MySidebar";
+import React, { Fragment } from "react";
+import MySidebar, { MenuLink } from "./MySidebar";
 import {
   Drawer,
   DrawerClose,
@@ -18,6 +18,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { headingClasses } from "../ui/Typography";
 import ConnectButton from "../ConnectWallet";
+import { links } from "@/lib/links";
 
 type Props = {};
 
@@ -50,7 +51,7 @@ const MobileSidebar = (props: Props) => {
               <div className="overflow-x-hidden">
                 <ul className="flex flex-col space-y-1">
                   {links.map((item, index) => (
-                    <>
+                    <Fragment key={index}>
                       <li className="px-5">
                         <div className="flex flex-row items-center h-8">
                           <div className="text-sm font-light tracking-wide text-muted-foreground">
@@ -63,7 +64,7 @@ const MobileSidebar = (props: Props) => {
                           key={index}
                           href={item.href}
                           icon={
-                            item.icon || (
+                            <item.Icon className="text-muted-foreground h-5 w-5" /> || (
                               <HomeIcon className="text-muted-foreground h-5 w-5" />
                             )
                           }
@@ -72,7 +73,7 @@ const MobileSidebar = (props: Props) => {
                           // subLabelColor={(item?.subLabelColor as any) || "green"}
                         />
                       ))}
-                    </>
+                    </Fragment>
                   ))}
                 </ul>
               </div>

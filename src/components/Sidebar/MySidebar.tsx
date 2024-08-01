@@ -21,82 +21,7 @@ import Link from "next/link";
 import React from "react";
 import { DrawerClose } from "../ui/drawer";
 import { Button } from "../ui/button";
-
-export const links = [
-  {
-    title: "Faucet",
-    subLinks: [
-      {
-        href: "/faucet",
-        label: "Faucet",
-        icon: <CircleDollarSign className="text-muted-foreground w-5 h-5" />,
-      },
-    ],
-  },
-  {
-    title: "Staking",
-    subLinks: [
-      {
-        label: "Stake",
-        href: "/staking",
-        icon: <PlaneTakeoffIcon className="text-muted-foreground w-5 h-5" />,
-      },
-      {
-        label: "Withdraw",
-        href: "/staking/withdraw",
-        icon: <BanknoteIcon className="text-muted-foreground w-5 h-5" />,
-      },
-      {
-        label: "Borrow",
-        href: "/staking/borrow",
-        icon: (
-          <SquareMousePointerIcon className="text-muted-foreground w-5 h-5" />
-        ),
-      },
-      {
-        label: "Repay",
-        href: "/staking/repay",
-        icon: <HandCoinsIcon className="text-muted-foreground w-5 h-5" />,
-      },
-      {
-        label: "Activity",
-        href: "/staking/activity",
-        icon: <GanttChart className="text-muted-foreground w-5 h-5" />,
-      },
-    ],
-  },
-  {
-    title: "AMM (Swap)",
-    subLinks: [
-      {
-        href: "/amm/swap",
-        label: "Swap",
-        icon: <ArrowDownUpIcon className="text-muted-foreground w-5 h-5" />,
-        subLabel: "New",
-      },
-      {
-        href: "/amm/liquidity",
-        label: "Provide liquidity",
-        icon: <HandCoinsIcon className="text-muted-foreground w-5 h-5" />,
-      },
-      {
-        href: "/amm",
-        label: "Explore",
-        icon: <ViewIcon className="text-muted-foreground w-5 h-5" />,
-      },
-    ],
-  },
-  {
-    title: "Activity",
-    subLinks: [
-      {
-        href: "/activity",
-        label: "My Activity",
-        icon: <ActivityIcon className="text-muted-foreground w-5 h-5" />,
-      },
-    ],
-  },
-];
+import { links } from "@/lib/links";
 
 type Props = {};
 
@@ -171,7 +96,7 @@ const MySidebar = (props: MySidebarProps) => {
                   key={index}
                   href={item.href}
                   icon={
-                    item.icon || (
+                    <item.Icon className="text-muted-foreground w-5 h-5" /> || (
                       <HomeIcon className="text-muted-foreground h-5 w-5" />
                     )
                   }

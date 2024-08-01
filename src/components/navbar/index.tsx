@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
 import { Github, HomeIcon } from "lucide-react";
 import MobileSidebar from "../Sidebar/MobileSidebar";
-import SearchCommand from "./SearchCommand";
+import CommandMenu from "./CommandMenu";
 
 type Props = {};
 
@@ -46,7 +46,7 @@ const Navbar = (props: Props) => {
         OmniDeFi
       </Link>
       <div className="lg:flex items-center gap-x-2 hidden">
-       <SearchCommand />
+       <CommandMenu />
        </div>
       <div className="flex items-center">
         <ConnectButton />

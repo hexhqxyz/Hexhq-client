@@ -30,6 +30,7 @@
     "@web3modal/ethers": "^5.0.6",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
     "ethers": "^6.13.1",
     "framer-motion": "^11.3.6",
