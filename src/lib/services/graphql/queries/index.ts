@@ -57,9 +57,10 @@ export const GET_TVL_DATA = gql`
   }
 `;
 
+
 export const GET_SWAP_DATA = gql`
-  query($first: Int!, $skip: Int!) {
-    swappeds(first: $first, skip: $skip, orderBy: blockTimestamp, orderDirection: desc) {
+  query($first: Int!, $skip: Int!, $address: String) {
+    swappeds(first: $first, skip: $skip, where: { swapper_contains: $address }, orderBy: blockTimestamp, orderDirection: desc) {
       swapper
       tokenIn
       tokenOut
@@ -72,8 +73,8 @@ export const GET_SWAP_DATA = gql`
 `;
 
 export const GET_ADD_LIQUIDITY_DATA = gql`
-  query($first: Int!, $skip: Int!) {
-    liquidityProvideds(first: $first, skip: $skip, orderBy: blockTimestamp, orderDirection: desc) {
+  query($first: Int!, $skip: Int!, $address: String) {
+    liquidityProvideds(first: $first, skip: $skip, where: { provider_contains: $address }, orderBy: blockTimestamp, orderDirection: desc) {
       provider
       amount1
       amount2
@@ -84,8 +85,8 @@ export const GET_ADD_LIQUIDITY_DATA = gql`
 `;
 
 export const GET_REMOVE_LIQUIDITY_DATA = gql`
-  query($first: Int!, $skip: Int!) {
-    liquidityRemoveds(first: $first, skip: $skip, orderBy: blockTimestamp, orderDirection: desc) {
+  query($first: Int!, $skip: Int!, $address: String) {
+    liquidityRemoveds(first: $first, skip: $skip, where: { provider_contains: $address }, orderBy: blockTimestamp, orderDirection: desc) {
       provider
       amount1
       amount2
@@ -94,3 +95,4 @@ export const GET_REMOVE_LIQUIDITY_DATA = gql`
     }
   }
 `;
+

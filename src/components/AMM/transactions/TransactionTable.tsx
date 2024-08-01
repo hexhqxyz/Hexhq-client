@@ -157,8 +157,10 @@ const renderTableRow = (
 
 export default function TransactionTable({
   type,
+  address,
 }: {
   type: keyof typeof transactionTypes;
+  address?: string;
 }) {
   const key =
     type === "swap"
@@ -170,9 +172,9 @@ export default function TransactionTable({
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const { loading, error, data, fetchMore } = useQuery(transactionTypes[type], {
-    variables: { first: PER_PAGE, skip: 0 },
+    variables: { first: PER_PAGE, skip: page * PER_PAGE, address: address || "" },
   });
-  console.log("data:", data);
+    console.log("data:", data);
   if (loading) return <LoadingScreen />;
   if (error) return <p>Error: {error.message}</p>;
   if (!data || !data[key]?.length)
@@ -191,30 +193,6 @@ export default function TransactionTable({
         </Button>
       </div>
     );
-
-  // 🧑to be added on the infinite scroll or pagnination
-  const handleLoadMore = () => {
-    console.log("fetching more...");
-    fetchMore({
-      variables: {
-        skip: (page + 1) * PER_PAGE,
-      },
-      updateQuery: (previousResult, { fetchMoreResult }) => {
-        console.log("fetch more result:", fetchMoreResult);
-        if (!fetchMoreResult[key].length) {
-          setHasMore(false);
-          return previousResult;
-        }
-        console.log("fetchMoreData", fetchMoreResult);
-        setPage((prevPage) => prevPage + 1);
-
-        return {
-          ...previousResult,
-          [key]: [...previousResult[key], ...fetchMoreResult[key]],
-        };
-      },
-    });
-  };
 
   const tableLabels = type === "swap" ? labels : liquidityLabels;
   const isSwap = type === "swap";
