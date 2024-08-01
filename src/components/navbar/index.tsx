@@ -4,10 +4,10 @@ import ConnectButton from "../ConnectWallet";
 import { headingClasses } from "../ui/Typography";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "../ui/button";
 import { Github, HomeIcon } from "lucide-react";
 import MobileSidebar from "../Sidebar/MobileSidebar";
 import CommandMenu from "./CommandMenu";
+import LaunchApp from "./LaunchApp";
 
 type Props = {};
 
@@ -46,8 +46,8 @@ const Navbar = (props: Props) => {
         OmniDeFi
       </Link>
       <div className="lg:flex items-center gap-x-2 hidden">
-       <CommandMenu />
-       </div>
+        <CommandMenu />
+      </div>
       <div className="flex items-center">
         <ConnectButton />
         <Link
@@ -58,7 +58,10 @@ const Navbar = (props: Props) => {
           <Github className="w-5 h-5" />
         </Link>
         <ThemeSwitcher />
-      <MobileSidebar />
+        <div className="lg:hidden">
+          <MobileSidebar />
+        </div>
+        <LaunchApp />
       </div>
     </div>
   );
