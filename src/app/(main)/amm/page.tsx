@@ -19,13 +19,10 @@ const page = (props: Props) => {
   return (
     <div>
       <div className="flex justify-center">
-        <div className="py-2 pl-2 w-full">
+        <div className="py-2 md:pl-2 w-full">
           <PageHeader>
-            <PageHeaderHeading className="hidden md:block">
+            <PageHeaderHeading>
               Explore pools
-            </PageHeaderHeading>
-            <PageHeaderHeading className="md:hidden">
-              Examples
             </PageHeaderHeading>
             <PageHeaderDescription>
               Providing liquidity to a pool allows you to earn a percentage of
@@ -53,16 +50,16 @@ const page = (props: Props) => {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-[0.5rem] border bg-background shadow md:px-8 py-2">
+      <div className="rounded-[0.5rem] border bg-background shadow md:px-8 px-2 py-2">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-2xl font-bold tracking-tight">Analytics</h2>
-          <div className="flex items-center space-x-2">
+          <div className="md:flex hidden items-center space-x-2">
            <Link className={cn(buttonVariants(), "gap-x-2 items-center")} href={"#amm-transactions"}>
            <ActivityIcon className="w-4 h-4" /> View transactions
            </Link>
           </div>
         </div>
-        <div className="w-full flex flex-col items-center">
+        <div className="w-full">
           <PoolInfo />
           <div className="mt-6 w-full">
             <AMM />

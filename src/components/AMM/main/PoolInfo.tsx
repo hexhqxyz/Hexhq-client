@@ -58,7 +58,7 @@ const PoolInfo = (props: Props) => {
   }, [address, ammContract]);
 
   return (
-    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 py-4 w-full px-4 lg:px-0">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 py-4 w-full">
       <InfoCard
         icon={<Image width={20} height={20} src="/dtx-token.svg" alt="icon" />}
         title="Your Pooled DTX"

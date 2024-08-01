@@ -1,11 +1,11 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn, formatNumber } from "@/lib/utils"
-import Link from "next/link"
-import { buttonVariants } from "./button"
-import { ethers } from "ethers"
-import { LinkToken } from "../AMM/transactions/Token"
-import { Skeleton } from "./skeleton"
+import { cn, formatNumber } from "@/lib/utils";
+import Link from "next/link";
+import { buttonVariants } from "./button";
+import { ethers } from "ethers";
+import { LinkToken } from "../AMM/transactions/Token";
+import { Skeleton } from "./skeleton";
 
 const Table = React.forwardRef<
   HTMLTableElement,
@@ -18,16 +18,16 @@ const Table = React.forwardRef<
       {...props}
     />
   </div>
-))
-Table.displayName = "Table"
+));
+Table.displayName = "Table";
 
 const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
   <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
-))
-TableHeader.displayName = "TableHeader"
+));
+TableHeader.displayName = "TableHeader";
 
 const TableBody = React.forwardRef<
   HTMLTableSectionElement,
@@ -38,8 +38,8 @@ const TableBody = React.forwardRef<
     className={cn("[&_tr:last-child]:border-0", className)}
     {...props}
   />
-))
-TableBody.displayName = "TableBody"
+));
+TableBody.displayName = "TableBody";
 
 const TableFooter = React.forwardRef<
   HTMLTableSectionElement,
@@ -53,8 +53,8 @@ const TableFooter = React.forwardRef<
     )}
     {...props}
   />
-))
-TableFooter.displayName = "TableFooter"
+));
+TableFooter.displayName = "TableFooter";
 
 const TableRow = React.forwardRef<
   HTMLTableRowElement,
@@ -68,8 +68,8 @@ const TableRow = React.forwardRef<
     )}
     {...props}
   />
-))
-TableRow.displayName = "TableRow"
+));
+TableRow.displayName = "TableRow";
 
 const TableHead = React.forwardRef<
   HTMLTableCellElement,
@@ -83,8 +83,8 @@ const TableHead = React.forwardRef<
     )}
     {...props}
   />
-))
-TableHead.displayName = "TableHead"
+));
+TableHead.displayName = "TableHead";
 
 const TableCell = React.forwardRef<
   HTMLTableCellElement,
@@ -95,8 +95,8 @@ const TableCell = React.forwardRef<
     className={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className)}
     {...props}
   />
-))
-TableCell.displayName = "TableCell"
+));
+TableCell.displayName = "TableCell";
 
 const TableCaption = React.forwardRef<
   HTMLTableCaptionElement,
@@ -107,15 +107,12 @@ const TableCaption = React.forwardRef<
     className={cn("mt-4 text-sm text-muted-foreground", className)}
     {...props}
   />
-))
-TableCaption.displayName = "TableCaption"
-
-
+));
+TableCaption.displayName = "TableCaption";
 
 //  Custom Table reusable components --------------------------
 
-
-const TableLoadingScreen = ({limit=10}) => (
+const TableLoadingScreen = ({ limit = 10 }) => (
   <div className="flex flex-col space-y-3 p-4">
     <Skeleton className="h-16 rounded-xl" />
     <div className="space-y-4">
@@ -127,8 +124,6 @@ const TableLoadingScreen = ({limit=10}) => (
     </div>
   </div>
 );
-
-
 
 const TableCellLink = ({
   href,
@@ -168,8 +163,8 @@ type ReuseTableProps = {
 };
 const ReuseTable = ({ labels, children }: ReuseTableProps) => {
   return (
-    <div className="w-full">
-      <Table className="w-full">
+    <div className="overflow-x-auto w-[89vw] lg:w-full">
+      <Table className="relative">
         <TableHeader>
           <TableRow>
             {labels?.map((item, index) => (
@@ -200,5 +195,4 @@ export {
   TableCellWithToken,
   TableCellLink,
   ReuseTable,
-
-}
+};

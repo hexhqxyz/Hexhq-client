@@ -76,8 +76,15 @@ const Layout = ({ children }: Props) => {
       <Suspense fallback={<ScreenLoading />}>
         <div className="flex flex-col w-full items-center min-h-[calc(100vh-86px)] justify-center">
           <Heading className="text-center">Staking DApp</Heading>
+        
 
-          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 py-4 w-full lg:w-11/12 px-4 lg:px-0">
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 py-4 w-full lg:w-11/12 px-2 lg:px-0">
+          <div className="md:hidden w-full border bg-background rounded-lg mt-6 mb-4">
+            <div className="border-b w-full rounded-md">
+              <TabsNav items={tabItems} />
+            </div>
+            <div className="w-full">{children}</div>
+          </div>
             <InfoCard
               icon={
                 <DollarSignIcon className="h-4 w-4 text-muted-foreground" />
@@ -94,8 +101,8 @@ const Layout = ({ children }: Props) => {
             <ClaimReward />
           </div>
 
-          <div className="grid grid-cols-5 gap-x-4 w-11/12 mt-6 reverse mb-8">
-            <div className="col-span-3 space-y-8">
+          <div className="md:grid grid-cols-5 gap-4 lg:w-11/12 w-full md:px-0 px-2 mt-6 reverse mb-8">
+            <div className="md:col-span-3 space-y-8 w-full">
               <Card className="border p-4">
                 <CardTitle className="text-xl">Curated for you</CardTitle>
                 <div className="mt-6">
@@ -116,7 +123,9 @@ const Layout = ({ children }: Props) => {
                       isSeperator={false}
                       className="flex justify-between"
                       label="Interest payable"
-                      value={`${formatNumber(userDetails.interestPayable)} dUSD`}
+                      value={`${formatNumber(
+                        userDetails.interestPayable
+                      )} dUSD`}
                     />
                     <InfoLabel
                       isSeperator={false}
@@ -139,7 +148,9 @@ const Layout = ({ children }: Props) => {
                 <InfoLabel
                   tooltip="Total amount staked in the pool"
                   label="Total staked"
-                  value={`${formatNumber(formatNumber(stakingDetails.totalStaked))} DTX`}
+                  value={`${formatNumber(
+                    formatNumber(stakingDetails.totalStaked)
+                  )} DTX`}
                 />
                 <InfoLabel
                   tooltip="Time when the last stake activity happened on the contract"
@@ -152,7 +163,12 @@ const Layout = ({ children }: Props) => {
                 />
               </InfoWrapper>
               <InfoWrapper title="Borrow info">
-                <InfoLabel label="Total borrow" value={`${formatNumber(totalBorrowedAmount)} ${tokenDetails.dusd.symbol}`} />
+                <InfoLabel
+                  label="Total borrow"
+                  value={`${formatNumber(totalBorrowedAmount)} ${
+                    tokenDetails.dusd.symbol
+                  }`}
+                />
                 <InfoLabel
                   label="Interest rate (APY)"
                   value={`${stakingDetails.interestRate}%`}
@@ -201,7 +217,7 @@ const Layout = ({ children }: Props) => {
                 />
               </InfoWrapper>
             </div>
-            <div className="w-full h-fit flex col-span-2 justify-center items-center flex-col mx-auto border bg-background shadow-lg rounded-lg px-4 lg:px-0 sticky top-4">
+            <div className="hidden w-full h-fit md:flex col-span-2 justify-center items-center flex-col mx-auto border bg-background shadow-lg rounded-lg px-4 lg:px-0 md:sticky top-4 md:mt-0 mt-6">
               <div className="border-b w-full rounded-md">
                 <TabsNav items={tabItems} />
               </div>

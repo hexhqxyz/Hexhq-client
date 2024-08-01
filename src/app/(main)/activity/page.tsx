@@ -91,7 +91,7 @@ const TabsContentWrapper = ({
   return (
     <Card className="">
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row w-full">
-        <div className="flex flex-1 gap-1 px-4 items-center">
+        <div className="flex flex-1 flex-wrap gap-1 px-4 items-center">
           <PageHeaderDescription className="text-base">
             Showing
           </PageHeaderDescription>
@@ -158,7 +158,7 @@ const Page = (props: Props) => {
   return (
     <div>
       <div className="flex flex-col justify-center items-center">
-        <div className="w-full p-6">
+        <div className="w-full lg:p-6 p-2">
           {/* Header section */}
           <div className="flex justify-center">
             <div className="py-2 pl-2 w-full">
@@ -194,9 +194,9 @@ const Page = (props: Props) => {
           {/* main section */}
           <div>
             <div className="overflow-hidden rounded-[0.5rem] border bg-background shadow md:px-8 py-2">
-              <div className="flex items-center justify-between space-y-2">
+              <div className="flex items-center justify-between space-y-2 px-2">
                 <h2 className="text-2xl font-bold tracking-tight">Activity</h2>
-                <div className="flex items-center space-x-2">
+                <div className="md:flex items-center space-x-2 hidden">
                   <Link
                     className={cn(buttonVariants(), "gap-x-2 items-center")}
                     href={"/amm"}
@@ -208,10 +208,10 @@ const Page = (props: Props) => {
 
               <Tabs
                 defaultValue="liqudity"
-                className="space-y-4"
+                className="space-y-4 mt-4"
                 onValueChange={(val) => handleTabChange(val)}
               >
-                <TabsList>
+                <TabsList className="">
                   <TabsTrigger value="liqudity">liqudity</TabsTrigger>
                   <TabsTrigger value="staking">Staking</TabsTrigger>
                   <TabsTrigger value="loan">loans</TabsTrigger>

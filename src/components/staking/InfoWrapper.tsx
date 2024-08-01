@@ -29,7 +29,7 @@ export const InfoLabel = ({
       <Heading variant="h5">{value}</Heading>
     </div>
     {isSeperator && (
-      <div>
+      <div className="md:block hidden">
         <Separator orientation="vertical" />
       </div>
     )}
@@ -42,10 +42,10 @@ type InfoWrapperProps = {
 };
 export const InfoWrapper = ({ title, children }: InfoWrapperProps) => {
   return (
-    <Card className="border p-4">
+    <Card className="border p-4 w-full">
       <CardTitle className="text-xl">{title}</CardTitle>
-      <div className="mt-6">
-        <div className="flex gap-x-6">{children}</div>
+      <div className="mt-6 w-full">
+        <div className="md:flex gap-6 space-y-2 md:space-y-0 w-full">{children}</div>
       </div>
     </Card>
   );

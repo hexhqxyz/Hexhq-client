@@ -38,7 +38,7 @@ const Page = (props: Props) => {
   ];
 
   return (
-    <div className="w-5/12 space-y-2">
+    <div className="md:w-5/12 w-full space-y-2">
       <div className="mb-4">
         <div className="space-y-1 mb-2">
           <Heading variant="h3">
