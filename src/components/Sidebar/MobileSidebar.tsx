@@ -46,7 +46,9 @@ const MobileSidebar = (props: Props) => {
                   </Button>
                 </DrawerClose>
               </div>
-              <ConnectButton isMobile={true} />
+              <div onClick={() => setIsOpen(!isOpen)}>
+                <ConnectButton isMobile={true} />
+              </div>
             </DrawerHeader>
 
             <div className="flex flex-col h-full">
