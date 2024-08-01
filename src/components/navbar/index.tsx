@@ -6,6 +6,8 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
 import { Github, HomeIcon } from "lucide-react";
+import MobileSidebar from "../Sidebar/MobileSidebar";
+import SearchCommand from "./SearchCommand";
 
 type Props = {};
 
@@ -44,17 +46,9 @@ const Navbar = (props: Props) => {
         OmniDeFi
       </Link>
       <div className="lg:flex items-center gap-x-2 hidden">
-        {links?.map((item, index) => (
-          <Link
-            key={index}
-            className={cn(buttonVariants({ variant: "link", size: "sm" }))}
-            href={item.href}
-          >
-            {item.label}
-          </Link>
-        ))}
-      </div>
-      <div className="flex items-center gap-x-2">
+       <SearchCommand />
+       </div>
+      <div className="flex items-center">
         <ConnectButton />
         <Link
           href={"https://github.com/SachinCoder1/Omni-DeFi"}
@@ -64,6 +58,7 @@ const Navbar = (props: Props) => {
           <Github className="w-5 h-5" />
         </Link>
         <ThemeSwitcher />
+      <MobileSidebar />
       </div>
     </div>
   );

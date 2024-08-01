@@ -15,9 +15,12 @@ import {
   SquareMousePointerIcon,
   View,
   ViewIcon,
+  XIcon,
 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import { DrawerClose } from "../ui/drawer";
+import { Button } from "../ui/button";
 
 export const links = [
   {
@@ -109,7 +112,7 @@ type MenuLinkProps = {
   subLabel?: string;
   subLabelColor?: keyof typeof subLabelColors;
 };
-const MenuLink = ({
+export const MenuLink = ({
   href,
   icon,
   label,
@@ -139,12 +142,19 @@ const MenuLink = ({
   );
 };
 
-const MySidebar = (props: Props) => {
+type MySidebarProps = {};
+const MySidebar = (props: MySidebarProps) => {
   return (
     <div className="flex flex-col h-full">
       {/* <div className="flex items-center justify-center h-14 border-b pb-4">
         <div>Tokens - DTX and dUSD</div>
       </div> */}
+      {/* <DrawerClose>
+        <Button variant="ghost" size={"sm"}>
+          <XIcon className="w-5 h-5" />
+        </Button>
+      </DrawerClose> */}
+
       <div className="overflow-y-auto overflow-x-hidden flex-grow">
         <ul className="flex flex-col space-y-1">
           {links.map((item, index) => (

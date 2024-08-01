@@ -215,7 +215,6 @@ const Page = (props: Props) => {
                   <TabsTrigger value="liqudity">liqudity</TabsTrigger>
                   <TabsTrigger value="staking">Staking</TabsTrigger>
                   <TabsTrigger value="loan">loans</TabsTrigger>
-                  <TabsTrigger value="token">Tokens</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="liqudity">

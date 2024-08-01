@@ -7,6 +7,7 @@ import useInitializeWeb3 from "@/hooks/initialize-web3";
 import { Button } from "@/components/ui/button";
 import ScreenLoading from "@/components/ui/ScreenLoading";
 import ResizableMain from "@/components/ResizableMain";
+import MySidebar from "@/components/Sidebar/MySidebar";
 
 type Props = {
   children: React.ReactNode;
@@ -42,9 +43,15 @@ const Layout = ({ children }: Props) => {
   return (
     <div>
       <Suspense fallback={<ScreenLoading />}>
-        <ResizableMain>
-          <div className="">{children}</div>
-        </ResizableMain>
+        <div className="lg:block hidden">
+          <ResizableMain>
+            <div className="">{children}</div>
+          </ResizableMain>
+        </div>
+        <div className="lg:hidden block">
+          {/* <MySidebar /> */}
+            <div className="">{children}</div>
+        </div>
       </Suspense>
     </div>
   );
