@@ -7,7 +7,7 @@ type Props = {};
 const AMM = (props: Props) => {
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="grid grid-cols-2 w-11/12 justify-center gap-8 ">
+      <div className="grid grid-cols-2 justify-center gap-8 ">
         <div className="min-w-max h-full">
           <VolumeChart />
         </div>

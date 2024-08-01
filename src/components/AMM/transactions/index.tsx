@@ -14,11 +14,11 @@ const AmmTransactions = (props: Props) => {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="w-11/12">
+      <div className="w-full">
         <Card className="">
           <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row w-full">
             <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-4">
-              <CardTitle>Transactions</CardTitle>
+              <CardTitle id="amm-transactions">Transactions</CardTitle>
             </div>
             <div className="flex px-2">
               <ToggleGroup
@@ -36,7 +36,7 @@ const AmmTransactions = (props: Props) => {
             </div>
           </CardHeader>
 
-          <CardContent className="p-0">
+          <CardContent className="p-0" >
             {selectedType === "swap" && <TransactionTable type={"swap"} />}
             {selectedType === "add" && <TransactionTable type={"add"} />}
             {selectedType === "remove" && <TransactionTable type={"remove"} />}
