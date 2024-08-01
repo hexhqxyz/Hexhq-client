@@ -60,7 +60,9 @@ const Navbar = (props: Props) => {
         <div className="lg:hidden">
           <MobileSidebar />
         </div>
-        <LaunchApp />
+        <div className="md:block hidden">
+          <LaunchApp />
+        </div>
       </div>
     </div>
   );
