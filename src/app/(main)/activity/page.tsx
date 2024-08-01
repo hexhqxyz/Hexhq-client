@@ -1,6 +1,5 @@
 "use client";
 
-import TransactionTable from "@/components/AMM/transactions/TransactionTable";
 import {
   PageActions,
   PageHeader,
@@ -8,24 +7,18 @@ import {
   PageHeaderHeading,
 } from "@/components/page-header";
 import { buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn, shortenString } from "@/lib/utils";
-import { ActivityIcon, PlusCircleIcon, Search } from "lucide-react";
+import { ActivityIcon } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { useWeb3Store } from "@/store/signer-provider-store";
 import { Badge } from "@/components/ui/badge";
+import LiquidityTable from "@/components/AMM/transactions/LiquidityTable";
+import StakingTable from "@/components/activity/StakingActivity";
 
 const liquidityLabels = [
   {
@@ -48,7 +41,7 @@ const stakingLabels = [
   },
   {
     label: "Withdrawn",
-    value: "withdraw",
+    value: "unstake",
   },
   {
     label: "Rewards claimed",
@@ -234,13 +227,13 @@ const Page = (props: Props) => {
                     toggleValue={selectedType}
                   >
                     {selectedType === "swap" && (
-                      <TransactionTable type={"swap"} address={address} />
+                      <LiquidityTable type={"swap"} address={address} />
                     )}
                     {selectedType === "add" && (
-                      <TransactionTable type={"add"} address={address} />
+                      <LiquidityTable type={"add"} address={address} />
                     )}
                     {selectedType === "remove" && (
-                      <TransactionTable type={"remove"} address={address} />
+                      <LiquidityTable type={"remove"} address={address} />
                     )}
                   </TabsContentWrapper>
                 </TabsContent>
@@ -255,7 +248,15 @@ const Page = (props: Props) => {
                     toggleLabels={stakingLabels}
                     toggleValue={selectedType}
                   >
-                    staking
+                    {selectedType === "stake" && (
+                      <StakingTable type={"stake"} address={address} />
+                    )}
+                    {selectedType === "unstake" && (
+                      <StakingTable type={"unstake"} address={address} />
+                    )}
+                    {selectedType === "reward" && (
+                      <StakingTable type={"reward"} address={address} />
+                    )}
                   </TabsContentWrapper>
                 </TabsContent>
 
@@ -269,7 +270,12 @@ const Page = (props: Props) => {
                     toggleLabels={loanLabels}
                     toggleValue={selectedType}
                   >
-                    Loan
+                    {selectedType === "loan" && (
+                      <StakingTable type={"loanTaken"} address={address} />
+                    )}
+                    {selectedType === "repay" && (
+                      <StakingTable type={"loanRepaid"} address={address} />
+                    )}
                   </TabsContentWrapper>
                 </TabsContent>
 

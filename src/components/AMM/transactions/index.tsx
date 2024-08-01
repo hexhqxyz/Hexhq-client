@@ -3,9 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import React, { useEffect, useState } from "react";
-import SwapTable from "./SwapTable";
-import AddTable from "./AddTable";
-import TransactionTable from "./TransactionTable";
+import LiquidityTable from "./LiquidityTable";
 
 type Props = {};
 
@@ -37,9 +35,9 @@ const AmmTransactions = (props: Props) => {
           </CardHeader>
 
           <CardContent className="p-0" >
-            {selectedType === "swap" && <TransactionTable type={"swap"} />}
-            {selectedType === "add" && <TransactionTable type={"add"} />}
-            {selectedType === "remove" && <TransactionTable type={"remove"} />}
+            {selectedType === "swap" && <LiquidityTable type={"swap"} />}
+            {selectedType === "add" && <LiquidityTable type={"add"} />}
+            {selectedType === "remove" && <LiquidityTable type={"remove"} />}
           </CardContent>
         </Card>
       </div>

@@ -2,40 +2,23 @@
 
 import React, { useState } from "react";
 import { useQuery } from "@apollo/client";
-import { TableCell, TableRow } from "@/components/ui/table";
+import { ReuseTable, TableCell, TableCellLink, TableCellWithToken, TableLoadingScreen, TableRow } from "@/components/ui/table";
 import moment from "moment";
 import {
   GET_SWAP_DATA,
   GET_ADD_LIQUIDITY_DATA,
   GET_REMOVE_LIQUIDITY_DATA,
 } from "@/lib/services/graphql/queries";
-import { cn, formatNumber, shortenString } from "@/lib/utils";
-import { ethers } from "ethers";
+import { shortenString } from "@/lib/utils";
 import { ArrowDown, InfoIcon } from "lucide-react";
-import Link from "next/link";
 import { LinkToken } from "./Token";
-import ReuseTable from "./ReuseTable";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   BLOCK_EXPLORER_LINK,
   REWARD_TOKEN_ADDRESS,
   STAKING_TOKEN_CONTRACT_ADDRESS,
 } from "@/lib/constants";
 import { Heading } from "@/components/ui/Typography";
-import { Skeleton } from "@/components/ui/skeleton";
-
-const LoadingScreen = () => (
-  <div className="flex flex-col space-y-3 p-4">
-    <Skeleton className="h-16 rounded-xl" />
-    <div className="space-y-4">
-      {Array(10)
-        .fill(0)
-        .map((item, index) => (
-          <Skeleton key={index} className="h-10" />
-        ))}
-    </div>
-  </div>
-);
 
 const transactionTypes = {
   swap: GET_SWAP_DATA,
@@ -68,38 +51,6 @@ const liquidityLabels = [
   labels[4],
   labels[5],
 ];
-
-const TableCellLink = ({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) => (
-  <Link
-    className={cn(
-      buttonVariants({ variant: "link", size: "sm" }),
-      "text-muted-foreground p-0 m-0"
-    )}
-    target="_blank"
-    href={href}
-  >
-    {children}
-  </Link>
-);
-
-const TableCellWithToken = ({
-  amount,
-  tokenAddress,
-}: {
-  amount: string;
-  tokenAddress: string;
-}) => (
-  <div className="flex items-center gap-x-2 text-base">
-    {formatNumber(ethers.formatUnits(amount))}{" "}
-    <LinkToken address={tokenAddress} />
-  </div>
-);
 
 const renderTableRow = (
   transaction: any,
@@ -155,7 +106,7 @@ const renderTableRow = (
   </TableRow>
 );
 
-export default function TransactionTable({
+export default function LiquidityTable({
   type,
   address,
 }: {
@@ -175,7 +126,7 @@ export default function TransactionTable({
     variables: { first: PER_PAGE, skip: page * PER_PAGE, address: address || "" },
   });
     console.log("data:", data);
-  if (loading) return <LoadingScreen />;
+  if (loading) return <TableLoadingScreen />;
   if (error) return <p>Error: {error.message}</p>;
   if (!data || !data[key]?.length)
     return (

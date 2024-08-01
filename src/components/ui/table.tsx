@@ -1,6 +1,11 @@
 import * as React from "react"
 
-import { cn } from "@/lib/utils"
+import { cn, formatNumber } from "@/lib/utils"
+import Link from "next/link"
+import { buttonVariants } from "./button"
+import { ethers } from "ethers"
+import { LinkToken } from "../AMM/transactions/Token"
+import { Skeleton } from "./skeleton"
 
 const Table = React.forwardRef<
   HTMLTableElement,
@@ -105,6 +110,81 @@ const TableCaption = React.forwardRef<
 ))
 TableCaption.displayName = "TableCaption"
 
+
+
+//  Custom Table reusable components --------------------------
+
+
+const TableLoadingScreen = ({limit=10}) => (
+  <div className="flex flex-col space-y-3 p-4">
+    <Skeleton className="h-16 rounded-xl" />
+    <div className="space-y-4">
+      {Array(limit)
+        .fill(0)
+        .map((item, index) => (
+          <Skeleton key={index} className="h-10" />
+        ))}
+    </div>
+  </div>
+);
+
+
+
+const TableCellLink = ({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) => (
+  <Link
+    className={cn(
+      buttonVariants({ variant: "link", size: "sm" }),
+      "text-muted-foreground p-0 m-0"
+    )}
+    target="_blank"
+    href={href}
+  >
+    {children}
+  </Link>
+);
+
+const TableCellWithToken = ({
+  amount,
+  tokenAddress,
+}: {
+  amount: string;
+  tokenAddress: string;
+}) => (
+  <div className="flex items-center gap-x-2 text-base">
+    {formatNumber(ethers.formatUnits(amount))}{" "}
+    <LinkToken address={tokenAddress} />
+  </div>
+);
+
+type ReuseTableProps = {
+  labels: { name: React.ReactNode; className?: string }[];
+  children: React.ReactNode;
+};
+const ReuseTable = ({ labels, children }: ReuseTableProps) => {
+  return (
+    <div className="w-full">
+      <Table className="w-full">
+        <TableHeader>
+          <TableRow>
+            {labels?.map((item, index) => (
+              <TableHead key={index} className={cn(item.className)}>
+                {item.name}
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>{children}</TableBody>
+      </Table>
+    </div>
+  );
+};
+
 export {
   Table,
   TableHeader,
@@ -114,4 +194,11 @@ export {
   TableRow,
   TableCell,
   TableCaption,
+
+  // custom
+  TableLoadingScreen,
+  TableCellWithToken,
+  TableCellLink,
+  ReuseTable,
+
 }
