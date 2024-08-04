@@ -20,6 +20,7 @@ import { useStakingStore } from "@/store/staking-store";
 import { decodeStakingError } from "@/lib/decodeError";
 import { useTokenStore } from "@/store/token-store";
 import { STAKING_ADDRESS } from "@/lib/constants";
+import { fireConfetti } from "@/lib/utils/confetti";
 
 type Props = {};
 
@@ -103,6 +104,7 @@ const StakeAmount = (props: Props) => {
       });
 
       setIsLoading(false);
+      fireConfetti();
       reset();
       setDebouncedValue("");
       setAvailableStakingTokenBalance();

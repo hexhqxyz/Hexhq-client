@@ -67,29 +67,53 @@ const RemoveLiquidity = (props: Props) => {
 
   const handleRemoveLiquidity = async () => {
     if (!ammContract || !stakingTokenContract || !rewardTokenContract) return;
-    if(debouncedSliderValue <= 0){
-        toast.error("Please use slider or select from presets to set percentage of the amount you wish to remove")
-        return;
+    if (debouncedSliderValue <= 0) {
+      toast.error(
+        "Please use slider or select from presets to set percentage of the amount you wish to remove"
+      );
+      return;
     }
     setIsLoading(true);
 
     try {
       const userLiquidity = await ammContract.liquidity(address);
-      console.log("user liquidity:", userLiquidity)
-      if(userLiquidity <= 0) return;
+      console.log("user liquidity:", userLiquidity);
+      if (userLiquidity <= 0) {
+        setIsLoading(false);
+        toast.info("Insufficient liquidity")
+        return;
+      }
 
       const formattedUserLiquidity = ethers.formatUnits(userLiquidity, 18);
-      if(Math.round(parseFloat(formattedUserLiquidity)) <= 0) {
-        console.log("Math.round(parseFloat(formattedUserLiquidity))", Math.round(parseFloat(formattedUserLiquidity)))
-        toast.error("No liquidity found. Please liquidiate some amount first")
+      console.log("formatted liquidity:", formattedUserLiquidity)
+      if (Math.round(parseFloat(formattedUserLiquidity)) <= 0) {
+        toast.error("No liquidity found. Please liquidiate some amount first");
         setIsLoading(false);
         return;
       }
-      console.log("formatted user liquidity:", formattedUserLiquidity)
+      if(parseFloat(formattedUserLiquidity) <= 0) {
+        toast.info("Insufficient liquidity")
+        setIsLoading(false);
+        return;
+      }
+      console.log("formatted user liquidity:", formattedUserLiquidity);
 
+      let liquidityToRemove;
+      if (debouncedSliderValue === 100) {
+        liquidityToRemove = userLiquidity;
+      } else {
+        const percentToRemove =
+          (parseFloat(formattedUserLiquidity) * debouncedSliderValue) / 100;
+        liquidityToRemove = ethers
+          .parseUnits(percentToRemove.toString(), 18)
+          .toString();
+      }
+      console.log(
+        "amount to remove:",
+        ethers.formatUnits(liquidityToRemove, 18)
+      );
+      console.log("amount to remove:", liquidityToRemove);
 
-      const liquidityToRemove =
-        (parseFloat(formattedUserLiquidity) * debouncedSliderValue) / 100;
       console.log("amount to remove:", liquidityToRemove);
 
       const maxFeePerGas = ethers.parseUnits("100", "gwei"); // 100 gwei
@@ -98,7 +122,7 @@ const RemoveLiquidity = (props: Props) => {
         .toString();
 
       const liquidityTx = await ammContract
-        .removeLiquidity(amountToSend, {
+        .removeLiquidity(liquidityToRemove, {
           maxFeePerGas: maxFeePerGas,
         })
         .then((data) => data)
@@ -110,7 +134,7 @@ const RemoveLiquidity = (props: Props) => {
             description: parsedError.description || "",
           });
           toast.dismiss(toastId);
-          throw new Error("");
+          throw new Error("CustomError");
         });
 
       let toastId = toast.loading(
@@ -133,13 +157,19 @@ const RemoveLiquidity = (props: Props) => {
       setAvailableStakingTokenBalance();
       setSliderValue(0);
       setDebouncedSliderValue(0);
-    } catch (error) {}
+    } catch (error:any) {
+      console.log("error:", error)
+      if (error === "CustomError" || error?.message === "CustomError") {
+      } else {
+        toast.dismiss();
+      }
+      setIsLoading(false);
+    }
 
-    setIsLoading(false);
   };
 
   useEffect(() => {
-    if(!debouncedSliderValue)return;
+    if (!debouncedSliderValue) return;
     getReceivableAmount(debouncedSliderValue);
   }, [debouncedSliderValue]);
 
@@ -191,7 +221,7 @@ const RemoveLiquidity = (props: Props) => {
             label={
               <Heading className="text-primary">
                 {debouncedSliderValue > 0
-                  ? `~${formatNumber(receivableDtx,false, 4)}`
+                  ? `~${formatNumber(receivableDtx, false, 4)}`
                   : "-"}
               </Heading>
             }
@@ -213,7 +243,7 @@ const RemoveLiquidity = (props: Props) => {
             label={
               <Heading className="text-primary">
                 {debouncedSliderValue > 0
-                  ? `~${formatNumber(receivableDusd,false, 2)}`
+                  ? `~${formatNumber(receivableDusd, false, 2)}`
                   : "-"}
               </Heading>
             }

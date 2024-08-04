@@ -24,6 +24,7 @@ import { ethers, TransactionReceipt } from "ethers";
 import { formatNumber } from "@/lib/utils";
 import { toast } from "sonner";
 import { decodeAmmError } from "@/lib/decodeError";
+import { fireConfetti } from "@/lib/utils/confetti";
 
 type Props = {};
 
@@ -271,6 +272,7 @@ const ProvideLiquidity = (props: Props) => {
         id: toastId,
       });
       setIsLoading(false);
+      fireConfetti();
       reset();
       setAvailableStakingTokenBalance();
       

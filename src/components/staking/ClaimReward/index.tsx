@@ -19,6 +19,7 @@ import {
 
 import { useStakingStore } from "@/store/staking-store";
 import { decodeStakingError } from "@/lib/decodeError";
+import { fireConfetti } from "@/lib/utils/confetti";
 
 export default function ClaimReward() {
   const [open, setOpen] = React.useState(false);
@@ -50,6 +51,7 @@ export default function ClaimReward() {
         id: toastId,
       });
 
+      fireConfetti();
       setOpen(false);
     } catch (error) {
       console.log("error:", error);

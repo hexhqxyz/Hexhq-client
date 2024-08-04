@@ -25,6 +25,7 @@ import { decodeAmmError } from "@/lib/decodeError";
 import { formatNumber } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { fireConfetti } from "@/lib/utils/confetti";
 
 type Props = {};
 
@@ -164,6 +165,7 @@ const Swap = (props: Props) => {
         id: toastId,
       });
       setIsLoading(false);
+      fireConfetti();
       reset();
       setAvailableStakingTokenBalance();
       setCurrentTokenPrices();
