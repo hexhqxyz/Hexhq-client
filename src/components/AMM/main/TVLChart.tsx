@@ -149,13 +149,13 @@ export function TVLChart() {
             <div className="flex items-center gap-2 font-medium leading-none">
               {trend.isUp ? (
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="h-8 w-8 text-green-500" /> TVL up by +
+                  <TrendingUp className="h-8 w-8 text-green-500" /> TVL up by{" "}
                   {trend.percentage.toFixed(2)}%
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
                   <TrendingDown className="h-8 w-8 text-destructive" /> TVL down
-                  by -{trend.percentage.toFixed(2)}% today
+                  by {trend.percentage.toFixed(2)}% today
                 </div>
               )}
             </div>

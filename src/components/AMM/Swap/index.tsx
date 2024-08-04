@@ -394,7 +394,7 @@ const Swap = (props: Props) => {
           <LabelValueRow
             label="Network cost"
             value={`$${formatNumber(estimatedGasFees)}`}
-            tooltip="The maximum price movement before your transaction will revert."
+            tooltip="The network cost that will occur to complete the transaction onchain."
           />
         </div>
       </div>

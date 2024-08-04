@@ -143,13 +143,13 @@ export default function VolumeChart() {
             <div className="flex items-center gap-2 font-medium leading-none">
               {trend.isUp ? (
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="h-8 w-8 text-green-500" /> Volume up by
-                  +{trend.percentage.toFixed(2)}%
+                  <TrendingUp className="h-8 w-8 text-green-500" /> Volume up by {" "}
+                   {trend.percentage.toFixed(2)}%
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
                   <TrendingDown className="h-8 w-8 text-destructive" /> Volume
-                  down by -{trend.percentage.toFixed(2)}% today
+                  down by {trend.percentage.toFixed(2)}% today
                 </div>
               )}
             </div>
@@ -161,7 +161,7 @@ export default function VolumeChart() {
                 ),
                 "MMMM dd, yyyy"
               )}
-              - {format(new Date(), "MMMM dd, yyyy")}
+               {format(new Date(), "MMMM dd, yyyy")}
             </div>
           </div>
         </div>

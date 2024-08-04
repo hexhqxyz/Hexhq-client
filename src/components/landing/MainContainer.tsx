@@ -19,7 +19,7 @@ export function HeroScrollDemo() {
         }
       >
         <Image
-          src={`/01_platform.png`}
+          src={`/platform_screenshots/01_platform.png`}
           alt="hero"
           height={720}
           width={1400}
@@ -27,7 +27,7 @@ export function HeroScrollDemo() {
           draggable={false}
         />
         <Image
-          src={`/02_platform_trade.png`}
+          src={`/platform_screenshots/02_platform_trade.png`}
           alt="hero"
           height={720}
           width={1400}
