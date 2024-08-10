@@ -13,7 +13,7 @@ import { useAmmStore } from "@/store/amm-store";
 import { formatNumber, formatNumberSmall } from "@/lib/utils";
 import { ArrowDown } from "lucide-react";
 import { useWeb3Store } from "@/store/signer-provider-store";
-import { AMM_CONTRACT_ADDRESS } from "@/lib/constants";
+import { AMM_CONTRACT_ADDRESS, BLOCK_EXPLORER } from "@/lib/constants";
 import { ethers, TransactionReceipt } from "ethers";
 import { toast } from "sonner";
 import { decodeAmmError } from "@/lib/decodeError";
@@ -148,7 +148,7 @@ const RemoveLiquidity = (props: Props) => {
         action: {
           label: "See Tx",
           onClick: () => {
-            window.open(`https://sepolia.etherscan.io/tx/${receipt.hash}`);
+            window.open(`${BLOCK_EXPLORER}/tx/${receipt.hash}`);
           },
         },
         id: toastId,

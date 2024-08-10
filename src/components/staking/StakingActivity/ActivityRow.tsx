@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { ethers } from "ethers";
 import { formatNumber, shortenString } from "@/lib/utils";
 import Link from "next/link";
+import { BLOCK_EXPLORER } from "@/lib/constants";
 
 type Activity = {
   type: "Staked" | "Withdrawn" | "RewardsClaimed";
@@ -53,7 +54,7 @@ const ActivityRow = ({ activity }: Props) => {
   const formattedAmount = activity.amount
     ? ethers.formatUnits(activity.amount, 18)
     : "0";
-  const etherscanLink = `https://etherscan.io/tx/${activity.transactionHash}`;
+  const etherscanLink = `${BLOCK_EXPLORER}/tx/${activity.transactionHash}`;
 
 
   return (

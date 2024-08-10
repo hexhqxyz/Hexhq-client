@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { Heading } from "../ui/Typography";
 
 import {
+  BLOCK_EXPLORER,
   STAKING_ADDRESS,
 } from "@/lib/constants";
 import { defaultError } from "@/lib/errors";
@@ -68,7 +69,7 @@ const ApproveToken = (props: Props) => {
         action: {
           label: "See Tx",
           onClick: () => {
-            window.open(`https://sepolia.etherscan.io/tx/${receipt?.hash}`);
+            window.open(`${BLOCK_EXPLORER}/tx/${receipt?.hash}`);
           },
         },
         id: toastId,

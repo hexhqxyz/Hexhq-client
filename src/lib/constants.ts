@@ -4,4 +4,4 @@ export const STAKING_ADDRESS = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 export const FAUCET_CONTRACT_ADDRESS = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
 export const AMM_CONTRACT_ADDRESS = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
 
-export const BLOCK_EXPLORER_LINK = "https://www.sepolia.etherscan.io";
+export const BLOCK_EXPLORER = "https://www.sepolia.etherscan.io";

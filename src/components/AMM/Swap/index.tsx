@@ -12,6 +12,7 @@ import { TOKEN_TYPE } from "@/lib/types";
 import { useAmmStore } from "@/store/amm-store";
 import {
   AMM_CONTRACT_ADDRESS,
+  BLOCK_EXPLORER,
   REWARD_TOKEN_ADDRESS,
   STAKING_TOKEN_CONTRACT_ADDRESS,
 } from "@/lib/constants";
@@ -159,7 +160,7 @@ const Swap = (props: Props) => {
         action: {
           label: "See Tx",
           onClick: () => {
-            window.open(`https://sepolia.etherscan.io/tx/${receipt.hash}`);
+            window.open(`${BLOCK_EXPLORER}/tx/${receipt.hash}`);
           },
         },
         id: toastId,

@@ -8,6 +8,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { getCurrency } from "./ActivityRow";
 
 import { cn } from "@/lib/utils";
+import { BLOCK_EXPLORER } from "@/lib/constants";
 
 type Activity = {
   type: "Staked" | "Withdrawn" | "RewardsClaimed";
@@ -31,8 +32,8 @@ const ActivityDetails = ({ activity }: Props) => {
     ? ethers.formatUnits(activity.amount, 18)
     : "0";
 
-  const etherscanLink = `https://etherscan.io/tx/${activity.transactionHash}`;
-  const etherscanBlockLink = `https://etherscan.io/block/${activity.blockNumber}`;
+  const etherscanLink = `${BLOCK_EXPLORER}/tx/${activity.transactionHash}`;
+  const etherscanBlockLink = `${BLOCK_EXPLORER}/block/${activity.blockNumber}`;
 
   return (
     <div className="">

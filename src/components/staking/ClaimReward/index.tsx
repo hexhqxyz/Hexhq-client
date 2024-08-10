@@ -20,6 +20,7 @@ import {
 import { useStakingStore } from "@/store/staking-store";
 import { decodeStakingError } from "@/lib/decodeError";
 import { fireConfetti } from "@/lib/utils/confetti";
+import { BLOCK_EXPLORER } from "@/lib/constants";
 
 export default function ClaimReward() {
   const [open, setOpen] = React.useState(false);
@@ -45,7 +46,7 @@ export default function ClaimReward() {
         action: {
           label: "See Tx",
           onClick: () => {
-            window.open(`https://sepolia.etherscan.io/tx/${receipt?.hash}`);
+            window.open(`${BLOCK_EXPLORER}/tx/${receipt?.hash}`);
           },
         },
         id: toastId,

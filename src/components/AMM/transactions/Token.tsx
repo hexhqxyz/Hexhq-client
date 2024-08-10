@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { STAKING_TOKEN_CONTRACT_ADDRESS, REWARD_TOKEN_ADDRESS } from "@/lib/constants";
+import { STAKING_TOKEN_CONTRACT_ADDRESS, REWARD_TOKEN_ADDRESS, BLOCK_EXPLORER } from "@/lib/constants";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -45,7 +45,7 @@ export const LinkToken = ({ address }: { address: string }) => {
   return (
     <Link
       className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "p-1")}
-      href={`https://sepolia.etherscan.io/token/${address}`}
+      href={`${BLOCK_EXPLORER}/token/${address}`}
       target="_blank"
     >
       <Token address={address} />

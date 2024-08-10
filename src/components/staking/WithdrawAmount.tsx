@@ -17,6 +17,7 @@ import { useStakingStore } from "@/store/staking-store";
 import { ApproveTokenSchema } from "@/lib/zod-validation";
 import { formatNumber } from "@/lib/utils";
 import { decodeStakingError } from "@/lib/decodeError";
+import { BLOCK_EXPLORER } from "@/lib/constants";
 
 type Props = {};
 
@@ -76,7 +77,7 @@ const WithdrawAmount = (props: Props) => {
         action: {
           label: "See Tx",
           onClick: () => {
-            window.open(`https://sepolia.etherscan.io/tx/${receipt?.hash}`);
+            window.open(`${BLOCK_EXPLORER}/tx/${receipt?.hash}`);
           },
         },
         id: toastId,

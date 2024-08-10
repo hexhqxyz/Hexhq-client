@@ -19,7 +19,7 @@ import { useWeb3Store } from "@/store/signer-provider-store";
 import { useStakingStore } from "@/store/staking-store";
 import { decodeStakingError } from "@/lib/decodeError";
 import { useTokenStore } from "@/store/token-store";
-import { STAKING_ADDRESS } from "@/lib/constants";
+import { BLOCK_EXPLORER, STAKING_ADDRESS } from "@/lib/constants";
 import { fireConfetti } from "@/lib/utils/confetti";
 
 type Props = {};
@@ -97,7 +97,7 @@ const StakeAmount = (props: Props) => {
         action: {
           label: "See Tx",
           onClick: () => {
-            window.open(`https://sepolia.etherscan.io/tx/${receipt?.hash}`);
+            window.open(`${BLOCK_EXPLORER}/tx/${receipt?.hash}`);
           },
         },
         id: toastId,

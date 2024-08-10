@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { Contract, ethers, TransactionReceipt } from "ethers";
 import { useWeb3Store } from "@/store/signer-provider-store";
-import { FAUCET_CONTRACT_ADDRESS } from "@/lib/constants";
+import { BLOCK_EXPLORER, FAUCET_CONTRACT_ADDRESS } from "@/lib/constants";
 import { toast } from "sonner";
 import { decodeFaucetError } from "@/lib/decodeError";
 
@@ -48,7 +48,7 @@ const Faucet = (props: Props) => {
           label: "See Tx",
           onClick: () => {
             window.open(
-              `https://sepolia.etherscan.io/tx/${receipt?.hash}`
+              `${BLOCK_EXPLORER}/tx/${receipt?.hash}`
             );
           },
         },
