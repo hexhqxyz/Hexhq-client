@@ -14,7 +14,7 @@ import { ArrowDown, InfoIcon } from "lucide-react";
 import { LinkToken } from "./Token";
 import { Button } from "@/components/ui/button";
 import {
-  BLOCK_EXPLORER_LINK,
+  BLOCK_EXPLORER,
   REWARD_TOKEN_ADDRESS,
   STAKING_TOKEN_CONTRACT_ADDRESS,
 } from "@/lib/constants";
@@ -91,14 +91,14 @@ const renderTableRow = (
     </TableCell>
     <TableCell>
       <TableCellLink
-        href={`${BLOCK_EXPLORER_LINK}/tx/${transaction.transactionHash}`}
+        href={`${BLOCK_EXPLORER}/tx/${transaction.transactionHash}`}
       >
         {shortenString(transaction.transactionHash)}
       </TableCellLink>
     </TableCell>
     <TableCell className="font-medium text-right">
       <TableCellLink
-        href={`${BLOCK_EXPLORER_LINK}/tx/${transaction.transactionHash}`}
+        href={`${BLOCK_EXPLORER}/tx/${transaction.transactionHash}`}
       >
         {moment(new Date(transaction.blockTimestamp * 1000)).fromNow()}
       </TableCellLink>
