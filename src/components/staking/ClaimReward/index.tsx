@@ -39,7 +39,6 @@ export default function ClaimReward() {
       );
 
       const receipt: TransactionReceipt = await tx.wait();
-      console.log("receipt:", receipt);
       toast.success("Successfully Claimed reward!", {
         description:
           "Your dUSD tokens have been successfully sent to your wallet address",
@@ -55,7 +54,6 @@ export default function ClaimReward() {
       fireConfetti();
       setOpen(false);
     } catch (error) {
-      console.log("error:", error);
       toast.dismiss();
       const parsedError = await decodeStakingError(error);
       toast.error(parsedError.title, {

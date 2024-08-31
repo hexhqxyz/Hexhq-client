@@ -1,5 +1,6 @@
 import React from "react";
 import dynamic from "next/dynamic";
+import { BackgroundBeamsWithCollision } from "../ui/animations/background-beams-with-collision";
 
 const DynamicSpotlightPreview = dynamic(
   () => import("./Spotlight").then((mod) => mod.SpotlightPreview),
@@ -36,20 +37,13 @@ const DynamicVortexDemo = dynamic(
   }
 );
 
-const DynamicProudlyUsed = dynamic(
-  () => import("./ProudlyUsed").then((mod) => mod.ProudlyUsed),
-  {
-    loading: () => <p>Loading Proudly Used...</p>,
-  }
-);
 
 type Props = {};
 
 const LandingMain = (props: Props) => {
   return (
     <div className="w-full">
-      <DynamicSpotlightPreview />
-      <DynamicProudlyUsed />
+        <DynamicSpotlightPreview />
       <DynamicHeroScrollDemo />
       <DynamicAppleCardsCarouselDemo />
       <DynamicVortexDemo />

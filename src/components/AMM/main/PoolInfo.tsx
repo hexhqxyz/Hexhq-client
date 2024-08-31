@@ -24,7 +24,6 @@ const PoolInfo = (props: Props) => {
   });
 
   const getMyLiquidity = async () => {
-    console.log("here...");
     if (!ammContract) return;
     try {
       const info = await ammContract.getUserLiquidity(address);
@@ -48,7 +47,6 @@ const PoolInfo = (props: Props) => {
         poolShare: poolShare.toFixed(2),
       });
     } catch (error) {
-      console.log("error:", error);
     }
   };
 

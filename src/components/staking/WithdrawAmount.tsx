@@ -55,7 +55,6 @@ const WithdrawAmount = (props: Props) => {
     if (!stakingContract) return;
 
     try {
-      console.log("data:", data);
       setIsLoading(true);
 
       const amountToStake = ethers.parseUnits(data.amount, 18).toString();
@@ -68,10 +67,7 @@ const WithdrawAmount = (props: Props) => {
         "Your ATX is being withdrawn! This may take a few moments"
       );
 
-      console.log("tx:", tx);
-
       const receipt: TransactionReceipt = await tx.wait();
-      console.log("receipt:", receipt);
       toast.success("Successfully Withdrawn!", {
         description: "Your ATX tokens have been successfully withdrawn",
         action: {
@@ -95,7 +91,6 @@ const WithdrawAmount = (props: Props) => {
       });
 
       setIsLoading(false);
-      console.log("error:", error);
     }
   });
 

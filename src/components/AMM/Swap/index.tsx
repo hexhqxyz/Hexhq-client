@@ -107,7 +107,6 @@ const Swap = (props: Props) => {
     if (!ammContract || !stakingTokenContract || !rewardTokenContract) return;
     setIsLoading(true);
     try {
-      console.log("data:", data);
 
       const maxFeePerGas = ethers.parseUnits("100", "gwei"); // 100 gwei
       const amountToSend = ethers.parseUnits(data.fromAmount, 18).toString();
@@ -145,7 +144,6 @@ const Swap = (props: Props) => {
       });
 
       const approveReceipt: TransactionReceipt = await approveTx?.wait();
-      console.log("approve receipt", approveReceipt);
 
       const swapTx = await ammContract.swap(
         tokenIn,
@@ -179,7 +177,6 @@ const Swap = (props: Props) => {
     } catch (error) {
       toast.dismiss();
       setIsLoading(false);
-      console.log("error:", error);
       const parsedError = await decodeAmmError(error);
       toast.error(parsedError.title, {
         description: parsedError.description || "",
@@ -246,7 +243,6 @@ const Swap = (props: Props) => {
       );
       setEstimatedGasFees("0.24");
     } catch (error) {
-      console.log("error in swap details..", error);
     }
   };
 

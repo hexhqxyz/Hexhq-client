@@ -61,11 +61,8 @@ export const useStakingStore = create<State & Action>((set, get) => ({
       
       const totalStaked = await stakingContract.totalStakedTokens();
       const totalBorrowed = await stakingContract.totalBorrowedAmount();
-      // console.log("total staked.........", totalStaked)
       const lastUpdated = await stakingContract.lastUpdateTime();
       const interestRate = await stakingContract.interestRate();
-      console.log("here...", )
-      console.log("interest rate.............", interestRate);
 
       set({
         stakingDetails: {
@@ -76,7 +73,6 @@ export const useStakingStore = create<State & Action>((set, get) => ({
         },
       });
     } catch (error) {
-      console.log("Error fetching staking details: ", error);
     }
   },
   setUserDetails: async () => {
@@ -105,7 +101,6 @@ export const useStakingStore = create<State & Action>((set, get) => ({
         },
       });
     } catch (error) {
-      console.log("Error fetching user details: ", error);
     }
   },
   setTotalRewardsEarned: (amount) => set({ totalRewardsEarned: amount }),
@@ -118,7 +113,6 @@ export const useStakingStore = create<State & Action>((set, get) => ({
       const amount = ethers.formatUnits(stakedBalance, 18);
       set({ totalStakedAmount: amount });
     } catch (error) {
-      console.log("error occured........", error);
     }
   },
   setTotalBorrowedAmount: async () => {
@@ -130,7 +124,6 @@ export const useStakingStore = create<State & Action>((set, get) => ({
       const amount = ethers.formatUnits(stakedBalance, 18);
       set({ totalBorrowedAmount: amount });
     } catch (error) {
-      console.log("error occured........", error);
     }
   },
 

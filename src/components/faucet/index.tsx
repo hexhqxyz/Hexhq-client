@@ -39,7 +39,6 @@ const Faucet = (props: Props) => {
         "Your ATX faucet tokens are on the way! This may take a few moments"
       );
       const receipt: TransactionReceipt = await tx.wait();
-      console.log("receipt:", receipt)
 
       toast.success("Tokens Received!", {
         description:
@@ -58,7 +57,6 @@ const Faucet = (props: Props) => {
       setLoading(false);
     } catch (error) {
       toast.dismiss();
-      console.log("error:", error);
       const parsedError = await decodeFaucetError(error);
       toast.error(parsedError.title, {
         description: parsedError.description,

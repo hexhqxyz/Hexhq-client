@@ -69,7 +69,6 @@ export const processDataCurrent = (rawData: any, compareKey: string) => {
 
     return calculateTrend(todayData, yesterdayData, compareKey);
   } catch (error) {
-    console.log("err:", error);
     return { isUp: true, percentage: 0 };
   }
 };

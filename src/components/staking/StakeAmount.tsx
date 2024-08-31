@@ -67,7 +67,6 @@ const StakeAmount = (props: Props) => {
     }
     if (!stakingContract || !stakingTokenContract) return;
     try {
-      console.log("data:", data);
       setIsLoading(true);
 
       const amountToStake = ethers.parseUnits(data.amount, 18).toString();
@@ -88,7 +87,6 @@ const StakeAmount = (props: Props) => {
       });
 
       const approveReceipt: TransactionReceipt = await approveTx.wait();
-      console.log("approve receipt", approveReceipt);
 
       const tx = await stakingContract.stake(amountToStake, {
         maxFeePerGas: maxFeePerGas,
@@ -97,7 +95,6 @@ const StakeAmount = (props: Props) => {
         id: toastId,
       });
       const receipt: TransactionReceipt = await tx.wait();
-      console.log("receipt:", receipt);
       toast.success("Successfully Staked!", {
         description: "Your ATX tokens have been successfully staked",
         action: {
@@ -118,7 +115,6 @@ const StakeAmount = (props: Props) => {
     } catch (error) {
       toast.dismiss();
       setIsLoading(false);
-      console.log("error:", error);
       const parsedError = await decodeStakingError(error);
       toast.error(parsedError.title, {
         description: parsedError.description || "",
@@ -158,15 +154,12 @@ const StakeAmount = (props: Props) => {
         const gasCostInUSD = (
           parseFloat(gasCostInEtherFormatted) * ethToUsdRate
         ).toFixed(4);
-        console.log("gas price:", estimatedGas);
         setEstimatedGasFees(gasCostInUSD);
         return;
       }
 
-      console.log("estimatedGas", estimatedGas);
       setEstimatedGasFees(estimatedGas.toString());
     } catch (error) {
-      console.error("Failed to estimate gas:", error);
       // setEstimatedGasFees("0");
     }
   };

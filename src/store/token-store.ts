@@ -58,7 +58,6 @@ export const useTokenStore = create<State & Action>((set, get) => ({
   ...initialState,
   setAvailableStakingTokenBalance: async () => {
     try {
-      console.log("set available token balance...")
       const { stakingTokenContract, rewardTokenContract } = get();
       const address = useWeb3Store.getState().address;
       if (
@@ -68,7 +67,6 @@ export const useTokenStore = create<State & Action>((set, get) => ({
         !ethers.isAddress(address)
       )
         return;
-      console.log("address", address);
 
       const balance = await stakingTokenContract.balanceOf(address);
       const rewardBalance = await rewardTokenContract.balanceOf(address);
@@ -80,7 +78,6 @@ export const useTokenStore = create<State & Action>((set, get) => ({
         availableRewardTokenBalance: formattedRewardBalance,
       });
     } catch (error) {
-      console.log("error in the available token balance:", error);
     }
   },
   setStakingTokenContract(contract) {
@@ -104,50 +101,8 @@ export const useTokenStore = create<State & Action>((set, get) => ({
 
       set({ totalApprovedAmount: amount });
     } catch (error) {
-      console.log("error occured........", error);
     }
   },
-
-  // setTokenDetails: async () => {
-  //   try {
-  //     const { stakingTokenContract, rewardTokenContract } =
-  //       useStakingStore.getState();
-  //     if (!stakingTokenContract || !rewardTokenContract) return;
-
-  //     const stakingTokenName = await stakingTokenContract.name();
-  //     const rewardTokenName = await rewardTokenContract.name();
-  //     const stakingTokenSymbol = await stakingTokenContract.symbol();
-  //     const rewardTokenSymbol = await rewardTokenContract.symbol();
-  //     const stakingTokenTotalSupply = await stakingTokenContract.totalSupply();
-  //     const rewardTokenTotalSupply = await rewardTokenContract.totalSupply();
-
-  //     const formattedStakingSupply = ethers.formatUnits(
-  //       stakingTokenTotalSupply,
-  //       18
-  //     );
-  //     const formattedRewardSupply = ethers.formatUnits(
-  //       rewardTokenTotalSupply,
-  //       18
-  //     );
-
-  //     set({
-  //       tokenDetails: {
-  //         atx: {
-  //           name: stakingTokenName || "",
-  //           symbol: stakingTokenSymbol || "",
-  //           totalSupply: formattedStakingSupply || "0",
-  //         },
-  //         dusd: {
-  //           name: rewardTokenName || "",
-  //           symbol: rewardTokenSymbol || "",
-  //           totalSupply: formattedRewardSupply || "0",
-  //         },
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.log("error in the available token balance:", error);
-  //   }
-  // },
 
   reset: () => {
     set(initialState);

@@ -34,9 +34,7 @@ const EarnedReward = (props: Props) => {
       const roundedReward = parseFloat(amount)?.toFixed(2);
 
       setTotalRewardsEarned(roundedReward);
-      console.log("setEarnedReward amount:", amount);
     } catch (error) {
-      console.log("error:", error);
     }
     setIsLoading(false);
   };
@@ -47,9 +45,7 @@ const EarnedReward = (props: Props) => {
       const rewardRate = await stakingContract.rewardRate();
       const amount = ethers.formatUnits(rewardRate, 18);
       setRewardDate(amount);
-      console.log("reward rate amount:", amount);
     } catch (error) {
-      console.log("error:", error);
     }
     setIsLoading(false);
   };

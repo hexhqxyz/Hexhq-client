@@ -108,7 +108,6 @@ const ProvideLiquidity = (props: Props) => {
         formatNumber(amountOut, false)
       );
     } catch (error) {
-      console.log("error in swap details..", error);
     }
   };
 
@@ -172,7 +171,6 @@ const ProvideLiquidity = (props: Props) => {
     if (!ammContract || !stakingTokenContract || !rewardTokenContract) return;
 
     try {
-      console.log("data:", data);
       setIsLoading(true);
       const maxFeePerGas = ethers.parseUnits("100", "gwei"); // 100 gwei
       const amount1ToSend = ethers.parseUnits(data.fromAmount, 18).toString();
@@ -206,7 +204,6 @@ const ProvideLiquidity = (props: Props) => {
       }
 
       const approveReceipt: TransactionReceipt = await approveTx?.wait();
-      console.log("approve receipt", approveReceipt);
 
       if (toToken === "ATX") {
         approveTx = await stakingTokenContract.approve(
@@ -243,9 +240,7 @@ const ProvideLiquidity = (props: Props) => {
         })
         .then((data) => data)
         .catch(async (err) => {
-          console.log("err:", err);
           const parsedError = await decodeAmmError(err);
-          console.log("decodedErr in catch:", parsedError);
           toast.error(parsedError.title, {
             description: parsedError.description || "",
           });
@@ -277,15 +272,8 @@ const ProvideLiquidity = (props: Props) => {
       reset();
       setAvailableStakingTokenBalance();
       
-      console.log("data:", data);
     } catch (error) {
       toast.dismiss();
-      console.log("error catch ............................", error);
-      //   const parsedError = await decodeAmmError(error);
-      //   console.log("decodedErr in catch:", parsedError);
-      //   toast.error(parsedError.title, {
-      //     description: parsedError.description || "",
-      //   });
     }
 
     setIsLoading(false);

@@ -50,7 +50,7 @@ const Navbar = (props: Props) => {
       </div>
       <div className="flex items-center gap-x-1">
         <Link
-          href={"https://github.com/SachinCoder1/Astra-DeFi"}
+          href={"https://github.com/SachinCoder1/Omni-Defi"}
           className="md:block hidden"
           target="_blank"
         >

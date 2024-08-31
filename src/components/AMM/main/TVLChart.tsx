@@ -94,7 +94,6 @@ export function TVLChart() {
             type="single"
             defaultValue="1D"
             onValueChange={(val) => {
-              console.log("val:", val);
               setSelectedPeriod(val);
             }}
           >

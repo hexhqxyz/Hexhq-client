@@ -119,7 +119,6 @@ const StakingActivity = (props: Props) => {
   };
 
   const handleLoadMore = () => {
-    console.log("fetching more...");
     fetchMore({
       variables: {
         skip: (page + 1) * PER_PAGE,
@@ -131,7 +130,6 @@ const StakingActivity = (props: Props) => {
             !fetchMoreResult.stakeds.length &&
             !fetchMoreResult.withdrawns.length
           ) {
-            console.log("no more daa..........");
             setHasMore(false);
 
             return previousResult;
@@ -152,7 +150,6 @@ const StakingActivity = (props: Props) => {
             return previousResult;
           }
         }
-        console.log("fetchMoreData", fetchMoreResult);
         setPage((prevPage) => prevPage + 1);
 
         return {

@@ -148,11 +148,6 @@ const Page = (props: Props) => {
     }
   };
 
-  useEffect(() => {
-    if (!selectedType) return;
-    console.log("changed...", selectedType);
-  }, [selectedType]);
-
   if (!address) return <>loading...</>;
 
   return (

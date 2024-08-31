@@ -43,7 +43,6 @@ const ApproveToken = (props: Props) => {
   const onSubmit = handleSubmit(async (data) => {
     if(!stakingTokenContract) return;
     try {
-      console.log("data:", data);
       setIsLoading(true);
 
       const amountToSend = ethers.parseUnits(data.amount, 18).toString();
@@ -60,10 +59,7 @@ const ApproveToken = (props: Props) => {
         "Your ATX is being approved! This may take a few moments"
       );
 
-      console.log("tx:", tx);
-
       const receipt: TransactionReceipt = await tx.wait();
-      console.log("receipt:", receipt);
       toast.success("ATX tokens approved!", {
         description: "Your ATX tokens have been approved to use for staking",
         action: {
@@ -80,7 +76,6 @@ const ApproveToken = (props: Props) => {
       setTotalApprovedAmount();
     } catch (error) {
       setIsLoading(false);
-      console.log("error:", error);
       toast.dismiss();
       toast.error(defaultError.title, {
         description: defaultError.description || "",

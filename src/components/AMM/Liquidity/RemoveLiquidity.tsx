@@ -54,14 +54,12 @@ const RemoveLiquidity = (props: Props) => {
         address,
         parsedPercent
       );
-      console.log("balances:", balances);
 
       const formattedBalanceAtx = ethers.formatUnits(balances[0]);
       const formattedBalanceDusd = ethers.formatUnits(balances[1]);
       setReceivableAtx(formattedBalanceAtx);
       setReceivableDusd(formattedBalanceDusd);
     } catch (error) {
-      console.log("err:", error);
     }
   };
 
@@ -77,7 +75,6 @@ const RemoveLiquidity = (props: Props) => {
 
     try {
       const userLiquidity = await ammContract.liquidity(address);
-      console.log("user liquidity:", userLiquidity);
       if (userLiquidity <= 0) {
         setIsLoading(false);
         toast.info("Insufficient liquidity")
@@ -85,7 +82,6 @@ const RemoveLiquidity = (props: Props) => {
       }
 
       const formattedUserLiquidity = ethers.formatUnits(userLiquidity, 18);
-      console.log("formatted liquidity:", formattedUserLiquidity)
       if (Math.round(parseFloat(formattedUserLiquidity)) <= 0) {
         toast.error("No liquidity found. Please liquidiate some amount first");
         setIsLoading(false);
@@ -96,7 +92,6 @@ const RemoveLiquidity = (props: Props) => {
         setIsLoading(false);
         return;
       }
-      console.log("formatted user liquidity:", formattedUserLiquidity);
 
       let liquidityToRemove;
       if (debouncedSliderValue === 100) {
@@ -108,13 +103,6 @@ const RemoveLiquidity = (props: Props) => {
           .parseUnits(percentToRemove.toString(), 18)
           .toString();
       }
-      console.log(
-        "amount to remove:",
-        ethers.formatUnits(liquidityToRemove, 18)
-      );
-      console.log("amount to remove:", liquidityToRemove);
-
-      console.log("amount to remove:", liquidityToRemove);
 
       const maxFeePerGas = ethers.parseUnits("100", "gwei"); // 100 gwei
       const amountToSend = ethers
@@ -127,9 +115,7 @@ const RemoveLiquidity = (props: Props) => {
         })
         .then((data) => data)
         .catch(async (err) => {
-          console.log("err:", err);
           const parsedError = await decodeAmmError(err);
-          console.log("decodedErr in catch:", parsedError);
           toast.error(parsedError.title, {
             description: parsedError.description || "",
           });
@@ -158,7 +144,6 @@ const RemoveLiquidity = (props: Props) => {
       setSliderValue(0);
       setDebouncedSliderValue(0);
     } catch (error:any) {
-      console.log("error:", error)
       if (error === "CustomError" || error?.message === "CustomError") {
       } else {
         toast.dismiss();

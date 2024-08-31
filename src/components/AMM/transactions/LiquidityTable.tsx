@@ -125,7 +125,6 @@ export default function LiquidityTable({
   const { loading, error, data, fetchMore } = useQuery(transactionTypes[type], {
     variables: { first: PER_PAGE, skip: page * PER_PAGE, address: address || "" },
   });
-    console.log("data:", data);
   if (loading) return <TableLoadingScreen />;
   if (error) return <p>Error: {error.message}</p>;
   if (!data || !data[key]?.length)
