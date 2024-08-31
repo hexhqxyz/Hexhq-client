@@ -57,15 +57,15 @@ const ApproveToken = (props: Props) => {
         }
       );
       const toastId = toast.loading(
-        "Your DTX is being approved! This may take a few moments"
+        "Your ATX is being approved! This may take a few moments"
       );
 
       console.log("tx:", tx);
 
       const receipt: TransactionReceipt = await tx.wait();
       console.log("receipt:", receipt);
-      toast.success("DTX tokens approved!", {
-        description: "Your DTX tokens have been approved to use for staking",
+      toast.success("ATX tokens approved!", {
+        description: "Your ATX tokens have been approved to use for staking",
         action: {
           label: "See Tx",
           onClick: () => {
@@ -99,7 +99,7 @@ const ApproveToken = (props: Props) => {
       </p>
       <form onSubmit={onSubmit} className="space-y-4">
         <div className="grid gap-2">
-          <Label htmlFor="amount">How much DTX do you want to approve?</Label>
+          <Label htmlFor="amount">How much ATX do you want to approve?</Label>
           <Input
             disabled={isLoading}
             type="text"
@@ -114,7 +114,7 @@ const ApproveToken = (props: Props) => {
         <LabelValueRow
           label="Total approved amount"
           value={
-            <span className="font-semibold">{totalApprovedAmount} DTX</span>
+            <span className="font-semibold">{totalApprovedAmount} ATX</span>
           }
           tooltip="Amount you have approved to be staked later on"
         />

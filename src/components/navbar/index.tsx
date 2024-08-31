@@ -43,14 +43,14 @@ const Navbar = (props: Props) => {
   return (
     <div className="flex justify-between items-center h-full">
       <Link className={cn(headingClasses["h3"])} href={"/"}>
-        OmniDeFi
+        AstraDeFi
       </Link>
       <div className="lg:flex items-center gap-x-2 hidden">
         <CommandMenu />
       </div>
       <div className="flex items-center gap-x-1">
         <Link
-          href={"https://github.com/SachinCoder1/Omni-DeFi"}
+          href={"https://github.com/SachinCoder1/Astra-DeFi"}
           className="md:block hidden"
           target="_blank"
         >

@@ -30,7 +30,7 @@ const RemoveLiquidity = (props: Props) => {
   } = useTokenStore();
   const { priceToken1InToken2, priceToken2InToken1, ammContract } =
     useAmmStore();
-  const [receivableDtx, setReceivableDtx] = useState("0");
+  const [receivableAtx, setReceivableAtx] = useState("0");
   const [receivableDusd, setReceivableDusd] = useState("0");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -56,9 +56,9 @@ const RemoveLiquidity = (props: Props) => {
       );
       console.log("balances:", balances);
 
-      const formattedBalanceDtx = ethers.formatUnits(balances[0]);
+      const formattedBalanceAtx = ethers.formatUnits(balances[0]);
       const formattedBalanceDusd = ethers.formatUnits(balances[1]);
-      setReceivableDtx(formattedBalanceDtx);
+      setReceivableAtx(formattedBalanceAtx);
       setReceivableDusd(formattedBalanceDusd);
     } catch (error) {
       console.log("err:", error);
@@ -221,7 +221,7 @@ const RemoveLiquidity = (props: Props) => {
             label={
               <Heading className="text-primary">
                 {debouncedSliderValue > 0
-                  ? `~${formatNumber(receivableDtx, false, 4)}`
+                  ? `~${formatNumber(receivableAtx, false, 4)}`
                   : "-"}
               </Heading>
             }
@@ -231,10 +231,10 @@ const RemoveLiquidity = (props: Props) => {
                   <Image
                     width={20}
                     height={20}
-                    src="/dtx-token.svg"
+                    src="/atx-token.svg"
                     alt="icon"
                   />
-                  {tokenDetails.dtx.symbol}
+                  {tokenDetails.atx.symbol}
                 </div>
               </>
             }
@@ -253,7 +253,7 @@ const RemoveLiquidity = (props: Props) => {
                   <Image
                     width={20}
                     height={20}
-                    src="/dtx-token.svg"
+                    src="/dusd-token.svg"
                     alt="icon"
                   />
                   {tokenDetails.dusd.symbol}
@@ -268,8 +268,8 @@ const RemoveLiquidity = (props: Props) => {
         label="Price:"
         value={
           <div>
-            <p>1 DTX = {parseFloat(priceToken1InToken2).toFixed(4)} dUSD</p>
-            <p>1 dUSD = {parseFloat(priceToken2InToken1).toFixed(4)} DTX</p>
+            <p>1 ATX = {parseFloat(priceToken1InToken2).toFixed(4)} dUSD</p>
+            <p>1 dUSD = {parseFloat(priceToken2InToken1).toFixed(4)} ATX</p>
           </div>
         }
       />

@@ -38,7 +38,7 @@ const MobileSidebar = (props: Props) => {
             <DrawerHeader className="">
               <div className="flex items-center justify-between">
                 <Link className={cn(headingClasses["h4"])} href={"/"}>
-                  OmniDeFi
+                  AstraDeFi
                 </Link>
                 <DrawerClose>
                   <Button autoFocus variant={"ghost"} size={"icon"}>

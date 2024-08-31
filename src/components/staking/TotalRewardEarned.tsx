@@ -1,3 +1,5 @@
+'use client'
+
 import React from "react";
 import InfoCard from "../ui/InfoCard";
 import { Award } from "lucide-react";

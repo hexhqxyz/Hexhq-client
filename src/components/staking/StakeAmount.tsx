@@ -61,7 +61,7 @@ const StakeAmount = (props: Props) => {
       parseFloat(data.amount) > parseFloat(availableStakingTokenBalance)
     ) {
       setError("amount", {
-        message: "Amount must be below or equal to the approved DTX tokens ",
+        message: "Amount must be below or equal to the approved ATX tokens ",
       });
       return;
     }
@@ -73,6 +73,8 @@ const StakeAmount = (props: Props) => {
       const amountToStake = ethers.parseUnits(data.amount, 18).toString();
 
       const maxFeePerGas = ethers.parseUnits("100", "gwei"); // 100 gwei
+      const toastId = toast.loading("Please Approve when prompted");
+
       const approveTx = await stakingTokenContract.approve(
         STAKING_ADDRESS,
         amountToStake,
@@ -81,19 +83,23 @@ const StakeAmount = (props: Props) => {
         }
       );
 
+      toast.loading("Please wait while it is being approved", {
+        id: toastId,
+      });
+
       const approveReceipt: TransactionReceipt = await approveTx.wait();
       console.log("approve receipt", approveReceipt);
 
       const tx = await stakingContract.stake(amountToStake, {
         maxFeePerGas: maxFeePerGas,
       });
-      const toastId = toast.loading(
-        "Your DTX is being staked! This may take a few moments"
-      );
+      toast.loading("Your ATX is being staked! This may take a few moments", {
+        id: toastId,
+      });
       const receipt: TransactionReceipt = await tx.wait();
       console.log("receipt:", receipt);
       toast.success("Successfully Staked!", {
-        description: "Your DTX tokens have been successfully staked",
+        description: "Your ATX tokens have been successfully staked",
         action: {
           label: "See Tx",
           onClick: () => {
@@ -181,7 +187,7 @@ const StakeAmount = (props: Props) => {
       estimateGas(debouncedValue);
     } else {
       setError("amount", {
-        message: "Amount must be below or equal to the approved DTX tokens ",
+        message: "Amount must be below or equal to the approved ATX tokens ",
       });
     }
   }, [debouncedValue]);
@@ -192,7 +198,7 @@ const StakeAmount = (props: Props) => {
         Stake Amount
       </Heading>
       <p className="mb-4 text-sm text-muted-foreground">
-        Stake your DTX tokens easily by entering the amount and clicking Approve
+        Stake your ATX tokens easily by entering the amount and clicking Approve
         and Stake. Track your staked amount and gas fees in real-time.
       </p>
 
@@ -204,7 +210,7 @@ const StakeAmount = (props: Props) => {
           disabled={isLoading}
           error={errors.amount}
           {...register("amount")}
-          label="How much DTX do you want to stake?"
+          label="How much ATX do you want to stake?"
         />
         <div className="grid grid-cols-4 gap-x-4 text-sm !mt-3">
           {[25, 50, 75, 100].map((item, index) => (
@@ -223,12 +229,12 @@ const StakeAmount = (props: Props) => {
         <LabelValueRow
           tooltip="You can stake 100% tokens that are owned by you"
           label="Suppliable amount"
-          value={<>{formatNumber(availableStakingTokenBalance)} DTX</>}
+          value={<>{formatNumber(availableStakingTokenBalance)} ATX</>}
         />
         {debouncedValue && (
           <div className="bg-secondary rounded-lg px-2 py-2 mt-2">
             <LabelValueRow
-              tooltip="Staked DTX change"
+              tooltip="Staked ATX change"
               label="Staked"
               value={
                 <>

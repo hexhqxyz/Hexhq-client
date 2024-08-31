@@ -60,8 +60,8 @@ const loanLabels = [
 ];
 const tokenLabels = [
   {
-    label: "DTX",
-    value: "dtx",
+    label: "ATX",
+    value: "atx",
   },
   {
     label: "dUSD",

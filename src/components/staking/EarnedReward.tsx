@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import {  Gift, Trophy } from "lucide-react";
+import { Gift, Trophy } from "lucide-react";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 
 import { useWeb3Store } from "@/store/signer-provider-store";
@@ -15,12 +15,18 @@ const EarnedReward = (props: Props) => {
   const [rewardDate, setRewardDate] = useState("0");
   const { address } = useWeb3ModalAccount();
   const { signer } = useWeb3Store();
-  const { stakingContract,totalRewardsEarned,setTotalRewardsEarned,totalStakedAmount } = useStakingStore();
+  const {
+    stakingContract,
+    totalRewardsEarned,
+    setTotalRewardsEarned,
+    totalStakedAmount,
+  } = useStakingStore();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const getStakedEarnedReward = async () => {
-    if (!stakingContract) return;
+    if (!stakingContract || parseFloat(totalStakedAmount) <= 0) return;
+
     setIsLoading(true);
     try {
       const stakedBalance = await stakingContract.earned(address);
@@ -58,7 +64,7 @@ const EarnedReward = (props: Props) => {
     }, 20000);
 
     return () => clearInterval(interval);
-  }, [address, signer,stakingContract]);
+  }, [address, signer, stakingContract, totalStakedAmount]);
 
   return (
     <>

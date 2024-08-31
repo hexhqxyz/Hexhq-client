@@ -1,4 +1,3 @@
-import ConnectButton from "@/components/ConnectWallet";
 import LandingMain from "@/components/landing";
 
 export default function Home() {

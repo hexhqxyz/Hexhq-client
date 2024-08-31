@@ -85,7 +85,7 @@ const Borrow = (props: Props) => {
         maxFeePerGas: maxFeePerGas,
       });
       const toastId = toast.loading(
-        "Your DTX is being staked as colletral! This may take a few moments"
+        "Your ATX is being staked as colletral! This may take a few moments"
       );
       const receipt: TransactionReceipt = await tx.wait();
       console.log("receipt:", receipt);
@@ -158,7 +158,7 @@ const Borrow = (props: Props) => {
       clearErrors("amount");
     } else {
       setError("amount", {
-        message: "Amount must be below or equal to the approved DTX tokens ",
+        message: "Amount must be below or equal to the approved ATX tokens ",
       });
     }
   }, [debouncedValue]);
@@ -168,7 +168,7 @@ const Borrow = (props: Props) => {
       console.log("total staked amount:", totalStakedAmount);
       setError("amount", {
         message:
-          "You need to stake DTX tokens and enable them as collateral before you can borrow dUSD from this pool",
+          "You need to stake ATX tokens and enable them as collateral before you can borrow dUSD from this pool",
       });
       return;
     }
@@ -184,7 +184,7 @@ const Borrow = (props: Props) => {
       </Heading>
       <p className="mb-4 text-sm text-muted-foreground">
         You can lend max 80% of the staked tokens. You will not be able to
-        withdraw your DTX until you repay your loan
+        withdraw your ATX until you repay your loan
       </p>
 
       <form onSubmit={onSubmit} className="space-y-2">

@@ -48,7 +48,7 @@ const WithdrawAmount = (props: Props) => {
   const onSubmit = handleSubmit(async (data) => {
     if (parseFloat(data.amount) > parseFloat(totalStakedAmount)) {
       setError("amount", {
-        message: "Amount must be below or equal to the staked DTX tokens ",
+        message: "Amount must be below or equal to the staked ATX tokens ",
       });
       return;
     }
@@ -65,7 +65,7 @@ const WithdrawAmount = (props: Props) => {
         maxFeePerGas: maxFeePerGas,
       });
       const toastId = toast.loading(
-        "Your DTX is being withdrawn! This may take a few moments"
+        "Your ATX is being withdrawn! This may take a few moments"
       );
 
       console.log("tx:", tx);
@@ -73,7 +73,7 @@ const WithdrawAmount = (props: Props) => {
       const receipt: TransactionReceipt = await tx.wait();
       console.log("receipt:", receipt);
       toast.success("Successfully Withdrawn!", {
-        description: "Your DTX tokens have been successfully withdrawn",
+        description: "Your ATX tokens have been successfully withdrawn",
         action: {
           label: "See Tx",
           onClick: () => {
@@ -114,7 +114,7 @@ const WithdrawAmount = (props: Props) => {
     if (parseFloat(amount) > parseFloat(totalStakedAmount)) {
       setDebouncedValue("");
       setError("amount", {
-        message: "Amount must be below or equal to the Staked DTX tokens",
+        message: "Amount must be below or equal to the Staked ATX tokens",
       });
     } else {
       clearErrors("amount");
@@ -128,7 +128,7 @@ const WithdrawAmount = (props: Props) => {
         Withdraw amount
       </Heading>
       <p className="mb-4 text-sm text-muted-foreground">
-  Withdraw your staked DTX tokens by entering the amount and clicking Withdraw. Track your staked amount in real-time.
+  Withdraw your staked ATX tokens by entering the amount and clicking Withdraw. Track your staked amount in real-time.
 </p>
 
       <form onSubmit={onSubmit} className="space-y-4">
@@ -139,7 +139,7 @@ const WithdrawAmount = (props: Props) => {
           disabled={isLoading}
           error={errors.amount}
           {...register("amount")}
-          label="How much DTX do you want to withdraw?"
+          label="How much ATX do you want to withdraw?"
         />
         <div className="grid grid-cols-4 gap-x-4 text-sm !mt-3">
           {[25, 50, 75, 100].map((item, index) => (
@@ -158,12 +158,12 @@ const WithdrawAmount = (props: Props) => {
         <LabelValueRow
           tooltip="You can withdraw 100% of the staked balance (your balance will be locked if you have used your staked balance as colletral)"
           label="Withdrawable amount"
-          value={<>{formatNumber(totalStakedAmount)} DTX</>}
+          value={<>{formatNumber(totalStakedAmount)} ATX</>}
         />
         {debouncedValue && (
           <div className="bg-secondary rounded-lg px-2 py-2 mt-2">
             <LabelValueRow
-              tooltip="Staked DTX change"
+              tooltip="Staked ATX change"
               label="Staked"
               value={
                 <>

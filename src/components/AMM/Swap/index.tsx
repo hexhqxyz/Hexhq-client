@@ -38,7 +38,7 @@ const Swap = (props: Props) => {
   });
 
   const [estimatedGasFees, setEstimatedGasFees] = useState("0.00");
-  const [fromToken, setFromToken] = useState<TOKEN_TYPE>("DTX");
+  const [fromToken, setFromToken] = useState<TOKEN_TYPE>("ATX");
   const [toToken, setToToken] = useState<TOKEN_TYPE>("dUSD");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [swapDetailsLoading, setSwapDetailsLoading] = useState(false);
@@ -84,12 +84,12 @@ const Swap = (props: Props) => {
       return;
     }
 
-    if (fromToken === "DTX") {
+    if (fromToken === "ATX") {
       if (
         parseFloat(data.fromAmount) > parseFloat(availableStakingTokenBalance)
       ) {
         setError("fromAmount", {
-          message: "Amount cannot be greater then the available DTX tokens",
+          message: "Amount cannot be greater then the available ATX tokens",
         });
         return;
       }
@@ -112,15 +112,16 @@ const Swap = (props: Props) => {
       const maxFeePerGas = ethers.parseUnits("100", "gwei"); // 100 gwei
       const amountToSend = ethers.parseUnits(data.fromAmount, 18).toString();
       const tokenIn =
-        fromToken === "DTX"
+        fromToken === "ATX"
           ? STAKING_TOKEN_CONTRACT_ADDRESS
           : REWARD_TOKEN_ADDRESS;
       const minAmountOut = ethers
         .parseUnits(calculateMinReceived(data.fromAmount), 18)
         .toString();
 
+        const toastId = toast.loading("Please Approve when prompted");
       let approveTx;
-      if (fromToken === "DTX") {
+      if (fromToken === "ATX") {
         approveTx = await stakingTokenContract.approve(
           AMM_CONTRACT_ADDRESS,
           amountToSend,
@@ -139,6 +140,9 @@ const Swap = (props: Props) => {
       } else {
         throw new Error("Something went wrong");
       }
+      toast.loading("Please wait while it is being approved", {
+        id: toastId,
+      });
 
       const approveReceipt: TransactionReceipt = await approveTx?.wait();
       console.log("approve receipt", approveReceipt);
@@ -149,8 +153,10 @@ const Swap = (props: Props) => {
         minAmountOut,
         { maxFeePerGas: maxFeePerGas }
       );
-      const toastId = toast.loading(
-        "Swapping is being done! This may take a few moments"
+      toast.loading(
+        "Swapping is being done! This may take a few moments", {
+          id: toastId
+        }
       );
 
       const receipt: TransactionReceipt = await swapTx.wait();
@@ -186,10 +192,10 @@ const Swap = (props: Props) => {
   ) => {
     if (field === "fromToken") {
       setFromToken(value);
-      setToToken(value === "DTX" ? "dUSD" : "DTX");
+      setToToken(value === "ATX" ? "dUSD" : "ATX");
     } else {
       setToToken(value);
-      setFromToken(value === "DTX" ? "dUSD" : "DTX");
+      setFromToken(value === "ATX" ? "dUSD" : "ATX");
     }
   };
 
@@ -208,7 +214,7 @@ const Swap = (props: Props) => {
     token: TOKEN_TYPE,
     amount: string
   ) => {
-    if (token !== "DTX" && token !== "dUSD") return;
+    if (token !== "ATX" && token !== "dUSD") return;
     if (!amount) {
       setValue(fromOrTo === "fromAmount" ? "toAmount" : "fromAmount", "");
       return;
@@ -217,7 +223,7 @@ const Swap = (props: Props) => {
     try {
       if (!ammContract) return;
       let tokenAddress =
-        token === "DTX" ? STAKING_TOKEN_CONTRACT_ADDRESS : REWARD_TOKEN_ADDRESS;
+        token === "ATX" ? STAKING_TOKEN_CONTRACT_ADDRESS : REWARD_TOKEN_ADDRESS;
 
       const parsedAmount = ethers.parseUnits(amount, 18).toString();
 
@@ -285,7 +291,7 @@ const Swap = (props: Props) => {
 
   const calculatePriceImpact = () => {
     const currentPrice =
-      fromToken === "DTX" ? priceToken1InToken2 : priceToken2InToken1;
+      fromToken === "ATX" ? priceToken1InToken2 : priceToken2InToken1;
     const newPrice = parseFloat(swapQuotes.newPrice);
     const priceImpact =
       ((newPrice - parseFloat(currentPrice)) / parseFloat(currentPrice)) * 100;
@@ -299,14 +305,14 @@ const Swap = (props: Props) => {
           <div className="mb-8">
             <SwapInput
               disabled={isLoading}
-              defaultValue={fromToken || "DTX"}
+              defaultValue={fromToken || "ATX"}
               selectValue={fromToken}
               error={errors.fromAmount}
               onSelectChange={(value: any) =>
                 handleTokenChange("fromToken", value)
               }
               balance={`${formatNumber(availableStakingTokenBalance)} ${
-                tokenDetails.dtx.symbol
+                tokenDetails.atx.symbol
               }`}
               {...register("fromAmount")}
               onChange={(e) =>

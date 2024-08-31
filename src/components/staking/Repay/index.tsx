@@ -93,12 +93,12 @@ const Repay = (props: Props) => {
         maxFeePerGas: maxFeePerGas,
       });
       const toastId = toast.loading(
-        "Your DTX is being staked! This may take a few moments"
+        "Your ATX is being staked! This may take a few moments"
       );
       const receipt: TransactionReceipt = await tx.wait();
       console.log("receipt:", receipt);
       toast.success("Successfully Repayed! 💯", {
-        description: "Your DTX tokens has unlocked and loan has closed",
+        description: "Your ATX tokens has unlocked and loan has closed",
         action: {
           label: "See Tx",
           onClick: () => {

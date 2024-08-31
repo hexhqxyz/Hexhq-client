@@ -84,7 +84,7 @@ export function TVLChart() {
     <Card>
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row w-full">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-4">
-          <CardTitle className="text-xl">OmniDeFi Pool - TVL</CardTitle>
+          <CardTitle className="text-xl">AstraDeFi Pool - TVL</CardTitle>
           <CardDescription>
             Showing total TVL &#40;Total value locked&#41; for the last 1 month
           </CardDescription>

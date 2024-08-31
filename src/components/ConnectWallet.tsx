@@ -5,6 +5,7 @@ import { useIsClient } from "usehooks-ts";
 import { Button } from "./ui/button";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SUPPORTED_CHAINS } from "@/lib/constants";
 
 type ConnectButtonProps = {
   isMobile?:boolean;
@@ -23,7 +24,7 @@ export default function ConnectButton({isMobile}: ConnectButtonProps) {
   return (
     <div>
       <div className="flex gap-x-2 items-center">
-        {chainId && ![1337, 1, 11155111].includes(chainId) && (
+        {chainId && !SUPPORTED_CHAINS.includes(chainId) && (
           <Button
             variant={"destructive"}
             size={"sm"}

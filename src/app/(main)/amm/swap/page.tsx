@@ -44,9 +44,9 @@ const Page = (props: Props) => {
             className="text-blue-500 flex-col"
           >
             {toggle ? (
-              <p>1 DTX = {formatNumberSmall(priceToken1InToken2)} dUSD</p>
+              <p>1 ATX = {formatNumberSmall(priceToken1InToken2)} dUSD</p>
             ) : (
-              <p>1 dUSD = {formatNumberSmall(priceToken2InToken1)} DTX</p>
+              <p>1 dUSD = {formatNumberSmall(priceToken2InToken1)} ATX</p>
             )}
           </Button>
         </div>

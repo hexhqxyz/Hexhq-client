@@ -32,11 +32,11 @@ export const useAmmStore = create<State & Action>((set, get) => ({
       const [priceToken1InToken2, priceToken2InToken1] =
         await ammContract.getCurrentPrices();
 
-      const formattedDTXPrice = ethers.formatUnits(priceToken1InToken2, 18);
+      const formattedATXPrice = ethers.formatUnits(priceToken1InToken2, 18);
       const formattedDUSDPrice = ethers.formatUnits(priceToken2InToken1, 18);
 
       set({
-        priceToken1InToken2: formattedDTXPrice,
+        priceToken1InToken2: formattedATXPrice,
         priceToken2InToken1: formattedDUSDPrice
       });
     } catch (error) {

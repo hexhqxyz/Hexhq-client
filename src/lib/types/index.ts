@@ -1,1 +1,1 @@
-export type TOKEN_TYPE = "DTX" | "dUSD"
+export type TOKEN_TYPE = "ATX" | "dUSD"

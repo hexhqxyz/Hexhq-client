@@ -21,13 +21,13 @@ type Props = {
 export const getCurrency = (type: string) => {
   switch (type) {
     case "Staked":
-      return "DTX";
+      return "ATX";
     case "Withdrawn":
-      return "DTX";
+      return "ATX";
     case "RewardsClaimed":
       return "dUSD";
     default:
-      return "DTX";
+      return "ATX";
   }
 };
 

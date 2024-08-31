@@ -33,7 +33,7 @@ export const ParallaxScroll = ({
     <div className="flex justify-center flex-col items-center w-full space-y-10 md:mt-20">
       <h1 className="text-3xl font-semibold text-black dark:text-white text-center">
         <span className="text-4xl md:text-[4rem] font-bold mt-1 leading-none">
-        Omni Defi Platform Demo
+        Astra Defi Platform Demo
         </span>
       </h1>
       <div

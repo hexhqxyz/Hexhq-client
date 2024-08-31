@@ -17,7 +17,7 @@ const PoolInfo = (props: Props) => {
   const address = useWeb3Store().address;
   const tokenDetails = useTokenStore().tokenDetails;
   const [userLiquidityInTokens, setUserLiquidityInTokens] = useState({
-    dtx: "0",
+    atx: "0",
     dusd: "0",
     userLiquidity: "0",
     poolShare: "0",
@@ -31,7 +31,7 @@ const PoolInfo = (props: Props) => {
       const userLiquidity = await ammContract.liquidity(address);
       const totalLiquidity = await ammContract.totalLiquidity();
 
-      const formattedDtx = ethers.formatUnits(info[0]);
+      const formattedAtx = ethers.formatUnits(info[0]);
       const formattedDusd = ethers.formatUnits(info[1]);
       const formattedUserLiquidity = ethers.formatUnits(userLiquidity);
       const formattedTotalLiquidity = ethers.formatUnits(totalLiquidity);
@@ -42,7 +42,7 @@ const PoolInfo = (props: Props) => {
         100;
 
       setUserLiquidityInTokens({
-        dtx: formattedDtx,
+        atx: formattedAtx,
         dusd: formattedDusd,
         userLiquidity: formattedUserLiquidity,
         poolShare: poolShare.toFixed(2),
@@ -60,15 +60,15 @@ const PoolInfo = (props: Props) => {
   return (
     <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 py-4 w-full">
       <InfoCard
-        icon={<Image width={20} height={20} src="/dtx-token.svg" alt="icon" />}
-        title="Your Pooled DTX"
-        value={`${formatNumber(userLiquidityInTokens.dtx)} ${
-          tokenDetails.dtx.symbol
+        icon={<Image width={20} height={20} src="/atx-token.svg" alt="icon" />}
+        title="Your Pooled ATX"
+        value={`${formatNumber(userLiquidityInTokens.atx)} ${
+          tokenDetails.atx.symbol
         }`}
         subValue="As of now"
       />
       <InfoCard
-        icon={<Image width={20} height={20} src="/dtx-token.svg" alt="icon" />}
+        icon={<Image width={20} height={20} src="/dusd-token.svg" alt="icon" />}
         title="Your Pooled dUSD"
         value={`${formatNumber(userLiquidityInTokens.dusd)} ${
           tokenDetails.dusd.symbol

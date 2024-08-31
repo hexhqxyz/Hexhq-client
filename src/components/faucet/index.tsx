@@ -36,14 +36,14 @@ const Faucet = (props: Props) => {
       });
 
       const toastId = toast.loading(
-        "Your DTX faucet tokens are on the way! This may take a few moments"
+        "Your ATX faucet tokens are on the way! This may take a few moments"
       );
       const receipt: TransactionReceipt = await tx.wait();
       console.log("receipt:", receipt)
 
       toast.success("Tokens Received!", {
         description:
-          "Your DTX faucet tokens have been successfully transferred",
+          "Your ATX faucet tokens have been successfully transferred",
         action: {
           label: "See Tx",
           onClick: () => {
@@ -75,7 +75,7 @@ const Faucet = (props: Props) => {
         disabled={loading}
         loading={loading}
       >
-        Send Me DTX
+        Send Me ATX
       </Button>
     </div>
   );

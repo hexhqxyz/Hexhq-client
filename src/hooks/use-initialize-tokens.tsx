@@ -20,13 +20,17 @@ const useInitializeTokens = () => {
 
   useEffect(() => {
     const initialize = async () => {
+      console.log("initilazing....")
       if (!signer) return;
+      console.log("after signer initializer....")
 
       const stakingTokenContract = new Contract(
         STAKING_TOKEN_CONTRACT_ADDRESS,
         STAKING_TOKEN_ABI.abi,
         signer
       );
+
+      console.log("stakingTokenContract:", stakingTokenContract);
 
       const rewardTokenContract = new Contract(
         REWARD_TOKEN_ADDRESS,
