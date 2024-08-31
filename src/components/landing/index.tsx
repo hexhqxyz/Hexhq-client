@@ -1,42 +1,40 @@
 import React from "react";
 import dynamic from "next/dynamic";
-import { BackgroundBeamsWithCollision } from "../ui/animations/background-beams-with-collision";
 
 const DynamicSpotlightPreview = dynamic(
   () => import("./Spotlight").then((mod) => mod.SpotlightPreview),
   {
-    loading: () => <p>Loading Spotlight...</p>,
+    loading: () => <p>Loading...</p>,
   }
 );
 
 const DynamicHeroScrollDemo = dynamic(
   () => import("./MainContainer").then((mod) => mod.HeroScrollDemo),
   {
-    loading: () => <p>Loading Hero Scroll...</p>,
+    loading: () => <p>Loading...</p>,
   }
 );
 
 const DynamicParallaxScrollDemo = dynamic(
   () => import("./ParallelScrollMain").then((mod) => mod.ParallaxScrollDemo),
   {
-    loading: () => <p>Loading Parallax Scroll...</p>,
+    loading: () => <p>Loading...</p>,
   }
 );
 
 const DynamicAppleCardsCarouselDemo = dynamic(
   () => import("./CardsCarousel").then((mod) => mod.AppleCardsCarouselDemo),
   {
-    loading: () => <p>Loading Cards Carousel...</p>,
+    loading: () => <p>Loading...</p>,
   }
 );
 
 const DynamicVortexDemo = dynamic(
   () => import("./VotexMain").then((mod) => mod.VortexDemo),
   {
-    loading: () => <p>Loading Vortex...</p>,
+    loading: () => <p>Loading...</p>,
   }
 );
-
 
 type Props = {};
 
