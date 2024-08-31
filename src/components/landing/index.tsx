@@ -45,7 +45,10 @@ const LandingMain = (props: Props) => {
       <DynamicHeroScrollDemo />
       <DynamicAppleCardsCarouselDemo />
       <DynamicVortexDemo />
+      <div className="pt-20 md:pt-10">
+
       <DynamicParallaxScrollDemo />
+      </div>
     </div>
   );
 };

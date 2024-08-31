@@ -14,8 +14,8 @@ export function SpotlightPreview() {
         className="-top-20 left-0 md:left-60 md:-top-20"
         fill="white"
       />
-      <div className=" p-4 max-w-7xl  mx-auto relative z-10  w-full pt-20 md:pt-0">
-        <h1 className="text-4xl md:text-7xl font-bold text-center bg-clip-text dark:text-transparent dark:bg-gradient-to-b dark:from-neutral-50 dark:to-neutral-400 dark:bg-opacity-50">
+      <div className=" p-2 md:p-4 max-w-7xl mx-auto relative z-10  w-full pt-20 md:pt-0">
+        <h1 className="text-3xl sm:text-4xl lg:text-7xl font-bold text-center bg-clip-text dark:text-transparent dark:bg-gradient-to-b dark:from-neutral-50 dark:to-neutral-400 dark:bg-opacity-50">
           AstraDeFi <br /> Swap, Earn, <FlipWords words={words} />
         </h1>
         <p className="mt-4 font-normal text-base dark:text-neutral-300 max-w-lg text-center mx-auto">
