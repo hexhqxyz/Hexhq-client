@@ -1,4 +1,11 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    trailingSlash: true,
+    exportPathMap: () => {
+        return {
+            "/": { page: "/" }
+        }
+    },
+};
 
 export default nextConfig;
