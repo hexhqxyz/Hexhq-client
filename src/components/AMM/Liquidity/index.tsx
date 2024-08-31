@@ -31,7 +31,7 @@ type Props = {};
 
 const ProvideLiquidity = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [fromToken, setFromToken] = useState<TOKEN_TYPE>("DTX");
+  const [fromToken, setFromToken] = useState<TOKEN_TYPE>("ATX");
   const [toToken, setToToken] = useState<TOKEN_TYPE>("dUSD");
   const {
     availableStakingTokenBalance,
@@ -72,10 +72,10 @@ const ProvideLiquidity = (props: Props) => {
   ) => {
     if (field === "fromToken") {
       setFromToken(value);
-      setToToken(value === "DTX" ? "dUSD" : "DTX");
+      setToToken(value === "ATX" ? "dUSD" : "ATX");
     } else {
       setToToken(value);
-      setFromToken(value === "DTX" ? "dUSD" : "DTX");
+      setFromToken(value === "ATX" ? "dUSD" : "ATX");
     }
   };
 
@@ -84,7 +84,7 @@ const ProvideLiquidity = (props: Props) => {
     token: TOKEN_TYPE,
     amount: string
   ) => {
-    if (token !== "DTX" && token !== "dUSD") return;
+    if (token !== "ATX" && token !== "dUSD") return;
     if (!amount) {
       setValue(fromOrTo === "fromAmount" ? "toAmount" : "fromAmount", "");
       return;
@@ -93,7 +93,7 @@ const ProvideLiquidity = (props: Props) => {
     try {
       if (!ammContract) return;
       let tokenAddress =
-        token === "DTX" ? STAKING_TOKEN_CONTRACT_ADDRESS : REWARD_TOKEN_ADDRESS;
+        token === "ATX" ? STAKING_TOKEN_CONTRACT_ADDRESS : REWARD_TOKEN_ADDRESS;
 
       const parsedAmount = ethers.parseUnits(amount, 18).toString();
 
@@ -108,7 +108,6 @@ const ProvideLiquidity = (props: Props) => {
         formatNumber(amountOut, false)
       );
     } catch (error) {
-      console.log("error in swap details..", error);
     }
   };
 
@@ -148,12 +147,12 @@ const ProvideLiquidity = (props: Props) => {
       return;
     }
 
-    if (fromToken === "DTX") {
+    if (fromToken === "ATX") {
       if (
         parseFloat(data.fromAmount) > parseFloat(availableStakingTokenBalance)
       ) {
         setError("fromAmount", {
-          message: "Amount cannot be greater then the available DTX tokens",
+          message: "Amount cannot be greater then the available ATX tokens",
         });
         return;
       }
@@ -172,20 +171,19 @@ const ProvideLiquidity = (props: Props) => {
     if (!ammContract || !stakingTokenContract || !rewardTokenContract) return;
 
     try {
-      console.log("data:", data);
       setIsLoading(true);
       const maxFeePerGas = ethers.parseUnits("100", "gwei"); // 100 gwei
       const amount1ToSend = ethers.parseUnits(data.fromAmount, 18).toString();
       //   const amount2ToSend = ethers.parseUnits(data.toAmount, 18).toString();
       const tokenIn =
-        fromToken === "DTX"
+        fromToken === "ATX"
           ? STAKING_TOKEN_CONTRACT_ADDRESS
           : REWARD_TOKEN_ADDRESS;
 
       let approveTx;
       toastId = toast.loading("Please approve when prompted");
 
-      if (fromToken === "DTX") {
+      if (fromToken === "ATX") {
         approveTx = await stakingTokenContract.approve(
           AMM_CONTRACT_ADDRESS,
           amount1ToSend,
@@ -206,9 +204,8 @@ const ProvideLiquidity = (props: Props) => {
       }
 
       const approveReceipt: TransactionReceipt = await approveTx?.wait();
-      console.log("approve receipt", approveReceipt);
 
-      if (toToken === "DTX") {
+      if (toToken === "ATX") {
         approveTx = await stakingTokenContract.approve(
           AMM_CONTRACT_ADDRESS,
           amount1ToSend,
@@ -243,9 +240,7 @@ const ProvideLiquidity = (props: Props) => {
         })
         .then((data) => data)
         .catch(async (err) => {
-          console.log("err:", err);
           const parsedError = await decodeAmmError(err);
-          console.log("decodedErr in catch:", parsedError);
           toast.error(parsedError.title, {
             description: parsedError.description || "",
           });
@@ -277,15 +272,8 @@ const ProvideLiquidity = (props: Props) => {
       reset();
       setAvailableStakingTokenBalance();
       
-      console.log("data:", data);
     } catch (error) {
       toast.dismiss();
-      console.log("error catch ............................", error);
-      //   const parsedError = await decodeAmmError(error);
-      //   console.log("decodedErr in catch:", parsedError);
-      //   toast.error(parsedError.title, {
-      //     description: parsedError.description || "",
-      //   });
     }
 
     setIsLoading(false);
@@ -301,7 +289,7 @@ const ProvideLiquidity = (props: Props) => {
         />
         <div className="grid lg:grid-cols-2 gap-4 items-center w-full">
           <PairDropdown
-            defaultValue="DTX"
+            defaultValue="ATX"
             onValueChange={(value: any) =>
               handleTokenChange("fromToken", value)
             }
@@ -325,7 +313,7 @@ const ProvideLiquidity = (props: Props) => {
 
           <div>
             <SwapInput
-              defaultValue={fromToken || "DTX"}
+              defaultValue={fromToken || "ATX"}
               selectValue={fromToken}
               disabled={isLoading}
               error={errors.fromAmount}
@@ -338,7 +326,7 @@ const ProvideLiquidity = (props: Props) => {
                 getRequiredTokenAmount("fromAmount", fromToken, e.target.value)
               }
               balance={`${formatNumber(availableStakingTokenBalance)} ${
-                tokenDetails.dtx.symbol
+                tokenDetails.atx.symbol
               }`}
             />
             <div className="flex justify-center items-center !-mt-2 !-mb-2 relative z-50">
@@ -352,7 +340,7 @@ const ProvideLiquidity = (props: Props) => {
               </Button>
             </div>
             <SwapInput
-              defaultValue={toToken || "DTX"}
+              defaultValue={toToken || "ATX"}
               selectValue={toToken}
               isSelectDisabled={true}
               disabled={isLoading}

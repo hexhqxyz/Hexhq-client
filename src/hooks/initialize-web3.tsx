@@ -6,6 +6,7 @@ import {
 import { BrowserProvider } from "ethers";
 import { useWeb3Store } from "@/store/signer-provider-store";
 import useInitializeTokens from "./use-initialize-tokens";
+import { SUPPORTED_CHAINS } from "@/lib/constants";
 
 const useInitializeWeb3 = () => {
   const { walletProvider } = useWeb3ModalProvider();
@@ -24,7 +25,7 @@ const useInitializeWeb3 = () => {
         !address ||
         !isConnected ||
         !chainId ||
-        ![1337, 1, 11155111].includes(chainId)
+        !SUPPORTED_CHAINS.includes(chainId)
       )
         return;
 
@@ -34,12 +35,13 @@ const useInitializeWeb3 = () => {
       const signer = await ethersProvider.getSigner();
       setSigner(signer);
       setAddress(address as string);
+      localStorage.setItem("chainId", chainId)
 
       setIsConnected(true);
     };
 
     initialize();
-  }, [walletProvider, setProvider, setSigner, setIsConnected, status]);
+  }, [walletProvider, setProvider, setSigner, setIsConnected, status,chainId]);
 };
 
 export default useInitializeWeb3;

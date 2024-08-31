@@ -12,7 +12,7 @@ const Token = ({ address }: {address:string}) => {
     switch (normalizedAddress) {
       case STAKING_TOKEN_CONTRACT_ADDRESS.toLowerCase():
         return (
-          <Image width={SIZE} height={SIZE} src="/dtx-token.svg" alt="DTX Token" />
+          <Image width={SIZE} height={SIZE} src="/atx-token.svg" alt="ATX Token" />
         );
       case REWARD_TOKEN_ADDRESS.toLowerCase():
         return (
@@ -26,7 +26,7 @@ const Token = ({ address }: {address:string}) => {
   const getTokenName = () => {
     switch (normalizedAddress) {
       case STAKING_TOKEN_CONTRACT_ADDRESS.toLowerCase():
-        return "DTX";
+        return "ATX";
       case REWARD_TOKEN_ADDRESS.toLowerCase():
         return "dUSD";
       default:

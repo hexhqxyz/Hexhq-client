@@ -30,7 +30,7 @@ const RemoveLiquidity = (props: Props) => {
   } = useTokenStore();
   const { priceToken1InToken2, priceToken2InToken1, ammContract } =
     useAmmStore();
-  const [receivableDtx, setReceivableDtx] = useState("0");
+  const [receivableAtx, setReceivableAtx] = useState("0");
   const [receivableDusd, setReceivableDusd] = useState("0");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -54,14 +54,12 @@ const RemoveLiquidity = (props: Props) => {
         address,
         parsedPercent
       );
-      console.log("balances:", balances);
 
-      const formattedBalanceDtx = ethers.formatUnits(balances[0]);
+      const formattedBalanceAtx = ethers.formatUnits(balances[0]);
       const formattedBalanceDusd = ethers.formatUnits(balances[1]);
-      setReceivableDtx(formattedBalanceDtx);
+      setReceivableAtx(formattedBalanceAtx);
       setReceivableDusd(formattedBalanceDusd);
     } catch (error) {
-      console.log("err:", error);
     }
   };
 
@@ -77,7 +75,6 @@ const RemoveLiquidity = (props: Props) => {
 
     try {
       const userLiquidity = await ammContract.liquidity(address);
-      console.log("user liquidity:", userLiquidity);
       if (userLiquidity <= 0) {
         setIsLoading(false);
         toast.info("Insufficient liquidity")
@@ -85,7 +82,6 @@ const RemoveLiquidity = (props: Props) => {
       }
 
       const formattedUserLiquidity = ethers.formatUnits(userLiquidity, 18);
-      console.log("formatted liquidity:", formattedUserLiquidity)
       if (Math.round(parseFloat(formattedUserLiquidity)) <= 0) {
         toast.error("No liquidity found. Please liquidiate some amount first");
         setIsLoading(false);
@@ -96,7 +92,6 @@ const RemoveLiquidity = (props: Props) => {
         setIsLoading(false);
         return;
       }
-      console.log("formatted user liquidity:", formattedUserLiquidity);
 
       let liquidityToRemove;
       if (debouncedSliderValue === 100) {
@@ -108,13 +103,6 @@ const RemoveLiquidity = (props: Props) => {
           .parseUnits(percentToRemove.toString(), 18)
           .toString();
       }
-      console.log(
-        "amount to remove:",
-        ethers.formatUnits(liquidityToRemove, 18)
-      );
-      console.log("amount to remove:", liquidityToRemove);
-
-      console.log("amount to remove:", liquidityToRemove);
 
       const maxFeePerGas = ethers.parseUnits("100", "gwei"); // 100 gwei
       const amountToSend = ethers
@@ -127,9 +115,7 @@ const RemoveLiquidity = (props: Props) => {
         })
         .then((data) => data)
         .catch(async (err) => {
-          console.log("err:", err);
           const parsedError = await decodeAmmError(err);
-          console.log("decodedErr in catch:", parsedError);
           toast.error(parsedError.title, {
             description: parsedError.description || "",
           });
@@ -158,7 +144,6 @@ const RemoveLiquidity = (props: Props) => {
       setSliderValue(0);
       setDebouncedSliderValue(0);
     } catch (error:any) {
-      console.log("error:", error)
       if (error === "CustomError" || error?.message === "CustomError") {
       } else {
         toast.dismiss();
@@ -221,7 +206,7 @@ const RemoveLiquidity = (props: Props) => {
             label={
               <Heading className="text-primary">
                 {debouncedSliderValue > 0
-                  ? `~${formatNumber(receivableDtx, false, 4)}`
+                  ? `~${formatNumber(receivableAtx, false, 4)}`
                   : "-"}
               </Heading>
             }
@@ -231,10 +216,10 @@ const RemoveLiquidity = (props: Props) => {
                   <Image
                     width={20}
                     height={20}
-                    src="/dtx-token.svg"
+                    src="/atx-token.svg"
                     alt="icon"
                   />
-                  {tokenDetails.dtx.symbol}
+                  {tokenDetails.atx.symbol}
                 </div>
               </>
             }
@@ -253,7 +238,7 @@ const RemoveLiquidity = (props: Props) => {
                   <Image
                     width={20}
                     height={20}
-                    src="/dtx-token.svg"
+                    src="/dusd-token.svg"
                     alt="icon"
                   />
                   {tokenDetails.dusd.symbol}
@@ -268,8 +253,8 @@ const RemoveLiquidity = (props: Props) => {
         label="Price:"
         value={
           <div>
-            <p>1 DTX = {parseFloat(priceToken1InToken2).toFixed(4)} dUSD</p>
-            <p>1 dUSD = {parseFloat(priceToken2InToken1).toFixed(4)} DTX</p>
+            <p>1 ATX = {parseFloat(priceToken1InToken2).toFixed(4)} dUSD</p>
+            <p>1 dUSD = {parseFloat(priceToken2InToken1).toFixed(4)} ATX</p>
           </div>
         }
       />

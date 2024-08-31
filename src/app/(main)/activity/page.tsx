@@ -60,8 +60,8 @@ const loanLabels = [
 ];
 const tokenLabels = [
   {
-    label: "DTX",
-    value: "dtx",
+    label: "ATX",
+    value: "atx",
   },
   {
     label: "dUSD",
@@ -147,11 +147,6 @@ const Page = (props: Props) => {
         break;
     }
   };
-
-  useEffect(() => {
-    if (!selectedType) return;
-    console.log("changed...", selectedType);
-  }, [selectedType]);
 
   if (!address) return <>loading...</>;
 

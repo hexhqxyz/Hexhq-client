@@ -9,10 +9,10 @@ export function HeroScrollDemo() {
       <ContainerScroll
         titleComponent={
           <>
-            <h1 className="text-4xl font-semibold text-black dark:text-white">
+            <h1 className="text-3xl sm:text-4xl lg:text-7xl font-semibold text-black dark:text-white">
               Unleash the power of <br />
-              <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none">
-                Omni DeFi
+              <span className="text-3xl sm:text-4xl lg:text-7xl md:text-[6rem] font-bold mt-1 leading-none">
+                Astra DeFi
               </span>
             </h1>
           </>

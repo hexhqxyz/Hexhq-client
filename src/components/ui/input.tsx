@@ -44,7 +44,7 @@ const CryptoInput = React.forwardRef<HTMLInputElement, CryptoInputProps>(
         </div>
         <div className="flex items-center bg-secondary p-2 rounded-md">
           <div className="flex items-center justify-center bg-blue-600 rounded-full">
-            <Image width={30} height={30} src="/dtx-token.svg" alt="icon" />
+            <Image width={30} height={30} src="/atx-token.svg" alt="icon" />
           </div>
           <input
             type={type}

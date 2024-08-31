@@ -68,7 +68,6 @@ const Repay = (props: Props) => {
     if (!stakingContract || !stakingTokenContract || !rewardTokenContract)
       return;
     try {
-      console.log("data:", data);
       setIsLoading(true);
 
       const roundedRepayAmount = roundToNearestHalf(totalAmountToRepay);
@@ -85,7 +84,6 @@ const Repay = (props: Props) => {
       );
 
       const approveReceipt: TransactionReceipt = await approveTx.wait();
-      console.log("approve receipt", approveReceipt);
       const borrowedAmount = ethers
         .parseUnits(totalBorrowedAmount, 18)
         .toString();
@@ -93,12 +91,11 @@ const Repay = (props: Props) => {
         maxFeePerGas: maxFeePerGas,
       });
       const toastId = toast.loading(
-        "Your DTX is being staked! This may take a few moments"
+        "Your ATX is being staked! This may take a few moments"
       );
       const receipt: TransactionReceipt = await tx.wait();
-      console.log("receipt:", receipt);
       toast.success("Successfully Repayed! 💯", {
-        description: "Your DTX tokens has unlocked and loan has closed",
+        description: "Your ATX tokens has unlocked and loan has closed",
         action: {
           label: "See Tx",
           onClick: () => {
@@ -117,7 +114,6 @@ const Repay = (props: Props) => {
     } catch (error) {
       toast.dismiss();
       setIsLoading(false);
-      console.log("error:", error);
       const parsedError = await decodeStakingError(error);
       toast.error(parsedError.title, {
         description: parsedError.description || "",

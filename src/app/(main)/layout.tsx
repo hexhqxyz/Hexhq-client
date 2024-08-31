@@ -9,10 +9,8 @@ import ScreenLoading from "@/components/ui/ScreenLoading";
 import ResizableMain from "@/components/ResizableMain";
 import { ShootingStarsAndStarsBackgroundDemo } from "@/components/landing/StarsBackground";
 import { Heading } from "@/components/ui/Typography";
-import ConnectButton from "@/components/ConnectWallet";
-import { CompareDemo } from "@/components/landing/Compare";
 import { ShootingStars } from "@/components/ui/animations/shooting-stars";
-import { StarsBackground } from "@/components/ui/animations/stars-background";
+import { SUPPORTED_CHAINS } from "@/lib/constants";
 
 type Props = {
   children: React.ReactNode;
@@ -25,7 +23,7 @@ const Layout = ({ children }: Props) => {
   const { switchNetwork } = useSwitchNetwork();
   const handleSwitch = () => {
     try {
-      switchNetwork(1337);
+      switchNetwork(SUPPORTED_CHAINS[0]);
     } catch (error) {}
   };
 
@@ -41,12 +39,12 @@ const Layout = ({ children }: Props) => {
     );
   }
 
-  if (chainId && ![1337, 1, 11155111].includes(chainId)) {
+  if (chainId && !SUPPORTED_CHAINS.includes(chainId)) {
     return (
       <div>
         <div className="h-[45rem] rounded-md dark:bg-neutral-900 flex flex-col items-center justify-center relative w-full">
           <Heading className="relative flex-col md:flex-row z-10 text-3xl md:text-5xl md:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium bg-clip-text dark:text-transparent dark:bg-gradient-to-b from-neutral-800 via-white to-white flex items-center gap-2 md:gap-4">
-            <span>Omni</span>
+            <span>Astra</span>
             <span>DeFi</span>
           </Heading>
           <Heading className="pt-6">

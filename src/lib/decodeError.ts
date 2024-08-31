@@ -14,15 +14,9 @@ export const decodeFaucetError = async (error: any) => {
       error?.data ||
       error?.transaction?.data ||
       error?.payload?.params[0]?.data;
-    console.log(
-      "errorData:",
-      errorData,
-      "error?.payload?.params[0]?.data",
-      error?.payload?.params[0]?.data
-    );
-    if (errorData) {
+
+      if (errorData) {
       const decodedError = iface.parseError(errorData);
-      console.log("decode error:", decodedError);
       if (!decodedError) return defaultError;
 
       if (faucetErrors[decodedError.name]) {
@@ -48,15 +42,9 @@ export const decodeStakingError = async (error: any) => {
       error?.data ||
       error?.transaction?.data ||
       error?.payload?.params[0]?.data;
-    console.log(
-      "errorData:",
-      errorData,
-      "error?.payload?.params[0]?.data",
-      error?.payload?.params[0]?.data
-    );
-    if (errorData) {
+
+      if (errorData) {
       const decodedError = iface.parseError(errorData);
-      console.log("decode error:", decodedError);
       if (!decodedError) return defaultError;
 
       const err = stakingErrors[decodedError.name];
@@ -81,10 +69,10 @@ export const decodeAmmError = async (error: any) => {
       error?.data ||
       error?.transaction?.data ||
       error?.payload?.params[0]?.data;
-    console.log("errorData:", errorData);
-    if (errorData) {
+
+      if (errorData) {
       const decodedError = iface.parseError(errorData);
-      console.log("decode error:", decodedError);
+
       if (!decodedError) return defaultError;
 
       const err = ammErrors[decodedError.name];

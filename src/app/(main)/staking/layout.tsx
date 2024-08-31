@@ -90,7 +90,7 @@ const Layout = ({ children }: Props) => {
                 <DollarSignIcon className="h-4 w-4 text-muted-foreground" />
               }
               title="Your Staked Balance"
-              value={`${formatNumber(totalStakedAmount)} DTX`}
+              value={`${formatNumber(totalStakedAmount)} ATX`}
               subValue="As of now"
             />
 
@@ -138,7 +138,7 @@ const Layout = ({ children }: Props) => {
                       className="flex justify-between"
                       tooltip="Amount available to use in colletral"
                       label="Colletral amount"
-                      value={`${formatNumber(totalStakedAmount)} DTX`}
+                      value={`${formatNumber(totalStakedAmount)} ATX`}
                     />
                   </div>
                 </div>
@@ -150,7 +150,7 @@ const Layout = ({ children }: Props) => {
                   label="Total staked"
                   value={`${formatNumber(
                     formatNumber(stakingDetails.totalStaked)
-                  )} DTX`}
+                  )} ATX`}
                 />
                 <InfoLabel
                   tooltip="Time when the last stake activity happened on the contract"
@@ -199,19 +199,19 @@ const Layout = ({ children }: Props) => {
                 />
               </InfoWrapper>
               <InfoWrapper title="Staking token info">
-                <InfoLabel label="Token name" value={tokenDetails.dtx.name} />
+                <InfoLabel label="Token name" value={tokenDetails.atx.name} />
                 <InfoLabel
                   label="Total Symbol"
-                  value={tokenDetails.dtx.symbol}
+                  value={tokenDetails.atx.symbol}
                 />
                 <InfoLabel
                   label="Total supply"
-                  value={formatNumber(tokenDetails.dtx.totalSupply)}
+                  value={formatNumber(tokenDetails.atx.totalSupply)}
                 />
                 <InfoLabel
                   label="Your balance"
                   value={`${formatNumber(availableStakingTokenBalance)} ${
-                    tokenDetails.dtx.symbol
+                    tokenDetails.atx.symbol
                   }`}
                   isSeperator={false}
                 />

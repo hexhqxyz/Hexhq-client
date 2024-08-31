@@ -71,17 +71,17 @@ const SwapInput = React.forwardRef<HTMLInputElement, Props>(
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem
-                    value={tokenDetails.dtx.symbol}
+                    value={tokenDetails.atx.symbol}
                     className="justify-start"
                   >
                     <div className="flex items-center gap-x-2">
                       <Image
                         width={20}
                         height={20}
-                        src="/dtx-token.svg"
+                        src="/atx-token.svg"
                         alt="icon"
                       />
-                      {tokenDetails.dtx.symbol}
+                      {tokenDetails.atx.symbol}
                     </div>
                   </SelectItem>
                   <SelectItem
@@ -92,7 +92,7 @@ const SwapInput = React.forwardRef<HTMLInputElement, Props>(
                       <Image
                         width={20}
                         height={20}
-                        src="/dtx-token.svg"
+                        src="/dusd-token.svg"
                         alt="icon"
                       />
                       {tokenDetails.dusd.symbol}

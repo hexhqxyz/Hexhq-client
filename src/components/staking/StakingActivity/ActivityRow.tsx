@@ -21,13 +21,13 @@ type Props = {
 export const getCurrency = (type: string) => {
   switch (type) {
     case "Staked":
-      return "DTX";
+      return "ATX";
     case "Withdrawn":
-      return "DTX";
+      return "ATX";
     case "RewardsClaimed":
       return "dUSD";
     default:
-      return "DTX";
+      return "ATX";
   }
 };
 
@@ -46,7 +46,6 @@ export const getActivityIcon = (type: string) => {
 
 const ActivityRow = ({ activity }: Props) => {
   if (!activity) return <>nothing...</>;
-//   console.log("activity:", activity);
   const formattedTimestamp = format(
     new Date(activity.timestamp * 1000 || ""),
     "do MMM yyyy, h:mm a"
