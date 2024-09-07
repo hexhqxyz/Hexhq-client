@@ -14,8 +14,8 @@ AstraDeFi is a **decentralized finance (DeFi) platform** that offers a wide rang
 - **Activity Tracking:** Monitor all your activities including staking, lending, borrowing, and swaps in one unified dashboard.
 - **Analytics & Charts:** Visualize token performance, trading volume, and liquidity pool stats with in-depth charts and graphs.
 - **Dark and Light Modes:** Switch between dark and light modes to suit your preference.
-- **Confetti Celebration:** Celebrate your successful transactions with visual confetti effects.
 
+<!-- - **Confetti Celebration:** Celebrate your successful transactions with visual confetti effects. -->
 
 ## 📸 Screenshots
 
